@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>beehive-utils</module>
+        <module>beehive-util</module>
     </modules>
 
     <name>beehive-parent</name>
@@ -19,16 +19,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+
+        <junit.version>4.11</junit.version>
     </properties>
 
+    <!-- dependencies 描述强制必须依赖项，子模块无须手动依赖，默认会自动添加依赖 -->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <!-- dependencyManagement 描述可选依赖项，子模块如果需要使用必须手动依赖 -->
+    <dependencyManagement>
+
+    </dependencyManagement>
 
     <build>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->

@@ -1,2 +1,2 @@
 # beehive-parent
-beehive project. 
+beehive project. this is maven project.
