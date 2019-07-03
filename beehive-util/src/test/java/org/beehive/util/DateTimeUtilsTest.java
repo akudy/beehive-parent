@@ -13,6 +13,8 @@
 package org.beehive.util;
 
 import org.junit.Test;
+import sun.util.locale.provider.LocaleProviderAdapter;
+import sun.util.locale.provider.LocaleResources;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -61,20 +63,45 @@ import java.util.Locale;
 public class DateTimeUtilsTest {
 
     @Test
-    public void formatTest(){
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.set(2019,5,27);
-        Date date = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("D");
-        System.out.println(sdf.format(date));
-        sdf = new SimpleDateFormat("DD");
-        System.out.println(sdf.format(date));
-        sdf = new SimpleDateFormat("DDD");
-        System.out.println(sdf.format(date));
-        sdf = new SimpleDateFormat("DDDD");
-        System.out.println(sdf.format(date));
-        sdf = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(sdf.format(date));
+    public void formatTest() {
+
+        Locale[] locales = Locale.getAvailableLocales();
+//        for (Locale locale : locales) {
+//            System.out.println(locale + "\t" + locale.getDisplayName() + "\t" + locale.getDisplayLanguage() + "\t" + locale.getDisplayCountry());
+//        }
+//
+
+        Locale locale = Locale.forLanguageTag("en");
+
+        Calendar calendar = Calendar.getInstance();
+        LocaleResources localeResources = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale);
+        String p = localeResources.getDateTimePattern(3,3, calendar);
+        System.out.println(p);
+
+
+
+        calendar.set(Calendar.YEAR, 2018);
+        calendar.set(Calendar.MONTH, 5);
+        calendar.set(Calendar.DAY_OF_MONTH, 23);
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        calendar.set(Calendar.MINUTE, 50);
+        calendar.set(Calendar.SECOND, 60);
+        calendar.set(Calendar.MILLISECOND, 0);
+        SimpleDateFormat sdf = new SimpleDateFormat(p,locale);
+
+
+        System.out.println(sdf.format(calendar.getTime()));
+
+        Date date1 = DateTimeUtils.newDateTime(2019, 2, 28, 12, 34, 45, 343);
+        System.out.println(sdf.format(date1));
+
+        Date date2 = DateTimeUtils.newDateTimeOfArray(2020, 5);
+        System.out.println(sdf.format(date2));
+
+
+        Date date3 = DateTimeUtils.tryToParse("2019年03月03日 23:13:10","yyyy-MM-dd HH:mm:ss","yyyy年MM月dd日 HH:mm:ss","yyyy/MM/dd HH:mm:ss");
+        System.out.println(date3);
+
     }
 
 }

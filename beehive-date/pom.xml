@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2019-2019 by akudy All Rights Reserved.
+  ~ Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
+  ~ Project Name: beehive-parent
+  ~ Module Name: beehive-parent
+  ~ File Name: D:/workspace/IdeaProjects/my/beehiveProject/beehive-parent/beehive-date/pom.xml
+  ~ Encoding: UTF-8
+  ~ Creator: akudy(akudys@163.com)
+  ~ Create Date: 2019-06-28
+  ~ Comments: <简述该文件的内容和作用>
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>beehive-parent</artifactId>
+        <groupId>org.beehive</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>beehive-date</artifactId>
+
+
+</project>
