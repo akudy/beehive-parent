@@ -26,6 +26,7 @@ import java.util.*;
  * <br>
  * 内部包含格式化、转换等多种处理方法。格式字符（单个格式字符描述的都是实际值，如果需要进行位对其的格式化则可以使用多个占位符，不足位会自动补0，所有的格式化内容都与本地语言有关）参考：
  * <table border="1" cellspacing="0" cellpadding="0">
+ * <caption>日期时间格式字符解释</caption>
  * <tr>
  * <th>符号</th>
  * <th>说明</th>
@@ -154,7 +155,7 @@ import java.util.*;
  * <b>Upgrade/Modify Description:</b>
  * <dl>
  * <dd>
- * <table border="1" cellspacing="0" cellpadding="0">
+ * <table border="1" cellspacing="0" cellpadding="0" summary="Upgrade/Modify History">
  * <tr style="background-color: #CECECE">
  * <th>Version</th>
  * <th>Environment</th>
@@ -177,7 +178,7 @@ import java.util.*;
  * @version 1.0
  * @since 1.0
  */
-public class DateTimeUtils {
+public final class DateTimeUtils {
 
     /**
      * 私有化构造器，禁止外部实例化
@@ -188,47 +189,17 @@ public class DateTimeUtils {
     /**
      * DateTime默认格式化字符串
      */
-    private static String DEFAULT_FORMAT = "yyyy/MM/dd HH:mm:ss";
+    private final static String DEFAULT_FORMAT = "yyyy/MM/dd HH:mm:ss";
 
     /**
      * Date默认格式字符串
      */
-    private static String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
+    private final static String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
 
     /**
      * Time默认格式字符串
      **/
-    private static String DEFAULT_TIME_FORMAT = "HH:mm:ss";
-
-    /**
-     * 设置默认DateTime的<a href="#dateFormat">格式化字符串</a>。
-     *
-     * @param defaultFormat 格式字符串
-     * @since 1.0
-     */
-    public static void setDefaultFormat(String defaultFormat) {
-        DateTimeUtils.DEFAULT_FORMAT = defaultFormat;
-    }
-
-    /**
-     * 设置默认Date的<a href="#dateFormat">格式化字符串</a>。
-     *
-     * @param defaultDateFormat 格式字符串
-     * @since 1.0
-     */
-    public static void setDefaultDateFormat(String defaultDateFormat) {
-        DateTimeUtils.DEFAULT_DATE_FORMAT = defaultDateFormat;
-    }
-
-    /**
-     * 设置默认Time的<a href="#dateFormat">格式化字符串</a>。
-     *
-     * @param defaultTimeFormat 格式字符串
-     * @since 1.0
-     */
-    public static void setDefaultTimeFormat(String defaultTimeFormat) {
-        DateTimeUtils.DEFAULT_TIME_FORMAT = defaultTimeFormat;
-    }
+    private final static String DEFAULT_TIME_FORMAT = "HH:mm:ss";
 
     /**
      * 每天的毫秒数
@@ -347,8 +318,8 @@ public class DateTimeUtils {
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      *
      * @param calendar 日历对象
-     * @return 日期分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br/>
-     * 月份的取值：[1-12]<br/>
+     * @return 日期分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br>
+     * 月份的取值：[1-12]<br>
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      */
     public static int[] toArray(Calendar calendar) {
@@ -482,6 +453,7 @@ public class DateTimeUtils {
      * 使用指定的数值实例化一个日期时间对象，内部使用{@link java.util.Calendar java.util.Calendar}类约定的字段进行设置。<br>
      * 该类预定的字段如下：
      * <table border="1" cellspacing="0" cellpadding="0">
+     * <caption>{@link java.util.Calendar java.util.Calendar}字段解释</caption>
      * <tr>
      * <th>Calendar字段</th>
      * <th>说明</th>
@@ -768,8 +740,8 @@ public class DateTimeUtils {
      * 月份的取值：[1,12]<br>
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      *
-     * @return 当前瞬时的日期时间分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br/>
-     * 月份的取值：[1-12]<br/>
+     * @return 当前瞬时的日期时间分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br>
+     * 月份的取值：[1-12]<br>
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      * @see #toArray(Date)
      * @since 1.0
@@ -1065,8 +1037,8 @@ public class DateTimeUtils {
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      *
      * @param date 日期时间对象
-     * @return 日期时间分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br/>
-     * 月份的取值：[1-12]<br/>
+     * @return 日期时间分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br>
+     * 月份的取值：[1-12]<br>
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      * @since 1.0
      */
@@ -1081,8 +1053,8 @@ public class DateTimeUtils {
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      *
      * @param timestamp 时间戳
-     * @return 日期分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br/>
-     * 月份的取值：[1-12]<br/>
+     * @return 日期分段值的数组，共8位，分别代表年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br>
+     * 月份的取值：[1-12]<br>
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
      * @see #toArray(Date)
      * @see #newDateTime(long)
@@ -1719,7 +1691,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将日期格式为指定模式{@value #DEFAULT_FORMAT}的字符串
+     * 将日期格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
      *
      * @param date 日期
      * @return 格式化后的日期字符串
@@ -1731,7 +1703,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将时间戳格式为指定模式{@value #DEFAULT_FORMAT}的字符串
+     * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
      *
      * @param timestamp 时间戳
      * @return 格式化后的日期字符串
@@ -1744,7 +1716,7 @@ public class DateTimeUtils {
 
 
     /**
-     * 将当前时间格式为指定模式{@value #DEFAULT_FORMAT}的字符串
+     * 将当前时间格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
      *
      * @return 格式化后的日期字符串
      * @see #format(Date, String)
@@ -1755,7 +1727,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将日期格式为指定模式{@value #DEFAULT_DATE_FORMAT}的字符串
+     * 将日期格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
      *
      * @param date 日期
      * @return 格式化后的日期字符串
@@ -1767,7 +1739,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将时间戳格式为指定模式{@value #DEFAULT_DATE_FORMAT}的字符串
+     * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
      *
      * @param timestamp 时间戳
      * @return 格式化后的日期字符串
@@ -1779,7 +1751,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将当前时间格式为指定模式{@value #DEFAULT_DATE_FORMAT}的字符串
+     * 将当前时间格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
      *
      * @return 格式化后的日期字符串
      * @see #format(Date, String)
@@ -1790,7 +1762,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将日期格式为指定模式{@value #DEFAULT_TIME_FORMAT}的字符串
+     * 将日期格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
      *
      * @param date 日期
      * @return 格式化后的时间字符串
@@ -1802,7 +1774,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将时间戳格式为指定模式{@value #DEFAULT_TIME_FORMAT}的字符串
+     * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
      *
      * @param timestamp 时间戳
      * @return 格式化后的时间字符串
@@ -1814,7 +1786,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将当前时间格式为指定模式{@value #DEFAULT_TIME_FORMAT}的字符串
+     * 将当前时间格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
      *
      * @return 格式化后的时间字符串
      * @see #format(Date, String)
@@ -1844,7 +1816,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将一个指定格式{@value #DEFAULT_FORMAT}的日期时间字符串转换为日期时间对象
+     * 将一个指定格式{@value DateTimeUtils#DEFAULT_FORMAT}的日期时间字符串转换为日期时间对象
      *
      * @param dateStr 日期时间字符串
      * @return 日期时间对象
@@ -1910,7 +1882,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 将默认格式{@value #DEFAULT_FORMAT}日期时间字符串转化为另一个格式的日期时间字符串
+     * 将默认格式{@value DateTimeUtils#DEFAULT_FORMAT}日期时间字符串转化为另一个格式的日期时间字符串
      *
      * @param dateStr       日期时间字符串
      * @param targetPattern 目标日期时间字符串格式
@@ -2568,6 +2540,7 @@ public class DateTimeUtils {
     /**
      * 计算当前日期时间和指定日期时间之间间隔的天数（即晚数），忽略时分秒的影响
      *
+     * @param date 输入的日期时间
      * @return 不计入时分秒的情况下，两个日期之间间隔的天数（即晚数）
      * @see #diffDays(Date)
      * @since 1.0
@@ -2592,6 +2565,7 @@ public class DateTimeUtils {
     /**
      * 计算当前日期时间和指定日期时间之间跨越的天数（包含首尾日期），忽略时分秒的影响
      *
+     * @param date 输入的日期时间
      * @return 不计入时分秒的情况下，两个日期时间之间跨越的天数（包含首尾日期）
      * @see #diffDays(Date, TimeMode)
      * @since 1.0
@@ -2855,7 +2829,7 @@ public class DateTimeUtils {
      * @param timeMode  时间模式
      * @return 如果前者在后者后一天之前则返回true，否则返回false
      * @see #compare(Date, Date, TimeMode)
-     * @see 1.0
+     * @since 1.0
      */
     public static boolean beforeOrEquals(Date date, Date otherDate, TimeMode timeMode) {
         return compare(date, otherDate, timeMode) <= 0;
@@ -2908,22 +2882,22 @@ public class DateTimeUtils {
      * @param timeMode 时间模式
      * @return 如果前者在后者后一天之前则返回true，否则返回false
      * @see #beforeOrEquals(Date, Date, TimeMode)
-     * @see 1.0
+     * @since 1.0
      */
     public static boolean beforeOrEqualsOfNow(Date date, TimeMode timeMode) {
         return beforeOrEquals(date, now(), timeMode);
     }
 
     /**
-     * 判断输入的日期时间是否在当前日期时间的后一天之前（忽略时间）。如果是则返回true，否则返回false。     *
+     * 判断输入的日期时间是否在当前日期时间的后一天之前（忽略时间）。如果是则返回true，否则返回false。
      *
      * @param date 输入的日期时间
      * @return 在不计入时间的情况下，如果前者在后者后一天之前则返回true，否则返回false
      * @see #beforeOrEquals(Date, Date)
      * @since 1.0
      */
-    public static boolean beforeOrEqualsOfNow(Date date, Date otherDate) {
-        return beforeOrEquals(date, otherDate);
+    public static boolean beforeOrEqualsOfNow(Date date) {
+        return beforeOrEquals(date, now());
     }
 
     /**
@@ -2947,7 +2921,7 @@ public class DateTimeUtils {
      * @see #afterOrEquals(Date, Date)
      * @since 1.0
      */
-    public static boolean afterOrEqualsDateOfNow(Date date) {
+    public static boolean afterOrEqualsOfNow(Date date) {
         return afterOrEquals(date, now());
     }
 
@@ -3195,7 +3169,7 @@ public class DateTimeUtils {
      * @see #after(Date, Date)
      * @since 1.0
      */
-    public static boolean afterOfYesterdayDate(Date date) {
+    public static boolean afterOfYesterday(Date date) {
         return after(date, yesterday());
     }
 

@@ -3,20 +3,25 @@
  * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
  * Project Name: beehive-parent
  * Module Name: beehive-util
- * File Name: org.beehive.util.DateTimeUtilsTest
+ * File Name: org.beehive.util.test.DateTimeUtilsTest
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
- * Create Date: 2019-06-26
+ * Create Date: 2019-07-08
  * Comments: <简述该文件的内容和作用>
  */
 
-package org.beehive.util;
+package org.beehive.util.test;
 
+import org.beehive.util.DateTimeUtils;
 import org.junit.Test;
 import sun.util.locale.provider.LocaleProviderAdapter;
 import sun.util.locale.provider.LocaleResources;
 
 import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -101,6 +106,24 @@ public class DateTimeUtilsTest {
 
         Date date3 = DateTimeUtils.tryToParse("2019年03月03日 23:13:10","yyyy-MM-dd HH:mm:ss","yyyy年MM月dd日 HH:mm:ss","yyyy/MM/dd HH:mm:ss");
         System.out.println(date3);
+
+        //LocalTime localTime = LocalTime.now();
+
+        Clock clock = Clock.systemDefaultZone();
+        System.out.println(clock);
+        System.out.println(clock.instant());
+        LocalTime localTime = LocalTime.now(clock);
+        System.out.println(localTime);
+        LocalDateTime localDateTime = LocalDateTime.now(clock);
+        System.out.println(localDateTime);
+        DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE;
+        System.out.println(dtf);
+
+
+        System.out.println();
+
+        Date date = DateTimeUtils.newDateTimeOfNowTime(2019,11,2);
+        System.out.println(DateTimeUtils.format(date,"M年d日"));
 
     }
 

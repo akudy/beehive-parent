@@ -7,15 +7,24 @@
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
  * Create Date: 2019-06-26
- * Comments: <简述该文件的内容和作用>
+ * Comments: Java源文件
  */
 
 package org.beehive.util;
 
+import static org.beehive.helper.SystemInfo.*;
+
 /**
- * Java运行系统工具类。
+ * 系统工具类。
  * <br>
  * 主要用于获取或定义一些系统参数，所有的参数定义只与当前运行实例有关；不影响其他运行实例。
+ *  TODO 这个类需要考虑清楚到底应该做什么
+ *  TODO 1. 获取所有系统参数，并尝试进行修改？
+ *  TODO 2. 获取当前被依赖应用（项目）的属性？
+ *  TODO 3. 扫描当前被依赖应用（项目）所有jar包的的常量定义？
+ *  TODO 4. 扫描beehive项目的所有配置定义，并提供修改？
+ *  TODO 5. 扫描当前被依赖应用（项目）所有jar包的的配置信息，并提供修改？
+ *  TODO 6. 统一被依赖应用（项目）的所有配置到该类中，并尝试修改所有常量的值；让应用保证应用（项目）的所有类同的配置统一
  * <p>
  * <b>Type Informations:</b>
  * <ul>
@@ -28,7 +37,7 @@ package org.beehive.util;
  * <b>Upgrade/Modify Description:</b>
  * <dl>
  * <dd>
- * <table border="1">
+ * <table border="1"  cellspacing="0" cellpadding="0" summary="Upgrade/Modify History">
  * <tr>
  * <th>Version</th>
  * <th>Environment</th>
@@ -51,7 +60,7 @@ package org.beehive.util;
  * @version 1.0
  * @since Java 8
  */
-public class SystemUtils {
+public final class SystemUtils {
 
     /**
      * 私有化构造函数，禁止实例化
@@ -60,72 +69,88 @@ public class SystemUtils {
     }
 
     /**
-     * 当前所在国家地区代码，默认为：CN
-     */
-    public static final String USER_COUNTRY = System.getProperty("user.country", "CN");
-
-    /**
-     * 行分隔符，默认为：\r\n
-     */
-    public static final String LINE_SEPARATOR = System.getProperty("line.separator", "\r\n");
-
-    /**
-     * Java Class头版本号
-     */
-    public static final String JAVA_CLASS_VERSION = System.getProperty("java.class.version");
-
-    /**
-     * 当前所在时区，默认为：东八区（GMT+8:00）
-     */
-    public static final String USER_TIMEZONE = System.getProperty("user.timezone", "GMT+8:00");
-
-    /**
-     * 当前文件编码格式，默认为：UTF-8
-     */
-    public static final String FILE_ENCODING = System.getProperty("file.encoding", "UTF-8");
-
-    /**
-     * Java规范版本号，例如:1.8
+     * 获取所在国家短名称，例如：CN
      *
-     * @see #JAVA_VERSION
+     * @return 国家短名称
      */
-    public static final String JAVA_SPECIFICATION_VERSION = System.getProperty("java.specification.version");
+    public static String getCountryShortName() {
+        return USER.COUNTRY;
+    }
 
     /**
-     * Java虚拟机规范版本号，例如:1.8
+     * 获取所在地区的时区，例如：GMT+8:00
      *
-     * @see #JAVA_SPECIFICATION_VERSION
+     * @return 时区标识符，默认：GMT+8:00
+     * @see USER#TIMEZONE
      */
-    public static final String JAVA_VM_SPECIFICATION_VERSION = System.getProperty("java.vm.specification.version");
+    public static String getTimezone() {
+        if (USER.TIMEZONE == null || USER.TIMEZONE.trim().length() == 0) {
+            return "GMT+8:00";
+        }
+        return USER.TIMEZONE;
+    }
 
     /**
-     * 当前语言代码
-     */
-    public static final String USER_LANGUAGE = System.getProperty("user.language", "zh");
-
-    /**
-     * Java版本号，例如：1.8.0_172
+     * 获取当前语言环境，例如：zh
      *
-     * @see #JAVA_SPECIFICATION_VERSION
-     * @see #JAVA_RUNTIME_VERSION
+     * @return 语言环境，默认：zh
+     * @see USER#LANGUAGE
      */
-    public static final String JAVA_VERSION = System.getProperty("java.version");
+    public static String getLanguage() {
+        if (USER.LANGUAGE == null || USER.LANGUAGE.trim().length() == 0) {
+            return "zh";
+        }
+        return USER.LANGUAGE;
+    }
 
     /**
-     * Java运行环境版本号，例如：1.8.0_172-b11
+     * 获取Java版本号，例如：1.8.0_172
      *
-     * @see #JAVA_VERSION
+     * @return Java版本号
+     * @see JAVA#VERSION
      */
-    public static final String JAVA_RUNTIME_VERSION = System.getProperty("java.runtime.version");
+    public static String getJavaVersion() {
+        return JAVA.VERSION;
+    }
 
     /**
-     * 文件分隔符，默认为：\
+     * 获取文件编码格式
+     *
+     * @return 文件编码格式，默认：UTF-8
+     * @see JAVA#FILE_ENCODING
      */
-    public static final String FILE_SEPARATOR = System.getProperty("file.separator", "\\");
+    public static String getFileEncoding() {
+        return JAVA.FILE_ENCODING;
+    }
 
     /**
-     * 多路径分隔符，默认为：;
+     * 获取系统换行符
+     *
+     * @return 系统换行符，默认：\r\n
+     * @see OS#LINE_SEPARATOR
      */
-    public static final String PATH_SEPARATOR = System.getProperty("path.separator", ";");
+    public static String getLineSeparator() {
+        return OS.LINE_SEPARATOR;
+    }
+
+    /**
+     * 获取文件分隔符
+     *
+     * @return 文件分隔符，默认：\
+     * @see OS#FILE_SEPARATOR
+     */
+    public static String getFileSeparator() {
+        return OS.FILE_SEPARATOR;
+    }
+
+    /**
+     * 获取路径分隔符
+     *
+     * @return 路径分隔符，默认：\
+     * @see OS#PATH_SEPARATOR
+     */
+    public static String getPathSeparator() {
+        return OS.PATH_SEPARATOR;
+    }
 
 }
