@@ -7,7 +7,7 @@
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
  * Create Date: 2019-06-28
- * Comments: <简述该文件的内容和作用>
+ * Comments: Java源文件
  */
 
 package org.beehive.date;
@@ -28,7 +28,7 @@ package org.beehive.date;
  * <b>Upgrade/Modify Description:</b>
  * <dl>
  * <dd>
- * <table border="1" cellspacing="0" cellpadding="0">
+ * <table border="1" cellspacing="0" cellpadding="0" summary="Upgrade/Modify History">
  * <tr>
  * <th>Version</th>
  * <th>Environment</th>
@@ -49,7 +49,7 @@ package org.beehive.date;
  *
  * @author akudy(akudys @ 163.com)
  * @version 1.0
- * @since Java 8
+ * @since 1.0
  */
 public class LocalDate {
 }
