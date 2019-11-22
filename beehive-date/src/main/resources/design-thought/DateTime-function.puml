@@ -1,0 +1,110 @@
+@startmindmap
+* DateTime
+
+** 配置
+*** 默认日期时间字符串格式
+****_ yyyy/MM/dd HH:mm:ss.SSS
+****_ 会被beehive-date*.properties中<b>default.date.format.style</b>覆盖
+
+** 实例创建
+*** 基于环境
+****_ TimeZone
+****_ Locale
+****_ TimeZone & Locale
+*** 基于其他对象
+****_ Calendar
+****_ Date
+****_ SQL Date
+****_ SQL Timestamp
+*** 基于值
+****_ millisecond（毫秒值）
+****_ 年月日时分秒毫秒
+****_ 年月日时分秒
+*** 当前对象
+****_ new DateTime
+****_ DateTime.now
+*** 基于Value
+****_ year
+****_ month
+****_ day
+****_ hour
+****_ minute
+****_ second
+****_ millisecond
+****_ <b>build</b>
+
+** 转换
+***_ asDate
+***_ asCalendar
+***_ asTimestamp
+***_ asSQLDate
+***_ asSQLTimestamp
+***_ <font color=red>asLocalDateTime</font>
+***_ <font color=red>asLocalDate</font>
+***_ <font color=red>asLocalTime</font>
+
+
+** 值描述
+*** 毫秒值
+****_ millisecond
+*** 值数组
+****_ <del>toArray</del>
+***_ 年（getYear）
+***_ 月（getMonth）
+***_ 日（getDay）
+***_ 星期（getWeek）
+***_ 时（getHour）
+***_ 分（getMinute）
+***_ 秒（getSecond）
+***_ 毫秒（getMillisecond）
+
+** 格式化
+*** 格式化为字符串
+****_ toString
+
+** 修/装饰
+*** 开始/结束
+****_ beginOf
+****_ endOf
+*** 设置日期或时间
+****_ setTime
+****_ setDate
+
+** 运算
+*** 加减运算
+**** 年
+*****_ addYear
+*****_ minusYear
+**** 月
+*****_ addMonth
+*****_ minusMonth
+**** 日
+*****_ addDay
+*****_ minusDay
+**** 时
+*****_ addHour
+*****_ minusHour
+**** 分
+*****_ addMinute
+*****_ minusMinute
+**** 秒
+*****_ addSecond
+*****_ minusSecond
+**** 毫秒
+*****_ addMillisecond
+*****_ minusMillisecond
+**** 混合运算
+*****_ add
+*****_ minus
+
+*** 差值运算
+****_ diff
+
+*** 比较运算
+****_ compareTo
+****_ compare
+****_ before
+****_ after
+****_ equals
+
+@endmindmap

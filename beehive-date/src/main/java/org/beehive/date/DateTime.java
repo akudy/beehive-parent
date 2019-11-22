@@ -145,23 +145,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     private Calendar calendar;
 
-    /**
-     * 日期时间值
-     */
-    private DateTimeValue values;
-
-    /**
-     * 毫秒值
-     */
-    private long millisecond;
-
-    /**
-     * 初始化值
-     */
-    private void initialization() {
-        this.values = new DateTimeValue(this.calendar);
-        this.millisecond = this.calendar.getTimeInMillis();
-    }
 
     /**
      * 使用时区和本地语言环境构建日期时间对象
@@ -172,7 +155,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(TimeZone timeZone, Locale locale) {
         this.calendar = Calendar.getInstance(timeZone, locale);
-        this.initialization();
     }
 
     /**
@@ -183,7 +165,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(TimeZone timeZone) {
         this.calendar = Calendar.getInstance(timeZone);
-        this.initialization();
     }
 
     /**
@@ -194,7 +175,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(Locale locale) {
         this.calendar = Calendar.getInstance(locale);
-        this.initialization();
     }
 
     /**
@@ -206,7 +186,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     public DateTime(Date date) {
         this.calendar = Calendar.getInstance();
         this.calendar.setTime(date);
-        this.initialization();
     }
 
     /**
@@ -218,7 +197,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     public DateTime(long millisecond) {
         this.calendar = Calendar.getInstance();
         this.calendar.setTimeInMillis(millisecond);
-        this.initialization();
     }
 
     /**
@@ -252,12 +230,79 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     }
 
     /**
-     * 使用本地所在时区和本地语言环境构建当前系统默认的日期时间对象
+     * 构建当前系统默认的日期时间对象
      *
      * @since 1.0
      */
     public DateTime() {
         this(System.currentTimeMillis());
+    }
+
+    /**
+     * 构建当前系统默认的日期时间对象
+     *
+     * @return 当前日期时间对象
+     * @since 1.0
+     */
+    public static DateTime now() {
+        return new DateTime();
+    }
+
+    /**
+     * 设置日历值
+     *
+     * @param calendar 待设置值的日期对象
+     * @param value    日期时间值对象
+     * @see Calendar#getInstance()
+     * @see Calendar#YEAR
+     * @see Calendar#MONTH
+     * @see Calendar#DAY_OF_MONTH
+     * @see Calendar#HOUR_OF_DAY
+     * @see Calendar#MINUTE
+     * @see Calendar#SECOND
+     * @see Calendar#MILLISECOND
+     * @see Value
+     * @since 1.0
+     */
+    private void setCalendarValue(Calendar calendar, Value value) {
+        // 获取当前的年月日时分秒毫秒值，如果设置为指定，则使用该值
+        Calendar __calendar = Calendar.getInstance();
+        int year = value.year != null ? value.year : __calendar.get(Calendar.YEAR);
+        int month = value.month != null ? value.month : __calendar.get(Calendar.MONTH);
+        int day = value.day != null ? value.day : __calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = value.hour != null ? value.hour : __calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = value.minute != null ? value.minute : __calendar.get(Calendar.MINUTE);
+        int second = value.second != null ? value.second : __calendar.get(Calendar.SECOND);
+        int millisecond = value.millisecond != null ? value.millisecond : __calendar.get(Calendar.MILLISECOND);
+        if (calendar == null) {
+            calendar = Calendar.getInstance();
+        }
+        calendar.set(Calendar.YEAR, year);
+        if (month < MONTH_MIN_VALUE || month > MONTH_MAX_VALUE) {
+            throw new IllegalArgumentException(formatString("value range of month is [{0},{1}]", MONTH_MIN_VALUE, MONTH_MAX_VALUE));
+        }
+        calendar.set(Calendar.MONTH, month - 1);
+        int daysOfMonth = getDaysOfMonth(year, month);
+        if (day < DAY_MIN_VALUE || day > daysOfMonth) {
+            throw new IllegalArgumentException(formatString("value range of day is [{0},{1}], because year is {2,number,#}, month is {3}", DAY_MIN_VALUE, daysOfMonth, year, month));
+        }
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        if (hour < HOUR_MIN_VALUE || hour > HOUR_MAX_VALUE) {
+            throw new IllegalArgumentException(formatString("value range of hour is [{0},{1}]", HOUR_MIN_VALUE, HOUR_MAX_VALUE));
+        }
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        if (minute < MINUTE_MIN_VALUE || minute > MINUTE_MAX_VALUE) {
+            throw new IllegalArgumentException(formatString("value range of minute is [{0},{1}]", MINUTE_MIN_VALUE, MINUTE_MAX_VALUE));
+        }
+        calendar.set(Calendar.MINUTE, minute);
+        if (second < SECOND_MIN_VALUE || second > SECOND_MAX_VALUE) {
+            throw new IllegalArgumentException(formatString("value range of second is [{0},{1}]", SECOND_MIN_VALUE, SECOND_MAX_VALUE));
+        }
+        calendar.set(Calendar.SECOND, second);
+        if (month < MILLISECOND_MIN_VALUE || month > MILLISECOND_MAX_VALUE) {
+            throw new IllegalArgumentException(formatString("value range of millisecond is [{0},{1}]", MILLISECOND_MIN_VALUE, MILLISECOND_MAX_VALUE));
+        }
+        calendar.set(Calendar.MILLISECOND, millisecond);
     }
 
     /**
@@ -282,33 +327,18 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond) {
         this.calendar = Calendar.getInstance();
-        this.calendar.set(Calendar.YEAR, year);
-        if (month < MONTH_MIN_VALUE || month > MONTH_MAX_VALUE) {
-            throw new IllegalArgumentException(formatString("value range of month is [{0},{1}]", MONTH_MIN_VALUE, MONTH_MAX_VALUE));
-        }
-        this.calendar.set(Calendar.MONTH, month - 1);
-        int daysOfMonth = getDaysOfMonth(year, month);
-        if (day < DAY_MIN_VALUE || day > daysOfMonth) {
-            throw new IllegalArgumentException(formatString("value range of day is [{0},{1}], because year is {2,number,#}, month is {3}", DAY_MIN_VALUE, daysOfMonth, year, month));
-        }
-        this.calendar.set(Calendar.DAY_OF_MONTH, day);
-        if (hour < HOUR_MIN_VALUE || hour > HOUR_MAX_VALUE) {
-            throw new IllegalArgumentException(formatString("value range of hour is [{0},{1}]", HOUR_MIN_VALUE, HOUR_MAX_VALUE));
-        }
-        this.calendar.set(Calendar.HOUR_OF_DAY, hour);
-        if (minute < MINUTE_MIN_VALUE || minute > MINUTE_MAX_VALUE) {
-            throw new IllegalArgumentException(formatString("value range of minute is [{0},{1}]", MINUTE_MIN_VALUE, MINUTE_MAX_VALUE));
-        }
-        this.calendar.set(Calendar.MINUTE, minute);
-        if (second < SECOND_MIN_VALUE || second > SECOND_MAX_VALUE) {
-            throw new IllegalArgumentException(formatString("value range of second is [{0},{1}]", SECOND_MIN_VALUE, SECOND_MAX_VALUE));
-        }
-        this.calendar.set(Calendar.SECOND, second);
-        if (month < MILLISECOND_MIN_VALUE || month > MILLISECOND_MAX_VALUE) {
-            throw new IllegalArgumentException(formatString("value range of millisecond is [{0},{1}]", MILLISECOND_MIN_VALUE, MILLISECOND_MAX_VALUE));
-        }
-        this.calendar.set(Calendar.MILLISECOND, millisecond);
-        this.initialization();
+        Value value = new Value().year(year).month(month).day(day).hour(hour).minute(minute).second(second).millisecond(millisecond);
+        this.setCalendarValue(this.calendar, value);
+    }
+
+    /**
+     * 使用构建器构造日期时间对象，如果构造器的值未设置，则使用当前日期时间值
+     *
+     * @param value 值对象
+     */
+    private DateTime(Value value) {
+        this.calendar = Calendar.getInstance();
+        this.setCalendarValue(this.calendar, value);
     }
 
     /**
@@ -420,99 +450,594 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     }
 
     /**
-     * 获取日期时间值。<br>
-     * 值由时区、年、月、日、时、分、秒、毫秒、周几等组成。
-     *
-     * @return 日期时间值对象
-     * @since 1.0
-     */
-    public DateTimeValue values() {
-        return this.values;
-    }
-
-    /**
-     * 转换为一个8个元素的数组，元素值依次为年、月、日、周几、时、分、秒、毫秒
-     *
-     * @return 8个元素的数组，元素值依次为年、月、日、周几、时、分、秒、毫秒
-     * @see #values()
-     * @since 1.0
-     * @deprecated 替代方法{@link #values()}
-     */
-    @Deprecated
-    public int[] toArray() {
-        int[] array = new int[8];
-        DateTimeValue values = this.values();
-        array[0] = values.getYear();
-        array[1] = values.getMonth();
-        array[2] = values.getDay();
-        array[3] = values.getWeek();
-        array[4] = values.getHour();
-        array[5] = values.getMinute();
-        array[6] = values.getSecond();
-        array[7] = values.getMillisecond();
-        return array;
-    }
-
-    /**
      * 获取时间毫秒值
      *
      * @return 时间毫秒值
      * @since 1.0
      */
     public long millisecond() {
-        return this.millisecond;
+        return this.calendar.getTimeInMillis();
     }
 
     /**
-     * 获取开始日期时间。<br>
+     * 转换为一个8个元素的数组，元素值依次为年、月、日、周几、时、分、秒、毫秒
+     *
+     * @return 8个元素的数组，元素值依次为年、月、日、周几、时、分、秒、毫秒
+     * @see #getYear()
+     * @see #getMonth()
+     * @see #getDay()
+     * @see #getHour()
+     * @see #getMinute()
+     * @see #getSecond()
+     * @see #getMillisecond()
+     * @see #getWeek()
+     * @since 1.0
+     * @deprecated 替代方法{@link #values()}
+     */
+    @Deprecated
+    public int[] toArray() {
+        int[] array = new int[8];
+        array[0] = this.getYear();
+        array[1] = this.getMonth();
+        array[2] = this.getDay();
+        array[3] = this.getWeek();
+        array[4] = this.getHour();
+        array[5] = this.getMinute();
+        array[6] = this.getSecond();
+        array[7] = this.getMillisecond();
+        return array;
+    }
+
+    /**
+     * 获取年份值
+     *
+     * @return year - 年份值
+     * @since 1.0
+     */
+    public int getYear() {
+        return this.calendar.get(Calendar.YEAR);
+    }
+
+    /**
+     * 获取月份值，取值范围[1,12]
+     *
+     * @return month - 月份值，取值范围[1,12]
+     * @since 1.0
+     */
+    public int getMonth() {
+        return this.calendar.get(Calendar.MONTH) + 1;
+    }
+
+    /**
+     * 获取日期值，取值范围[1,31]
+     *
+     * @return day - 日期值，取值范围[1,31]
+     * @since 1.0
+     */
+    public int getDay() {
+        return this.calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 获取星期值，取值范围[0,6]，以周日为一周的开始
+     *
+     * @return week - 星期值，取值范围[0,6]，以周日为一周的开始
+     * @since 1.0
+     */
+    public int getWeek() {
+        return this.calendar.get(Calendar.DAY_OF_WEEK) - 1;
+    }
+
+    /**
+     * 获取24小时进制的小时值，取值范围[0,23]
+     *
+     * @return hour - 24小时进制的小时值，取值范围[0,23]
+     * @since 1.0
+     */
+    public int getHour() {
+        return this.calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * 获取分钟值，取值范围[0,59]
+     *
+     * @return minute - 分钟值，取值范围[0,59]
+     * @since 1.0
+     */
+    public int getMinute() {
+        return this.calendar.get(Calendar.MINUTE);
+    }
+
+    /**
+     * 获取秒值，取值范围[0,59]
+     *
+     * @return second - 秒值，取值范围[0,59]
+     * @since 1.0
+     */
+    public int getSecond() {
+        return this.calendar.get(Calendar.SECOND);
+    }
+
+    /**
+     * 获取毫秒值，取值范围[0,999]
+     *
+     * @return millisecond - 毫秒值，取值范围[0,999]
+     * @since 1.0
+     */
+    public int getMillisecond() {
+        return this.calendar.get(Calendar.MILLISECOND);
+    }
+
+    /**
+     * 设置日期值
+     *
+     * @param year  年份数值
+     * @param month 月份数值，取值范围[1,12]
+     * @param day   天数值，1/3/5/7/8/10/12月份的取值范围为[1,31]；4,6,9,11月份取值取值范围为[1,30]；2月份取值范围为[1,28]或[1,29]
+     * @since 1.0
+     */
+    public void setDate(int year, int month, int day) {
+        Value value = new Value().year(year).month(month).day(day).hour(this.getHour()).minute(this.getMinute()).second(this.getSecond()).millisecond(this.getMillisecond());
+        this.setCalendarValue(this.calendar, value);
+    }
+
+    /**
+     * 设置时间值
+     *
+     * @param hour   小时值，取值范围[0,23]
+     * @param minute 分钟值，取值范围[0,59]
+     * @param second 秒值，取值范围[0,59]
+     * @since 1.0
+     */
+    public void setTime(int hour, int minute, int second) {
+        Value value = new Value().year(this.getYear()).month(this.getMonth()).day(this.getDay()).hour(hour).minute(minute).second(second).millisecond(MILLISECOND_MIN_VALUE);
+        this.setCalendarValue(this.calendar, value);
+    }
+
+    /**
+     * 设置时间值
+     *
+     * @param hour        小时值，取值范围[0,23]
+     * @param minute      分钟值，取值范围[0,59]
+     * @param second      秒值，取值范围[0,59]
+     * @param millisecond 毫秒值，取值范围[0,999]
+     * @since 1.0
+     */
+    public void setTime(int hour, int minute, int second, int millisecond) {
+        Value value = new Value().year(this.getYear()).month(this.getMonth()).day(this.getDay()).hour(hour).minute(minute).second(second).millisecond(millisecond);
+        this.setCalendarValue(this.calendar, value);
+    }
+
+    /**
+     * 转换为当天的开始时间
+     *
+     * @see #setTime(int, int, int, int)
+     * @since 1.0
+     */
+    public void beginOf() {
+        this.setTime(HOUR_MIN_VALUE, MINUTE_MIN_VALUE, SECOND_MIN_VALUE, MILLISECOND_MIN_VALUE);
+    }
+
+    /**
+     * 转换为当天的结束时间。<br/>
      * 需要指定是否忽略毫秒值，因为有些有些时候在转换为数据库的日期时间时可能会由于毫秒丢失进度，例如MySQL的DATETIME类型。
      *
-     * @param ignoreMillisecond 是否忽略毫秒，如果不忽略则设置为0
-     * @return 开始日期时间对象
+     * @param ignoreMillisecond 是否忽略毫秒值，如果忽略则设置为0
+     * @see #setTime(int, int, int, int)
+     * @since 1.0
      */
-    public DateTime beginDateTime(boolean ignoreMillisecond) {
-        this.calendar.set(Calendar.HOUR_OF_DAY, HOUR_MIN_VALUE);
-        this.calendar.set(Calendar.MINUTE, MINUTE_MIN_VALUE);
-        this.calendar.set(Calendar.SECOND, SECOND_MIN_VALUE);
-        if (!ignoreMillisecond) {
-            this.calendar.set(Calendar.MILLISECOND, MILLISECOND_MIN_VALUE);
+    public void endOf(boolean ignoreMillisecond) {
+        this.setTime(HOUR_MIN_VALUE, MINUTE_MIN_VALUE, SECOND_MIN_VALUE, ignoreMillisecond ? MILLISECOND_MIN_VALUE : MILLISECOND_MAX_VALUE);
+    }
+
+    /**
+     * 转换为当天的结束时间(忽略毫秒值)。
+     *
+     * @see #endOf(boolean)
+     * @since 1.0
+     */
+    public void endOf() {
+        this.endOf(true);
+    }
+
+
+    /**
+     * 加上指定的年数
+     *
+     * @param years 年数
+     * @since 1.0
+     */
+    public void addYear(int years) {
+        this.calendar.add(Calendar.YEAR, years);
+    }
+
+    /**
+     * 减去指定的年数
+     *
+     * @param years 年数
+     * @see Calendar#add(int, int)
+     * @see Calendar#YEAR
+     * @since 1.0
+     */
+    public void minuteYear(int years) {
+        this.calendar.add(Calendar.YEAR, -years);
+    }
+
+    /**
+     * 加上指定的月数
+     *
+     * @param months 月数
+     * @see Calendar#add(int, int)
+     * @see Calendar#MONTH
+     * @since 1.0
+     */
+    public void addMonth(int months) {
+        this.calendar.add(Calendar.MONTH, months);
+    }
+
+    /**
+     * 减去指定的年数
+     *
+     * @param months 年数
+     * @see Calendar#add(int, int)
+     * @see Calendar#MONTH
+     * @since 1.0
+     */
+    public void minuteMonth(int months) {
+        this.calendar.add(Calendar.MONTH, -months);
+    }
+
+    /**
+     * 加上指定的天数
+     *
+     * @param days 天数
+     * @see Calendar#add(int, int)
+     * @see Calendar#DAY_OF_MONTH
+     * @since 1.0
+     */
+    public void addDay(int days) {
+        this.calendar.add(Calendar.DAY_OF_MONTH, days);
+    }
+
+    /**
+     * 减去指定的天数
+     *
+     * @param months 天数
+     * @see Calendar#add(int, int)
+     * @see Calendar#DAY_OF_MONTH
+     * @since 1.0
+     */
+    public void minuteDay(int months) {
+        this.calendar.add(Calendar.DAY_OF_MONTH, -months);
+    }
+
+    /**
+     * 加上指定的小时数
+     *
+     * @param hours 小时数
+     * @see Calendar#add(int, int)
+     * @see Calendar#HOUR_OF_DAY
+     * @since 1.0
+     */
+    public void addHour(int hours) {
+        this.calendar.add(Calendar.HOUR_OF_DAY, hours);
+    }
+
+    /**
+     * 减去指定的小时数
+     *
+     * @param hours 小时数
+     * @see Calendar#add(int, int)
+     * @see Calendar#HOUR_OF_DAY
+     * @since 1.0
+     */
+    public void minuteHour(int hours) {
+        this.calendar.add(Calendar.HOUR_OF_DAY, -hours);
+    }
+
+    /**
+     * 加上指定的分钟数
+     *
+     * @param minute 分钟数
+     * @see Calendar#add(int, int)
+     * @see Calendar#MINUTE
+     * @since 1.0
+     */
+    public void addMinute(int minute) {
+        this.calendar.add(Calendar.MINUTE, minute);
+    }
+
+    /**
+     * 减去指定的分钟数
+     *
+     * @param minute 分钟数
+     * @see Calendar#add(int, int)
+     * @see Calendar#MINUTE
+     * @since 1.0
+     */
+    public void minuteMinute(int minute) {
+        this.calendar.add(Calendar.MINUTE, -minute);
+    }
+
+    /**
+     * 加上指定的秒数
+     *
+     * @param seconds 秒数
+     * @see Calendar#add(int, int)
+     * @see Calendar#SECOND
+     * @since 1.0
+     */
+    public void addSecond(int seconds) {
+        this.calendar.add(Calendar.SECOND, seconds);
+    }
+
+    /**
+     * 减去指定的秒数
+     *
+     * @param seconds 秒数
+     * @see Calendar#add(int, int)
+     * @see Calendar#SECOND
+     * @since 1.0
+     */
+    public void minuteSecond(int seconds) {
+        this.calendar.add(Calendar.SECOND, -seconds);
+    }
+
+    /**
+     * 加上指定的毫秒数
+     *
+     * @param milliseconds 毫秒数
+     * @see Calendar#add(int, int)
+     * @see Calendar#MILLISECOND
+     * @since 1.0
+     */
+    public void addMillisecond(int milliseconds) {
+        this.calendar.add(Calendar.MILLISECOND, milliseconds);
+    }
+
+    /**
+     * 减去指定的毫秒数
+     *
+     * @param milliseconds 毫秒数
+     * @see Calendar#add(int, int)
+     * @see Calendar#MILLISECOND
+     * @since 1.0
+     */
+    public void minuteMillisecond(int milliseconds) {
+        this.calendar.add(Calendar.MILLISECOND, -milliseconds);
+    }
+
+    /**
+     * 计算日期
+     *
+     * @param calendar 待计算的日期对象
+     * @param calcType 计算类型，大于0表示加，小于等于0表示减
+     * @param value    日期时间值对象
+     * @see Calendar#YEAR
+     * @see Calendar#MONTH
+     * @see Calendar#DAY_OF_MONTH
+     * @see Calendar#HOUR_OF_DAY
+     * @see Calendar#MINUTE
+     * @see Calendar#SECOND
+     * @see Calendar#MILLISECOND
+     * @see Value
+     * @since 1.0
+     */
+    private void calc(Calendar calendar, int calcType, Value value) {
+        int year = value.year != null ? value.year : 0;
+        int month = value.month != null ? value.month : 0;
+        int day = value.day != null ? value.day : 0;
+        int hour = value.hour != null ? value.hour : 0;
+        int minute = value.minute != null ? value.minute : 0;
+        int second = value.second != null ? value.second : 0;
+        int millisecond = value.millisecond != null ? value.millisecond : 0;
+        boolean isAdd = calcType > 0;
+        calendar.add(Calendar.YEAR, isAdd ? year : -year);
+        calendar.add(Calendar.MONTH, isAdd ? month : 0);
+        calendar.add(Calendar.DAY_OF_MONTH, isAdd ? day : 0);
+        calendar.add(Calendar.HOUR_OF_DAY, isAdd ? hour : 0);
+        calendar.add(Calendar.MINUTE, isAdd ? minute : 0);
+        calendar.add(Calendar.SECOND, isAdd ? second : 0);
+        calendar.add(Calendar.MILLISECOND, isAdd ? millisecond : 0);
+    }
+
+    /**
+     * 添加一个值对象描述的值列表
+     *
+     * @param value 值对象
+     * @see Value
+     * @since 1.0
+     */
+    public void add(Value value) {
+        this.calc(this.calendar, 1, value);
+    }
+
+    /**
+     * 减去一个值对象描述的值列表
+     *
+     * @param value 值对象
+     * @see Value
+     * @since 1.0
+     */
+    public void minus(Value value) {
+        this.calc(this.calendar, -1, value);
+    }
+
+    /**
+     * 计算两个日期时间的差值，不区分前后大小
+     *
+     * @param dateTime 另一个日期时间对象
+     * @return 两个日期时间的差值
+     * @see DiffValue
+     * @see #asTimestamp()
+     * @since 1.0
+     */
+    public DiffValue diff(DateTime dateTime) {
+        long beginTimestamp = this.asTimestamp();
+        long endTimestamp = dateTime.asTimestamp();
+        return new DiffValue(beginTimestamp, endTimestamp);
+    }
+
+    /**
+     * 计算和指定日期的差值
+     *
+     * @param date 日期对象
+     * @return 两个日期时间的差值
+     * @see DiffValue
+     * @see #asTimestamp()
+     * @since 1.0
+     */
+    public DiffValue diff(Date date) {
+        long beginTimestamp = this.asTimestamp();
+        long endTimestamp = date.getTime();
+        return new DiffValue(beginTimestamp, endTimestamp);
+    }
+
+    /**
+     * 计算和指定日历的差值
+     *
+     * @param calendar 日历对象
+     * @return 两个日期时间的差值
+     * @see DiffValue
+     * @see #asTimestamp()
+     * @see Calendar#getTimeInMillis()
+     * @since 1.0
+     */
+    public DiffValue diff(Calendar calendar) {
+        long beginTimestamp = this.asTimestamp();
+        long endTimestamp = calendar.getTimeInMillis();
+        return new DiffValue(beginTimestamp, endTimestamp);
+    }
+
+    /**
+     * 比较两个日期时间的大小
+     *
+     * @param other 另一个日期时间对象
+     * @return 如果当前日期时间大于指定的日期时间则返回大于正整数；如果当前日期时间小于指定的日期时间则返回负整数；否则返回0
+     * @see Calendar#compareTo(Calendar)
+     * @since 1.0
+     */
+    @Override
+    public int compareTo(DateTime other) {
+        return this.calendar.compareTo(other.calendar);
+    }
+
+    /**
+     * 比较和指定日期的大小
+     *
+     * @param date 日期对象
+     * @return 如果当前日期时间大于指定的日期则返回大于正整数；如果当前日期时间小于指定的日期则返回负整数；否则返回0
+     * @see #compareTo(DateTime)
+     * @since 1.0
+     */
+    public int compare(Date date) {
+        return this.compareTo(new DateTime(date));
+    }
+
+    /**
+     * 比较和指定日期对象的大小
+     *
+     * @param calendar 日历对象
+     * @return 如果当前日期时间大于指定的日历则返回大于正整数；如果当前日期时间小于指定的日历则返回负整数；否则返回0
+     * @see #compareTo(DateTime)
+     * @since 1.0
+     */
+    public int compare(Calendar calendar) {
+        return this.compareTo(new DateTime(calendar));
+    }
+
+    /**
+     * 当前日期时间是否在指定的日期时间之前
+     *
+     * @param dateTime 日期时间对象
+     * @return 如果当前日期时间在指定的日期时间之前则返回true，否则返回false
+     * @see #compareTo(DateTime)
+     * @since 1.0
+     */
+    public boolean before(DateTime dateTime) {
+        return this.compareTo(dateTime) > 0;
+    }
+
+    /**
+     * 当前日期时间是否在指定的日期之前
+     *
+     * @param date 日期对象
+     * @return 如果当前日期时间在指定的日期之前则返回true，否则返回false
+     * @see #compare(Date)
+     * @since 1.0
+     */
+    public boolean before(Date date) {
+        return this.compare(date) > 0;
+    }
+
+    /**
+     * 当前日期时间是否在指定的日历之前
+     *
+     * @param calendar 日历对象
+     * @return 如果当前日期时间在指定的日历之前则返回true，否则返回false
+     * @see #compare(Calendar)
+     * @since 1.0
+     */
+    public boolean before(Calendar calendar) {
+        return this.compare(calendar) > 0;
+    }
+
+    /**
+     * 当前日期时间是否在指定的日期时间之后
+     *
+     * @param dateTime 日期时间对象
+     * @return 如果当前日期时间在指定的日期时间之后则返回true，否则返回false
+     * @see #compare(Calendar)
+     * @since 1.0
+     */
+    public boolean after(DateTime dateTime) {
+        return this.compareTo(dateTime) < 0;
+    }
+
+    /**
+     * 当前日期时间是否在指定的日期之后
+     *
+     * @param date 日期对象
+     * @return 如果当前日期时间在指定的日期之后则返回true，否则返回false
+     * @see #compare(Calendar)
+     * @since 1.0
+     */
+    public boolean after(Date date) {
+        return this.compare(date) < 0;
+    }
+
+    /**
+     * 当前日期时间是否在指定的日历之后
+     *
+     * @param calendar 日历对象
+     * @return 如果当前日期时间在指定的日历之后则返回true，否则返回false
+     * @see #compare(Calendar)
+     * @since 1.0
+     */
+    public boolean after(Calendar calendar) {
+        return this.compare(calendar) < 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-        return this;
-    }
-
-    /**
-     * 获取结束日期时间对象。<br>
-     * 需要指定是否忽略毫秒值，因为有些有些时候在转换为数据库的日期时间时可能会由于毫秒丢失进度，例如MySQL的DATETIME类型。
-     *
-     * @param ignoreMillisecond 是否忽略毫秒，如果不忽略则设置为999
-     * @return 结束日期时间对象
-     */
-    public DateTime endDateTime(boolean ignoreMillisecond) {
-        this.calendar.set(Calendar.HOUR_OF_DAY, HOUR_MAX_VALUE);
-        this.calendar.set(Calendar.MINUTE, MINUTE_MAX_VALUE);
-        this.calendar.set(Calendar.SECOND, SECOND_MAX_VALUE);
-        if (!ignoreMillisecond) {
-            this.calendar.set(Calendar.MILLISECOND, MILLISECOND_MAX_VALUE);
+        if (obj instanceof DateTime) {
+            return this.compareTo((DateTime) obj) == 0;
         }
-        return this;
+        if (obj instanceof Date) {
+            return this.compare((Date) obj) == 0;
+        }
+        if (obj instanceof Calendar) {
+            return this.compare((Calendar) obj) == 0;
+        }
+        return false;
     }
 
-    /**
-     * 忽略毫秒的开始日期时间。<br>
-     *
-     * @return 开始日期时间对象
-     */
-    public DateTime beginDateTime() {
-        return this.beginDateTime(true);
-    }
-
-    /**
-     * 忽略毫秒的结束日期时间。<br>
-     *
-     * @return 结束日期时间对象
-     */
-    public DateTime endDateTime() {
-        return this.endDateTime(true);
+    @Override
+    public int hashCode() {
+        return this.calendar.hashCode();
     }
 
     /**
@@ -653,12 +1178,6 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
         return dateFormatter.format(this.calendar.getTime());
     }
 
-    @Override
-    public int compareTo(DateTime o) {
-        return this.calendar.compareTo(o.calendar);
-    }
-
-
     /**
      * 判断年份是否为闰年
      *
@@ -719,204 +1238,249 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     }
 
     /**
-     * 日期时间值类型定义，描述日期时间的年月日、时分秒、毫秒、周几等数值。
-     *
-     * @since 1.0
+     * 日期时间值对象
      */
-    public class DateTimeValue {
+    public static final class Value {
 
         /**
          * 年份值
          */
-        private int year;
+        private Integer year;
 
         /**
          * 月份值，取值范围[1,12]
          */
-        private int month;
+        private Integer month;
 
         /**
          * 日期值，取值范围[1,31]
          */
-        private int day;
-
-        /**
-         * 星期值，取值范围[0,6]，以周日为一周的开始
-         */
-        private int week;
+        private Integer day;
 
         /**
          * 24小时进制的小时值，取值范围[0,23]
          */
-        private int hour;
+        private Integer hour;
 
         /**
          * 分钟值，取值范围[0,59]
          */
-        private int minute;
+        private Integer minute;
 
         /**
          * 秒值，取值范围[0,59]
          */
-        private int second;
+        private Integer second;
 
         /**
          * 毫秒值，取值范围[0,999]
          */
-        private int millisecond;
+        private Integer millisecond;
 
         /**
-         * 时区ID
-         */
-        private String timeZoneID;
-
-        /**
-         * 时区GMT字符串
-         */
-        private String timeZoneGMTMark;
-
-        /**
-         * 获取年份值
+         * 设置年份值
          *
-         * @return year - 年份值
+         * @param year - 年份值
+         * @return 当前日期时间构建器对象
          */
-        public int getYear() {
-            return this.year;
+        public Value year(int year) {
+            this.year = year;
+            return this;
         }
 
         /**
-         * 获取月份值，取值范围[1,12]
+         * 设置月份值，取值范围[1,12]
          *
-         * @return month - 月份值，取值范围[1,12]
+         * @param month - 月份值，取值范围[1,12]
+         * @return 当前日期时间构建器对象
          */
-        public int getMonth() {
-            return this.month;
+        public Value month(int month) {
+            this.month = month;
+            return this;
         }
 
         /**
-         * 获取日期值，取值范围[1,31]
+         * 设置日期值，取值范围[1,31]
          *
-         * @return day - 日期值，取值范围[1,31]
+         * @param day - 日期值，取值范围[1,31]
+         * @return 当前日期时间构建器对象
          */
-        public int getDay() {
-            return this.day;
+        public Value day(int day) {
+            this.day = day;
+            return this;
         }
 
         /**
-         * 获取星期值，取值范围[0,6]，以周日为一周的开始
+         * 设置24小时进制的小时值，取值范围[0,23]
          *
-         * @return week - 星期值，取值范围[0,6]，以周日为一周的开始
+         * @param hour - 24小时进制的小时值，取值范围[0,23]
+         * @return 当前日期时间构建器对象
          */
-        public int getWeek() {
-            return this.week;
+        public Value hour(int hour) {
+            this.hour = hour;
+            return this;
         }
 
         /**
-         * 获取24小时进制的小时值，取值范围[0,23]
+         * 设置分钟值，取值范围[0,59]
          *
-         * @return hour - 24小时进制的小时值，取值范围[0,23]
+         * @param minute - 分钟值，取值范围[0,59]
+         * @return 当前日期时间构建器对象
          */
-        public int getHour() {
-            return this.hour;
+        public Value minute(int minute) {
+            this.minute = minute;
+            return this;
         }
 
         /**
-         * 获取分钟值，取值范围[0,59]
+         * 设置秒值，取值范围[0,59]
          *
-         * @return minute - 分钟值，取值范围[0,59]
+         * @param second - 秒值，取值范围[0,59]
+         * @return 当前日期时间构造器对象
          */
-        public int getMinute() {
-            return this.minute;
+        public Value second(int second) {
+            this.second = second;
+            return this;
         }
 
         /**
-         * 获取秒值，取值范围[0,59]
+         * 设置毫秒值，取值范围[0,999]
          *
-         * @return second - 秒值，取值范围[0,59]
+         * @param millisecond - 毫秒值，取值范围[0,999]
+         * @return 当前日期时间构造器对象
          */
-        public int getSecond() {
-            return this.second;
+        public Value millisecond(int millisecond) {
+            this.millisecond = millisecond;
+            return this;
         }
 
         /**
-         * 获取毫秒值，取值范围[0,999]
+         * 构建日期对象对象
          *
-         * @return millisecond - 毫秒值，取值范围[0,999]
+         * @return 日期时间对象
          */
-        public int getMillisecond() {
-            return this.millisecond;
-        }
-
-        /**
-         * 获取时区ID
-         *
-         * @return timeZoneID - 时区名称
-         */
-        public String getTimeZoneID() {
-            return timeZoneID;
-        }
-
-        /**
-         * 获取时区GMT字符串
-         *
-         * @return timeZoneGMTMark - 时区GMT字符串
-         */
-        public String getTimeZoneGMTMark() {
-            return timeZoneGMTMark;
-        }
-
-        /**
-         * 实例化日期时间值对象
-         *
-         * @param calendar 日历对象
-         * @see Calendar#YEAR
-         * @see Calendar#MONTH
-         * @see Calendar#DAY_OF_MONTH
-         * @see Calendar#DAY_OF_WEEK
-         * @see Calendar#HOUR_OF_DAY
-         * @see Calendar#MINUTE
-         * @see Calendar#SECOND
-         * @see Calendar#MILLISECOND
-         * @since 1.0
-         */
-        private DateTimeValue(Calendar calendar) {
-            this.year = calendar.get(Calendar.YEAR);
-            this.month = calendar.get(Calendar.MONTH) + 1;
-            this.day = calendar.get(Calendar.DAY_OF_MONTH);
-            this.week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-            this.hour = calendar.get(Calendar.HOUR_OF_DAY);
-            this.minute = calendar.get(Calendar.MINUTE);
-            this.second = calendar.get(Calendar.SECOND);
-            this.millisecond = calendar.get(Calendar.MILLISECOND);
-            this.timeZoneID = calendar.getTimeZone().getID();
-            //偏移的毫秒值
-            int offsetMillisecond = (calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET));
-            //偏移的分钟值
-            int offsetMinute = offsetMillisecond / (1000 * 60) % 60;
-            //偏移的小时值
-            int offsetHour = offsetMillisecond / (1000 * 60 * 60);
-            this.timeZoneGMTMark = formatString("GMT{0}{1}:{2}", offsetMillisecond < 0 ? "-" : "+", String.format("%02d", offsetHour), String.format("%02d", offsetMinute));
-        }
-
-        @Override
-        public String toString() {
-            StringBuffer sb = new StringBuffer();
-            sb.append(this.getClass().getName());
-            sb.append("[");
-            sb.append("timeZoneID = ").append(this.getTimeZoneID()).append(", ");
-            sb.append("timeZoneGMTMark = ").append(this.getTimeZoneGMTMark()).append(", ");
-            sb.append("year = ").append(this.getYear()).append(", ");
-            sb.append("month = ").append(this.getMonth()).append(", ");
-            sb.append("day = ").append(this.getDay()).append(", ");
-            sb.append("week = ").append(this.getWeek()).append(", ");
-            sb.append("hour = ").append(this.getHour()).append(", ");
-            sb.append("minute = ").append(this.getMinute()).append(", ");
-            sb.append("second = ").append(this.getSecond()).append(", ");
-            sb.append("millisecond = ").append(this.getMillisecond());
-            sb.append("]");
-            return sb.toString();
+        public DateTime build() {
+            return new DateTime(this);
         }
     }
 
+    /**
+     * 日期时间差异值对象
+     */
+    public static final class DiffValue {
+
+        /**
+         * 每天的毫秒数
+         */
+        private static final long MILLIS_OF_DAY = 1000 * 60 * 60 * 24;
+        /**
+         * 每小时的毫秒数
+         */
+        private static final long MILLIS_OF_HOUR = 1000 * 60 * 60;
+        /**
+         * 每分钟的毫秒数
+         */
+        private static final long MILLIS_OF_MINUTE = 1000 * 60;
+        /**
+         * 每秒的毫秒数
+         */
+        private static final long MILLIS_OF_SECOND = 1000;
+
+        private DiffValue() {
+
+        }
+
+        /**
+         * 根据两个时间戳来计算差值对象
+         *
+         * @param beginTimestamp 开始时间戳
+         * @param endTimestamp   结束时间戳
+         */
+        private DiffValue(long beginTimestamp, long endTimestamp) {
+            long diff = endTimestamp - beginTimestamp;
+            diff = diff > 0 ? diff : -diff;
+            long days = diff / MILLIS_OF_DAY;
+            long hours = diff % MILLIS_OF_DAY / MILLIS_OF_HOUR;
+            long minutes = diff % MILLIS_OF_HOUR / MILLIS_OF_MINUTE;
+            long seconds = diff % MILLIS_OF_MINUTE / MILLIS_OF_SECOND;
+            long milliseconds = diff % MILLIS_OF_SECOND;
+            this.days = (int) days;
+            this.hours = (int) hours;
+            this.minutes = (int) minutes;
+            this.seconds = (int) seconds;
+            this.milliseconds = (int) milliseconds;
+        }
+
+        /**
+         * 天数
+         */
+        private int days;
+
+        /**
+         * 小时数
+         */
+        private int hours;
+
+        /**
+         * 分钟数
+         */
+        private int minutes;
+
+        /**
+         * 秒数
+         */
+        private int seconds;
+
+        /**
+         * 毫秒数
+         */
+        private int milliseconds;
+
+        /**
+         * 获取天数
+         *
+         * @return days - 天数
+         */
+        public int days() {
+            return this.days;
+        }
+
+        /**
+         * 获取小时数
+         *
+         * @return hours - 小时数
+         */
+        public int hours() {
+            return this.hours;
+        }
+
+        /**
+         * 获取分钟数
+         *
+         * @return minutes - 分钟数
+         */
+        public int minutes() {
+            return this.minutes;
+        }
+
+        /**
+         * 获取秒数
+         *
+         * @return seconds - 秒数
+         */
+        public int seconds() {
+            return this.seconds;
+        }
+
+        /**
+         * 获取毫秒数
+         *
+         * @return milliseconds - 毫秒数
+         */
+        public int milliseconds() {
+            return this.milliseconds;
+        }
+
+    }
 
 }

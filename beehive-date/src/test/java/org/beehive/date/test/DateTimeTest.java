@@ -13,6 +13,7 @@
 package org.beehive.date.test;
 
 import org.beehive.date.DateTime;
+import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
@@ -81,14 +82,50 @@ public class DateTimeTest {
 
         System.out.println(MessageFormat.format("{0},{1},{2},{4},'{}", "A", "B", "C", "D", 23));
 
-        System.out.println(new DateTime().endDateTime(false).values());
-
         System.out.println(TimeZone.getTimeZone("GMT-1"));
 
         Instant instant = Instant.now();
         instant.plusSeconds(300);
         System.out.println(instant);
 
+    }
+
+    @Test
+    public void testBuilder() throws Exception {
+        DateTime dateTime1 = new DateTime();
+        System.out.println(dateTime1);
+        DateTime dateTime2 = dateTime1.now();
+        System.out.println(dateTime2);
+        DateTime dateTime3 = new DateTime(2019, 1, 3, 12, 34, 56);
+        System.out.println(dateTime3);
+
+        DateTime dateTime4 = new DateTime.Value().day(21).build();
+        System.out.println(dateTime4);
+
+        dateTime4.add(new DateTime.Value().hour(1));
+        System.out.println(dateTime4);
+
+        dateTime4.minus(new DateTime.Value().hour(2));
+        System.out.println(dateTime4);
+    }
+
+    @Test
+    public void testDiff() throws Exception {
+        DateTime dateTime1 = new DateTime();
+        DateTime dateTime2 = new DateTime(2019, 10, 2, 23, 56, 13, 873);
+        DateTime.DiffValue diffValue = dateTime1.diff(dateTime2);
+        System.out.println(diffValue.days() + "天" + diffValue.hours() + "时" + diffValue.minutes() + "分" + diffValue.seconds() + "秒" + diffValue.milliseconds() + "毫秒");
+    }
+
+    @Test
+    public void testCompare() throws Exception {
+        DateTime dateTime1 = new DateTime();
+        DateTime dateTime2 = new DateTime(2019, 11, 22, 0, 0, 0, 0);
+        System.out.println(dateTime1.compareTo(dateTime2));
+        System.out.println(dateTime1.equals(dateTime2));
+        dateTime1.beginOf();
+        System.out.println(dateTime1.compareTo(dateTime2));
+        System.out.println(dateTime1.equals(dateTime2));
     }
 
 }
