@@ -125,7 +125,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     /**
      * 默认的日期格式化器
      */
-    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+    private static String dateFormatStyle = "yyyy/MM/dd HH:mm:ss.SSS";
 
     /**
      * 加载配置参数，修改当前类的初始配置
@@ -133,8 +133,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     static {
         try {
             ResourceBundle resourceBundle = ResourceBundle.getBundle("beehive-date");
-            String dateFormatStr = resourceBundle.getString("default.date.format.style");
-            dateFormatter = new SimpleDateFormat(dateFormatStr);
+            dateFormatStyle = resourceBundle.getString("default.datetime.format.style");
         } catch (Exception e) {
             //e.printStackTrace();
         }
@@ -144,6 +143,11 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      * 日历对象
      */
     private Calendar calendar;
+
+    /**
+     * 日期格式对象
+     */
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormatStyle);
 
 
     /**
@@ -155,6 +159,8 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(TimeZone timeZone, Locale locale) {
         this.calendar = Calendar.getInstance(timeZone, locale);
+        this.dateFormatter = new SimpleDateFormat(dateFormatStyle, locale);
+        this.dateFormatter.setTimeZone(timeZone);
     }
 
     /**
@@ -165,6 +171,8 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(TimeZone timeZone) {
         this.calendar = Calendar.getInstance(timeZone);
+        this.dateFormatter = new SimpleDateFormat(dateFormatStyle);
+        this.dateFormatter.setTimeZone(timeZone);
     }
 
     /**
@@ -175,6 +183,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      */
     public DateTime(Locale locale) {
         this.calendar = Calendar.getInstance(locale);
+        this.dateFormatter = new SimpleDateFormat(dateFormatStyle, locale);
     }
 
     /**
@@ -423,7 +432,7 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
      * @since 1.0
      */
     public LocalDateTime asLocalDateTime() {
-        //TODO
+        // TODO
         return null;
     }
 
@@ -1018,6 +1027,13 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
         return this.compare(calendar) < 0;
     }
 
+    /**
+     * 比较其他对象和当前日期时间对象是否相等
+     *
+     * @param obj 其他对象
+     * @return 如果相等，则返回true，否则返回false
+     * @since 1.0
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -1026,13 +1042,43 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
         if (obj instanceof DateTime) {
             return this.compareTo((DateTime) obj) == 0;
         }
-        if (obj instanceof Date) {
-            return this.compare((Date) obj) == 0;
+        return false;
+    }
+
+    /**
+     * 比较其他对象值和当前日期时间值是否相等；支持DateTime、DateTime.Value、Date、sqlDate、sqlTimestamp、Long类型的值比较
+     *
+     * @param obj 其他对象
+     * @return 如果值相等，则返回true，否则返回false
+     * @since 1.0
+     */
+    public boolean sameValue(Object obj) {
+        if (obj == null) {
+            return false;
         }
-        if (obj instanceof Calendar) {
-            return this.compare((Calendar) obj) == 0;
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof DateTime) {
+            return this.asTimestamp() == ((DateTime) obj).asTimestamp();
+        }
+        if (obj instanceof Value) {
+            return this.asTimestamp() == new DateTime((Value) obj).asTimestamp();
+        }
+        if (obj instanceof java.sql.Date) {
+            return this.asTimestamp() == ((java.sql.Date) obj).getTime();
+        }
+        if (obj instanceof java.sql.Timestamp) {
+            return this.asTimestamp() == ((java.sql.Timestamp) obj).getTime();
+        }
+        if (obj instanceof Date) {
+            return this.asTimestamp() == ((Date) obj).getTime();
+        }
+        if (obj instanceof Long) {
+            return this.asTimestamp() == ((Long) obj).longValue();
         }
         return false;
+
     }
 
     @Override

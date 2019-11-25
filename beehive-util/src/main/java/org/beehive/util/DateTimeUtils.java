@@ -1549,6 +1549,43 @@ public final class DateTimeUtils {
     }
 
     /**
+     * 将日期时间格式为指定时区和语言环境下指定模式的字符串
+     *
+     * @param date     日期时间
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone 时区对象
+     * @param locale   语言环境
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String, Locale)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @since 1.0
+     */
+    public static String format(Date date, String pattern, TimeZone timeZone, Locale locale) {
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern, locale);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(date);
+    }
+
+    /**
+     * 将日期时间格式为指定时区下指定模式的字符串
+     *
+     * @param date     日期时间
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String, Locale)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @since 1.0
+     */
+    public static String format(Date date, String pattern, TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(date);
+    }
+
+    /**
      * 将日期时间格式为指定语言环境下指定模式的字符串
      *
      * @param date    日期时间
@@ -1580,58 +1617,20 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 将时间戳对应的日期时间格式为指定语言环境下指定模式的字符串
+     * 将日期时间格式为指定时区下指定模式的字符串
      *
-     * @param timestamp 时间戳
-     * @param pattern   <a href="#dateFormat">格式化字符串</a>
-     * @param locale    语言环境
+     * @param date     日期时间
+     * @param timeZone 时区对象
      * @return 格式化后的日期字符串
-     * @see #newDateTime(long)
-     * @see #format(long, String, Locale)
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
      * @since 1.0
      */
-    public static String format(long timestamp, String pattern, Locale locale) {
-        return format(newDateTime(timestamp), pattern, locale);
-    }
-
-    /**
-     * 将时间戳对应的日期时间格式为本地默认语言环境下指定模式的字符串
-     *
-     * @param timestamp 时间戳
-     * @param pattern   <a href="#dateFormat">格式化字符串</a>
-     * @return 格式化后的日期字符串
-     * @see #newDateTime(long)
-     * @see #format(long, String)
-     * @since 1.0
-     */
-    public static String format(long timestamp, String pattern) {
-        return format(newDateTime(timestamp), pattern);
-    }
-
-    /**
-     * 将档期日期时间格式为指定语言环境下指定模式的字符串
-     *
-     * @param pattern <a href="#dateFormat">格式化字符串</a>
-     * @param locale  语言环境
-     * @return 格式化后的日期字符串
-     * @see #format(Date, String, Locale)
-     * @see #now()
-     * @since 1.0
-     */
-    public static String formatOfNow(String pattern, Locale locale) {
-        return format(now(), pattern, locale);
-    }
-
-    /**
-     * 将当前日期时间格式为本地默认语言环境下指定模式的字符串
-     *
-     * @param pattern <a href="#dateFormat">格式化字符串</a>
-     * @return 格式化后的日期字符串
-     * @see #format(Date, String)
-     * @since 1.0
-     */
-    public static String formatOfNow(String pattern) {
-        return format(now(), pattern);
+    public static String format(Date date, TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(date);
     }
 
     /**
@@ -1657,6 +1656,99 @@ public final class DateTimeUtils {
     }
 
     /**
+     * 将日期格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
+     *
+     * @param date 日期
+     * @return 格式化后的日期字符串
+     * @see #format(Date, String)
+     * @since 1.0
+     */
+    public static String format(Date date) {
+        return format(date, DEFAULT_FORMAT);
+    }
+
+    /**
+     * 将时间戳对应的日期时间格式为指定时区和语言环境下指定模式的字符串
+     *
+     * @param timestamp 时间戳
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone  时区对象
+     * @param locale    语言环境
+     * @return 格式化后的日期字符串
+     * @see #newDateTime(long)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #format(long, String, TimeZone, Locale)
+     * @since 1.0
+     */
+    public static String format(long timestamp, String pattern, TimeZone timeZone, Locale locale) {
+        return format(newDateTime(timestamp), pattern, timeZone, locale);
+    }
+
+    /**
+     * 将时间戳对应的日期时间格式为指定时区下指定模式的字符串
+     *
+     * @param timestamp 时间戳
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone  时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #newDateTime(long)
+     * @see #format(long, String, TimeZone)
+     * @since 1.0
+     */
+    public static String format(long timestamp, String pattern, TimeZone timeZone) {
+        return format(newDateTime(timestamp), pattern, timeZone);
+    }
+
+    /**
+     * 将时间戳对应的日期时间格式为指定语言环境下指定模式的字符串
+     *
+     * @param timestamp 时间戳
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @param locale    语言环境
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #newDateTime(long)
+     * @see #format(long, String, Locale)
+     * @since 1.0
+     */
+    public static String format(long timestamp, String pattern, Locale locale) {
+        return format(newDateTime(timestamp), pattern, locale);
+    }
+
+    /**
+     * 将时间戳对应的日期时间格式为本地默认语言环境下指定模式的字符串
+     *
+     * @param timestamp 时间戳
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #newDateTime(long)
+     * @see #format(long, String)
+     * @since 1.0
+     */
+    public static String format(long timestamp, String pattern) {
+        return format(newDateTime(timestamp), pattern);
+    }
+
+    /**
+     * 将时间戳格式为指定时区下指定模式的字符串
+     *
+     * @param timestamp 时间戳
+     * @param timeZone  时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @since 1.0
+     */
+    public static String format(long timestamp, TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(newDateTime(timestamp));
+    }
+
+    /**
      * 将指定时间戳对应的日期时间格式化为指定语言环境对应的默认格式化字符串
      *
      * @param timestamp 时间戳
@@ -1671,6 +1763,181 @@ public final class DateTimeUtils {
      */
     public static String format(long timestamp, Locale locale) {
         return format(newDateTime(timestamp), locale);
+    }
+
+    /**
+     * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
+     *
+     * @param timestamp 时间戳
+     * @return 格式化后的日期字符串
+     * @see #format(long, String)
+     * @since 1.0
+     */
+    public static String format(long timestamp) {
+        return format(timestamp, DEFAULT_FORMAT);
+    }
+
+    /**
+     * 将日历对应的日期时间格式为指定时区和语言环境下指定模式的字符串
+     *
+     * @param calendar 日历
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone 时区对象
+     * @param locale   语言环境
+     * @return 格式化后的日期字符串
+     * @see #newDateTime(long)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #format(Date, String, TimeZone, Locale)
+     * @see Calendar#cachedLocaleData
+     * @since 1.0
+     */
+    public static String format(Calendar calendar, String pattern, TimeZone timeZone, Locale locale) {
+        return format(calendar.getTime(), pattern, timeZone, locale);
+    }
+
+    /**
+     * 将日历对应的日期时间格式为指定时区下指定模式的字符串
+     *
+     * @param calendar 日历
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #newDateTime(long)
+     * @see #format(Date, String, TimeZone)
+     * @since 1.0
+     */
+    public static String format(Calendar calendar, String pattern, TimeZone timeZone) {
+        return format(calendar.getTime(), pattern, timeZone);
+    }
+
+    /**
+     * 将日历对应的日期时间格式为指定语言环境下指定模式的字符串
+     *
+     * @param calendar 日历
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param locale   语言环境
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #newDateTime(long)
+     * @see #format(Date, String, Locale)
+     * @since 1.0
+     */
+    public static String format(Calendar calendar, String pattern, Locale locale) {
+        return format(calendar.getTime(), pattern, locale);
+    }
+
+    /**
+     * 将日历对应的日期时间格式为本地默认语言环境下指定模式的字符串
+     *
+     * @param calendar 日历
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see #newDateTime(long)
+     * @see #format(Date, String)
+     * @since 1.0
+     */
+    public static String format(Calendar calendar, String pattern) {
+        return format(calendar.getTime(), pattern);
+    }
+
+    /**
+     * 将指定日历对应的日期时间格式化为指定语言环境对应的默认格式化字符串
+     *
+     * @param calendar 日历
+     * @param timeZone 时区对象
+     * @return 被该语言环境下默认格式化字符串格式化之后的日期时间字符串
+     * @see #format(Date, TimeZone)
+     * @since 1.0
+     */
+    public static String format(Calendar calendar, TimeZone timeZone) {
+        return format(calendar.getTime(), timeZone);
+    }
+
+    /**
+     * 将指定日历对应的日期时间格式化为指定语言环境对应的默认格式化字符串
+     *
+     * @param calendar 日历
+     * @param locale   本地语言环境<br>
+     *                 可以通过<p><code>
+     *                 //language为语言代码，可以使用Locale.getAvailableLocales()查看<br>
+     *                 Locale.forLanguageTag("language");
+     *                 </code></p>例如zh(中文)；en(英文)等。
+     * @return 被该语言环境下默认格式化字符串格式化之后的日期时间字符串
+     * @see #format(Date, Locale)
+     * @since 1.0
+     */
+    public static String format(Calendar calendar, Locale locale) {
+        return format(calendar.getTime(), locale);
+    }
+
+    /**
+     * 将日历格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
+     *
+     * @param calendar 日历
+     * @return 格式化后的日期字符串
+     * @see #format(Date, String)
+     * @since 1.0
+     */
+    public static String format(Calendar calendar) {
+        return format(calendar.getTime(), DEFAULT_FORMAT);
+    }
+
+    /**
+     * 将当前日期时间格式为指定时区和语言环境下指定模式的字符串
+     *
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone 时区对象
+     * @param locale   语言环境
+     * @return 格式化后的日期字符串
+     * @see #format(Date, String, Locale)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatOfNow(String pattern, TimeZone timeZone, Locale locale) {
+        return format(now(), pattern, timeZone, locale);
+    }
+
+    /**
+     * 将当前日期时间格式为指定时区下指定模式的字符串
+     *
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see #format(Date, String, Locale)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatOfNow(String pattern, TimeZone timeZone) {
+        return format(now(), pattern, timeZone);
+    }
+
+    /**
+     * 将当前日期时间格式为指定语言环境下指定模式的字符串
+     *
+     * @param pattern <a href="#dateFormat">格式化字符串</a>
+     * @param locale  语言环境
+     * @return 格式化后的日期字符串
+     * @see #format(Date, String, Locale)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatOfNow(String pattern, Locale locale) {
+        return format(now(), pattern, locale);
+    }
+
+    /**
+     * 将当前日期时间格式为指定时区下指定模式的字符串
+     *
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see #format(Date, TimeZone)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatOfNow(TimeZone timeZone) {
+        return format(now(), timeZone);
     }
 
     /**
@@ -1691,29 +1958,16 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 将日期格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
+     * 将当前日期时间格式为本地默认语言环境下指定模式的字符串
      *
-     * @param date 日期
+     * @param pattern <a href="#dateFormat">格式化字符串</a>
      * @return 格式化后的日期字符串
      * @see #format(Date, String)
      * @since 1.0
      */
-    public static String format(Date date) {
-        return format(date, DEFAULT_FORMAT);
+    public static String formatOfNow(String pattern) {
+        return format(now(), pattern);
     }
-
-    /**
-     * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
-     *
-     * @param timestamp 时间戳
-     * @return 格式化后的日期字符串
-     * @see #format(long, String)
-     * @since 1.0
-     */
-    public static String format(long timestamp) {
-        return format(timestamp, DEFAULT_FORMAT);
-    }
-
 
     /**
      * 将当前时间格式为指定模式{@value DateTimeUtils#DEFAULT_FORMAT}的字符串
@@ -1724,6 +1978,23 @@ public final class DateTimeUtils {
      */
     public static String formatOfNow() {
         return format(now(), DEFAULT_FORMAT);
+    }
+
+    /**
+     * 将当前日期时间格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
+     *
+     * @param date     日期时间
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @since 1.0
+     */
+    public static String formatDate(Date date, TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(date);
     }
 
     /**
@@ -1739,6 +2010,46 @@ public final class DateTimeUtils {
     }
 
     /**
+     * 将时间戳转换为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
+     *
+     * @param timestamp 时间戳
+     * @param timeZone  时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @see #newDateTime(long)
+     * @since 1.0
+     */
+    public static String formatDate(long timestamp, TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(newDateTime(timestamp));
+    }
+
+    /**
+     * 将指定的日时间戳格式化为指定语言环境对应的默认格式化字符串
+     *
+     * @param timestamp 时间戳
+     * @param locale    本地语言环境<br>
+     *                  可以通过<p><code>
+     *                  //language为语言代码，可以使用Locale.getAvailableLocales()查看<br>
+     *                  Locale.forLanguageTag("language");
+     *                  </code></p>例如zh(中文)；en(英文)等。
+     * @return 被该语言环境下默认格式化字符串格式化之后的日期时间字符串
+     * @see SimpleDateFormat#SimpleDateFormat()
+     * @see LocaleProviderAdapter#getResourceBundleBased()
+     * @see LocaleProviderAdapter#getLocaleResources(Locale)
+     * @see LocaleResources#getDateTimePattern(int, int, Calendar)
+     * @since 1.0
+     */
+    public static String formatDate(long timestamp, Locale locale) {
+        Calendar calendar = Calendar.getInstance(locale);
+        String pattern = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale).getDateTimePattern(3, 3, calendar);
+        return format(newDateTime(timestamp), pattern);
+    }
+
+    /**
      * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
      *
      * @param timestamp 时间戳
@@ -1751,6 +2062,23 @@ public final class DateTimeUtils {
     }
 
     /**
+     * 将当前日期时间格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
+     *
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatDateOfNow(TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(now());
+    }
+
+    /**
      * 将当前时间格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
      *
      * @return 格式化后的日期字符串
@@ -1759,6 +2087,23 @@ public final class DateTimeUtils {
      */
     public static String formatDateOfNow() {
         return format(now(), DEFAULT_DATE_FORMAT);
+    }
+
+    /**
+     * 将制定的日期时间格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
+     *
+     * @param date     日期时间
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @since 1.0
+     */
+    public static String formatTime(Date date, TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_TIME_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(date);
     }
 
     /**
@@ -1777,12 +2122,69 @@ public final class DateTimeUtils {
      * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
      *
      * @param timestamp 时间戳
+     * @param timeZone  时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @see #newDateTime(long)
+     * @since 1.0
+     */
+    public static String formatTime(long timestamp, TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(newDateTime(timestamp));
+    }
+
+    /**
+     * 将指定的日时间戳格式化为指定语言环境对应的默认格式化字符串
+     *
+     * @param timestamp 时间戳
+     * @param locale    本地语言环境<br>
+     *                  可以通过<p><code>
+     *                  //language为语言代码，可以使用Locale.getAvailableLocales()查看<br>
+     *                  Locale.forLanguageTag("language");
+     *                  </code></p>例如zh(中文)；en(英文)等。
+     * @return 被该语言环境下默认格式化字符串格式化之后的日期时间字符串
+     * @see SimpleDateFormat#SimpleDateFormat()
+     * @see LocaleProviderAdapter#getResourceBundleBased()
+     * @see LocaleProviderAdapter#getLocaleResources(Locale)
+     * @see LocaleResources#getDateTimePattern(int, int, Calendar)
+     * @since 1.0
+     */
+    public static String formatTime(long timestamp, Locale locale) {
+        Calendar calendar = Calendar.getInstance(locale);
+        String pattern = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale).getDateTimePattern(3, 3, calendar);
+        return format(newDateTime(timestamp), pattern);
+    }
+
+    /**
+     * 将时间戳格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
+     *
+     * @param timestamp 时间戳
      * @return 格式化后的时间字符串
      * @see #format(long, String)
      * @since 1.0
      */
     public static String formatTime(long timestamp) {
         return format(timestamp, DEFAULT_TIME_FORMAT);
+    }
+
+    /**
+     * 将当前时间格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
+     *
+     * @param timeZone 时区对象
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatTimeOfNow(TimeZone timeZone) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_TIME_FORMAT);
+        formatter.setTimeZone(timeZone);
+        return formatter.format(now());
     }
 
     /**

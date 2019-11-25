@@ -76,10 +76,11 @@ public class DateTimeUtilsTest {
 //        }
 //
 
-        Locale locale = Locale.forLanguageTag("en");
+        Locale locale = Locale.forLanguageTag("zh");
 
         Calendar calendar = Calendar.getInstance();
         LocaleResources localeResources = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale);
+        System.out.println(localeResources);
         String p = localeResources.getDateTimePattern(3,3, calendar);
         System.out.println(p);
 
@@ -123,7 +124,14 @@ public class DateTimeUtilsTest {
         System.out.println();
 
         Date date = DateTimeUtils.newDateTimeOfNowTime(2019,11,2);
-        System.out.println(DateTimeUtils.format(date,"M年d日"));
+        System.out.println(DateTimeUtils.format(date,"M月d日"));
+
+
+        System.out.println();
+
+
+        Date now = DateTimeUtils.now();
+        System.out.println(DateTimeUtils.format(now, Locale.forLanguageTag("en")));
 
     }
 

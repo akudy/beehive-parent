@@ -4,7 +4,7 @@
 ** 配置
 *** 默认日期时间字符串格式
 ****_ yyyy/MM/dd HH:mm:ss.SSS
-****_ 会被beehive-date*.properties中<b>default.datetime.format.style</b>覆盖
+****_ 会被beehive-date*.properties中<b>default.local.datetime.format.style</b>覆盖
 
 ** 实例创建
 *** 基于环境
