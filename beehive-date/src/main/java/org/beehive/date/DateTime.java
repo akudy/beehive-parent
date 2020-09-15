@@ -15,6 +15,7 @@ package org.beehive.date;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.time.*;
 import java.util.*;
 
 /**
@@ -57,6 +58,11 @@ import java.util.*;
  * @see Calendar
  * @see TimeZone
  * @see Locale
+ * @see LocalDateTime
+ * @see LocalDate
+ * @see LocalTime
+ * @see ZoneId
+ * @see Instant
  * @since 1.0
  */
 public final class DateTime implements Serializable, Comparable<DateTime> {
@@ -367,6 +373,25 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     }
 
     /**
+     * 使用Java 8 提供的{@link java.time.LocalDateTime}本地日期时间对象来构建日期时间对象。
+     *
+     * @param localDateTime {@link java.time.LocalDateTime}本地日期时间对象
+     * @see ZoneId#systemDefault()
+     * @see LocalDateTime#atZone(ZoneId)
+     * @see ZonedDateTime#toInstant()
+     * @see Date#from(Instant)
+     * @see Calendar#getInstance()
+     * @see Calendar#setTime(Date)
+     * @since 1.0
+     */
+    public DateTime(LocalDateTime localDateTime) {
+        ZoneId zone = ZoneId.systemDefault();
+        Instant instant = localDateTime.atZone(zone).toInstant();
+        this.calendar = Calendar.getInstance();
+        this.calendar.setTime(Date.from(instant));
+    }
+
+    /**
      * 转换为{@link Date java.util.Date}日期对象。
      * 使用一个新的日期对象进行体现。
      *
@@ -426,36 +451,37 @@ public final class DateTime implements Serializable, Comparable<DateTime> {
     }
 
     /**
-     * 转换为{@link LocalDateTime}本地日期时间
+     * 转换为Java 8 提供的{@link java.time.LocalDateTime}本地日期时间
      *
-     * @return {@link LocalDateTime}本地日期时间对象
+     * @return {@link java.time.LocalDateTime}本地日期时间对象
      * @since 1.0
      */
     public LocalDateTime asLocalDateTime() {
-        // TODO
-        return null;
+        Instant instant = this.calendar.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+        return LocalDateTime.ofInstant(instant, zoneId);
     }
 
     /**
-     * 转换为{@link LocalDate}本地日期
+     * 转换为Java 8 提供的{@link java.time.LocalDate}本地日期
      *
-     * @return {@link LocalDate}本地日期对象
+     * @return {@link java.time.LocalDate}本地日期对象
+     * @see #asLocalDateTime()
      * @since 1.0
      */
     public LocalDate asLocalDate() {
-        //TODO
-        return null;
+        return asLocalDateTime().toLocalDate();
     }
 
     /**
-     * 转换为{@link LocalTime}本地时间
+     * 转换为Java 8 提供的{@link java.time.LocalTime}本地时间
      *
-     * @return {@link LocalTime}本地时间对象
+     * @return {@link java.time.LocalTime}本地时间对象
+     * @see #asLocalDateTime()
      * @since 1.0
      */
     public LocalTime asLocalTime() {
-        //TODO
-        return null;
+        return asLocalDateTime().toLocalTime();
     }
 
     /**

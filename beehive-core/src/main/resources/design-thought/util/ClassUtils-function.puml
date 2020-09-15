@@ -1,0 +1,19 @@
+@startmindmap
+
+* ClassUtils
+
+** 类型分析
+*** 类型判断
+****_ isPrimitiveType
+****_ isWrapperType
+****_ isValueType
+*****_ <b>registerValueType</b> <font color=red><&info><sup>辅助函数</sup></font>
+****_ isArrayType
+
+** 信息分析
+
+** 字段解析
+
+** 方法解析
+
+@endmindmap

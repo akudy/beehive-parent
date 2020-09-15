@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2019-2019 by akudy All Rights Reserved.
+ * Copyright (c) 2019-2020 by akudy All Rights Reserved.
  * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
  * Project Name: beehive-parent
- * Module Name: beehive-util
+ * Module Name: beehive-core
  * File Name: org.beehive.helper.SystemInfo
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
- * Create Date: 2019-11-05
- * Comments: Java源码
+ * Create Date: 2020-08-19
+ * Comments: Java源文件
  */
 
 package org.beehive.helper;
@@ -52,7 +52,7 @@ package org.beehive.helper;
  * @see System#getProperties()
  * @since 1.0
  */
-public final class SystemInfo {
+public class SystemInfo {
 
     /**
      * 私有化构造函数，禁止实例化

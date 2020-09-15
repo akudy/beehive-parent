@@ -11,6 +11,8 @@
     <modules>
         <module>beehive-util</module>
         <module>beehive-date</module>
+        <module>beehive-validator</module>
+        <module>beehive-core</module>
     </modules>
 
     <name>beehive-parent</name>

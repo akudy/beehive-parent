@@ -1,0 +1,57 @@
+@startmindmap
+
+* ArrayUtils
+** 数组检查
+***  是否空对象
+****_ isNull
+****_ isNotNull
+*** 是否有元素
+****_ isEmpty
+****_ isNotEmpty
+
+** 数据类型检查
+***_ isArray
+***_ length
+
+
+** 数组转换
+*** 转换为数组
+****_ toArray
+*** 转换为列表
+****_ asList
+****_ asListView
+****_ asSet
+****_ asSetView
+
+** 元素查找
+*** 是否含有元素
+****_ contains
+****_ containsAll
+****_ containsAny
+****_ count
+*** 出现位置
+****_ indexOf
+****_ lastIndexOf
+
+** 数组运算
+*** 交集
+****_ cross
+*** 并集
+****_ join
+****_ merge
+*** 差集
+****_ differ
+*** 补集
+****_ unCross
+
+** 数组比较
+***_ equals
+***_ <del>deepEquals</del>
+
+** 数组翻转
+***_ reverse
+
+** 数组截取
+***_ subArray
+
+@endmindmap

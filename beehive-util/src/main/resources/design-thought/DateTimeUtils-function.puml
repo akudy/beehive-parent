@@ -13,6 +13,8 @@
 ****_ newEndDate
 ****_ now
 ****_ nowDateTime
+****_ beginOfMonth（月的第一天）
+****_ endOfMonth（月的最后一天）
 *** 从其他日期时间创建
 ****_ newDateTime
 ****_ newBeginDate
@@ -25,16 +27,18 @@
 ****_ newDateTime
 ****_ newBeginDate
 ****_ newEndDate
+****_ beginOfDate
+****_ endOfDate
 *** 从部分年月日时分秒毫秒创建
 ****_ newDateTime
 ****_ newBeginDate
 ****_ newEndDate
-****_ nowDateTimeOfNowDate
+****_ newDateTimeOfNowDate
 ****_ newDateTimeOfNowTime
 *** 从可变的年月日时分秒毫秒数组创建
 ****_ newDateTimeOfArray（元素必须依次为年月日时分秒毫秒）
 *** 从时区创建当前时间
-****_ nowDateTime
+****_ newDateTime
 ****_ now
 *** 昨天今天明天
 ****_ yesterday
@@ -84,8 +88,8 @@
 ****_ nowDayOfYear
 ****_ getDayOfYear
 *** 一月中的第几天
-****_ nowDay
-****_ getDayOfYear
+****_ nowDayOfMonth
+****_ getDayOfMonth
 *** 一年周的第几周
 ****_ nowWeekOfYear
 ****_ getWeekOfYear
@@ -185,6 +189,10 @@
 **** 指定语言环境转换
 *****_ format
 *****_ formatOfNow
+*****_ formatDate
+*****_ formatDateOfNow
+*****_ formatTime
+*****_ formatTimeOfNow
 **** 原日期实际字符串转换为另一个格式字符串
 *****_ format
 *** <font color=red>转换为日期时间</font>

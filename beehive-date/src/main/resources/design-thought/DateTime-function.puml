@@ -16,6 +16,7 @@
 ****_ Date
 ****_ SQL Date
 ****_ SQL Timestamp
+****_ LocalDateTime <font color=red><&rss><sup>Java8新特性</sup></font>
 *** 基于值
 ****_ millisecond（毫秒值）
 ****_ 年月日时分秒毫秒
@@ -31,7 +32,7 @@
 ****_ minute
 ****_ second
 ****_ millisecond
-****_ <b>build</b>
+****_ <b>build</b> <font color=red><&info><sup>内部构造器</sup></font>
 
 ** 转换
 ***_ asDate
@@ -39,9 +40,9 @@
 ***_ asTimestamp
 ***_ asSQLDate
 ***_ asSQLTimestamp
-***_ <font color=red>asLocalDateTime</font>
-***_ <font color=red>asLocalDate</font>
-***_ <font color=red>asLocalTime</font>
+***_ asLocalDateTime <font color=red><&rss><sup>Java8新特性</sup></font>
+***_ asLocalDate <font color=red><&rss><sup>Java8新特性</sup></font>
+***_ asLocalTime <font color=red><&rss><sup>Java8新特性</sup></font>
 
 
 ** 值描述

@@ -1,0 +1,45 @@
+@startmindmap
+
+* CollectionUtils
+** 数组检查
+***  是否空对象
+****_ isNull
+****_ isNotNull
+*** 是否有元素
+****_ isEmpty
+****_ isNotEmpty
+
+** 数据类型检查
+***_ isCollection
+***_ size
+
+** 实例化
+***_ newArrayList
+***_ newHashSet
+
+** 元素操作
+***_ add
+***_ remove
+
+** 元素查找
+*** 是否含有元素
+****_ containsAll
+****_ containsAny
+****_ count
+
+** 集合运算
+*** 交集
+****_ cross
+*** 并集
+****_ join
+****_ merge
+*** 差集
+****_ differ
+*** 补集
+****_ unCross
+
+** List截取&提取
+***_ subList
+***_ extractList
+
+@endmindmap

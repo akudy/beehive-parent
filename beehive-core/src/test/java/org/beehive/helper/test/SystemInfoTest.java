@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2019-2019 by akudy All Rights Reserved.
+ * Copyright (c) 2019-2020 by akudy All Rights Reserved.
  * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
  * Project Name: beehive-parent
- * Module Name: beehive-util
+ * Module Name: beehive-core
  * File Name: org.beehive.helper.test.SystemInfoTest
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
- * Create Date: 2019-11-05
+ * Create Date: 2020-09-14
  * Comments: <简述该文件的内容和作用>
  */
 
@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * Comments,使用一句话简述该类信息，句末请使用./。
@@ -58,6 +59,18 @@ import java.lang.reflect.Method;
  * @since 1.0
  */
 public class SystemInfoTest {
+
+    @Test
+    public void systemOtherTest() throws Exception {
+        System.out.println(System.inheritedChannel());
+        System.out.println(System.getSecurityManager());
+        Map<String, String> infoMap = System.getenv();
+        if (infoMap != null) {
+            infoMap.forEach((key, value) -> {
+                System.out.println(key + " = " + value);
+            });
+        }
+    }
 
     @Test
     public void getAllProperties() {

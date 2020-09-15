@@ -13,14 +13,15 @@
 package org.beehive.util;
 
 import sun.util.locale.provider.LocaleProviderAdapter;
-import sun.util.locale.provider.LocaleResources;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * DateTime工具类定义。用于处理{@link java.util.Calendar java.util.Calendar}、{@link java.util.Date java.util.Date}、{@link java.sql.Date java.sql.Date}、{@link java.sql.Timestamp java.sql.Timestamp}、{@link java.sql.Time java.sql.Time}等类的工具。
+ * DateTime工具类定义，提供处理{@link java.util.Calendar java.util.Calendar}、{@link java.util.Date java.util.Date}、{@link java.sql.Date java.sql.Date}、{@link java.sql.Timestamp java.sql.Timestamp}、{@link java.sql.Time java.sql.Time}等类的工具。
+ * <br/>
+ * 该工具类适用Java 8 版本以下的环境中使用；Java 8 请使用 {@link DateTime8Utils DateTime8Utils(DateTime For Java 8 Utils)}工具类，该类中引入了Java 8 的LocalDateTime进行计算。
  * <br>
  * <a name="dateFormat"></a>
  * <br>
@@ -189,17 +190,17 @@ public final class DateTimeUtils {
     /**
      * DateTime默认格式化字符串
      */
-    private final static String DEFAULT_FORMAT = "yyyy/MM/dd HH:mm:ss";
+    private static final String DEFAULT_FORMAT = "yyyy/MM/dd HH:mm:ss";
 
     /**
      * Date默认格式字符串
      */
-    private final static String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
+    private static final String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
 
     /**
      * Time默认格式字符串
      **/
-    private final static String DEFAULT_TIME_FORMAT = "HH:mm:ss";
+    private static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
 
     /**
      * 每天的毫秒数
@@ -648,7 +649,7 @@ public final class DateTimeUtils {
      * @return 以当前日期为基础的日期时间对象
      * @since 1.0
      */
-    public static Date nowDateTimeOfNowDate(int hour, int minute, int second) {
+    public static Date newDateTimeOfNowDate(int hour, int minute, int second) {
         Calendar calendar = Calendar.getInstance();
         if (hour < 1 || hour > 23) {
             throw new IllegalArgumentException("value range of hour is [1,23]");
@@ -723,19 +724,6 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 获取当前时区的瞬时日期时间对象<br>
-     * TimeZone的命名可以使用GTM+X或者时区代码
-     *
-     * @param timeZone 时区对象
-     * @return 该时区的当前日期时间对象
-     * @see #now(TimeZone)
-     * @since 1.0
-     */
-    public static Date nowDateTime(TimeZone timeZone) {
-        return now(timeZone);
-    }
-
-    /**
      * 获取当前瞬时的日期时间分段值，分别分为年、月（月份会加1）、日、周几（周自动减1）、时、分、秒、毫秒<br>
      * 月份的取值：[1,12]<br>
      * 周几的取值：0（周日）/1（周一）/2（周二）/3（周三）/4（周四）/5（周五）/6（周六）
@@ -796,6 +784,18 @@ public final class DateTimeUtils {
      */
     public static int nowDayOfYear() {
         return getDayOfYear(now());
+    }
+
+    /**
+     * 获取当前的日期属于本月中的第几天
+     *
+     * @return 当前的日期属于本月中的第几天
+     * @see #now()
+     * @see #getDayOfMonth(Date)
+     * @since 1.0
+     */
+    public static int nowDayOfMonth() {
+        return getDayOfMonth(now());
     }
 
     /**
@@ -1170,6 +1170,33 @@ public final class DateTimeUtils {
      */
     public static int getDayOfYear(long timestamp) {
         return getDayOfYear(newDateTime(timestamp));
+    }
+
+    /**
+     * 获取指定日期时间对应的日期属于该月份的第几天
+     *
+     * @param date 日期时间对象
+     * @return 该日期是该日期对应月份中的第几天
+     * @see Calendar#get(int)
+     * @see Calendar#DAY_OF_MONTH
+     * @since 1.0
+     */
+    public static int getDayOfMonth(Date date) {
+        Calendar calendar = getCalendar(date, TimeMode.NOW_OF_DAY);
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 获取指定时间戳对应的日期属于该月份的第几天
+     *
+     * @param timestamp 时间戳
+     * @return 时间戳对应的日期是该日期对应月份中的第几天
+     * @see #getDayOfMonth(Date)
+     * @see #newDateTime(long)
+     * @since 1.0
+     */
+    public static int getDayOfMonth(long timestamp) {
+        return getDayOfMonth(newDateTime(timestamp));
     }
 
     /**
@@ -1646,7 +1673,7 @@ public final class DateTimeUtils {
      * @see SimpleDateFormat#SimpleDateFormat()
      * @see LocaleProviderAdapter#getResourceBundleBased()
      * @see LocaleProviderAdapter#getLocaleResources(Locale)
-     * @see LocaleResources#getDateTimePattern(int, int, Calendar)
+     * @see sun.util.locale.provider.LocaleResources#getDateTimePattern(int, int, Calendar)
      * @since 1.0
      */
     public static String format(Date date, Locale locale) {
@@ -2028,7 +2055,29 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 将指定的日时间戳格式化为指定语言环境对应的默认格式化字符串
+     * 将指定的日期时间格式化为指定语言环境对应的默认格式化字符串
+     *
+     * @param date   日期
+     * @param locale 本地语言环境<br>
+     *               可以通过<p><code>
+     *               //language为语言代码，可以使用Locale.getAvailableLocales()查看<br>
+     *               Locale.forLanguageTag("language");
+     *               </code></p>例如zh(中文)；en(英文)等。
+     * @return 被该语言环境下默认格式化字符串格式化之后的日期时间字符串
+     * @see SimpleDateFormat#SimpleDateFormat()
+     * @see LocaleProviderAdapter#getResourceBundleBased()
+     * @see LocaleProviderAdapter#getLocaleResources(Locale)
+     * @see sun.util.locale.provider.LocaleResources#getDateTimePattern(int, int, Calendar)
+     * @since 1.0
+     */
+    public static String formatDate(Date date, Locale locale) {
+        Calendar calendar = Calendar.getInstance(locale);
+        String pattern = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale).getDateTimePattern(3, 3, calendar);
+        return format(date, pattern);
+    }
+
+    /**
+     * 将指定的时间戳格式化为指定语言环境对应的默认格式化字符串
      *
      * @param timestamp 时间戳
      * @param locale    本地语言环境<br>
@@ -2040,7 +2089,7 @@ public final class DateTimeUtils {
      * @see SimpleDateFormat#SimpleDateFormat()
      * @see LocaleProviderAdapter#getResourceBundleBased()
      * @see LocaleProviderAdapter#getLocaleResources(Locale)
-     * @see LocaleResources#getDateTimePattern(int, int, Calendar)
+     * @see sun.util.locale.provider.LocaleResources#getDateTimePattern(int, int, Calendar)
      * @since 1.0
      */
     public static String formatDate(long timestamp, Locale locale) {
@@ -2062,7 +2111,28 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 将当前日期时间格式为指定模式{@value DateTimeUtils#DEFAULT_DATE_FORMAT}的字符串
+     * 将当前日期时间格式为指定语言环境下的字符串
+     *
+     * @param locale 本地语言环境<br>
+     *               可以通过<p><code>
+     *               //language为语言代码，可以使用Locale.getAvailableLocales()查看<br>
+     *               Locale.forLanguageTag("language");
+     *               </code></p>例如zh(中文)；en(英文)等。
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatDateOfNow(Locale locale) {
+        Calendar calendar = Calendar.getInstance(locale);
+        String pattern = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale).getDateTimePattern(3, 3, calendar);
+        return format(now(), pattern);
+    }
+
+    /**
+     * 将当前日期时间格式为指定时区的字符串
      *
      * @param timeZone 时区对象
      * @return 格式化后的日期字符串
@@ -2137,7 +2207,29 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 将指定的日时间戳格式化为指定语言环境对应的默认格式化字符串
+     * 将指定的时间戳格式化为指定语言环境对应的默认格式化字符串
+     *
+     * @param date   日期
+     * @param locale 本地语言环境<br>
+     *               可以通过<p><code>
+     *               //language为语言代码，可以使用Locale.getAvailableLocales()查看<br>
+     *               Locale.forLanguageTag("language");
+     *               </code></p>例如zh(中文)；en(英文)等。
+     * @return 被该语言环境下默认格式化字符串格式化之后的日期时间字符串
+     * @see SimpleDateFormat#SimpleDateFormat()
+     * @see LocaleProviderAdapter#getResourceBundleBased()
+     * @see LocaleProviderAdapter#getLocaleResources(Locale)
+     * @see sun.util.locale.provider.LocaleResources#getDateTimePattern(int, int, Calendar)
+     * @since 1.0
+     */
+    public static String formatTime(Date date, Locale locale) {
+        Calendar calendar = Calendar.getInstance(locale);
+        String pattern = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale).getDateTimePattern(3, 3, calendar);
+        return format(date, pattern);
+    }
+
+    /**
+     * 将指定的时间戳格式化为指定语言环境对应的默认格式化字符串
      *
      * @param timestamp 时间戳
      * @param locale    本地语言环境<br>
@@ -2149,7 +2241,7 @@ public final class DateTimeUtils {
      * @see SimpleDateFormat#SimpleDateFormat()
      * @see LocaleProviderAdapter#getResourceBundleBased()
      * @see LocaleProviderAdapter#getLocaleResources(Locale)
-     * @see LocaleResources#getDateTimePattern(int, int, Calendar)
+     * @see sun.util.locale.provider.LocaleResources#getDateTimePattern(int, int, Calendar)
      * @since 1.0
      */
     public static String formatTime(long timestamp, Locale locale) {
@@ -2171,7 +2263,28 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 将当前时间格式为指定模式{@value DateTimeUtils#DEFAULT_TIME_FORMAT}的字符串
+     * 将当前时间格式为指定模式语言环境下的字符串
+     *
+     * @param locale 本地语言环境<br>
+     *               可以通过<p><code>
+     *               //language为语言代码，可以使用Locale.getAvailableLocales()查看<br>
+     *               Locale.forLanguageTag("language");
+     *               </code></p>例如zh(中文)；en(英文)等。
+     * @return 格式化后的日期字符串
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     * @see SimpleDateFormat#setTimeZone(TimeZone)
+     * @see SimpleDateFormat#format(Date)
+     * @see #now()
+     * @since 1.0
+     */
+    public static String formatTimeOfNow(Locale locale) {
+        Calendar calendar = Calendar.getInstance(locale);
+        String pattern = LocaleProviderAdapter.getResourceBundleBased().getLocaleResources(locale).getDateTimePattern(3, 3, calendar);
+        return format(now(), pattern);
+    }
+
+    /**
+     * 将当前时间格式为指定模式时区的字符串
      *
      * @param timeZone 时区对象
      * @return 格式化后的日期字符串
@@ -2701,10 +2814,10 @@ public final class DateTimeUtils {
     public static Date addMD(Date date, int months, int days, TimeMode timeMode) {
         Calendar calendar = getCalendar(date, timeMode);
         if (months != 0) {
-            calendar.set(Calendar.MONTH, months);
+            calendar.add(Calendar.MONTH, months);
         }
         if (days != 0) {
-            calendar.set(Calendar.DAY_OF_MONTH, days);
+            calendar.add(Calendar.DAY_OF_MONTH, days);
         }
         return calendar.getTime();
     }
@@ -2720,7 +2833,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static Date addMD(Date date, int months, int days) {
-        return addMD(date, months, days, TimeMode.BEGIN_OF_DAY);
+        return addMD(date, months, days, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -2765,13 +2878,13 @@ public final class DateTimeUtils {
      * @see Calendar#MINUTE
      * @since 1.0
      */
-    public static Date addHM(Date date, int hours, int minutes, TimeMode timeMode) {
+    private static Date addHM(Date date, int hours, int minutes, TimeMode timeMode) {
         Calendar calendar = getCalendar(date, timeMode);
         if (hours != 0) {
-            calendar.set(Calendar.HOUR_OF_DAY, hours);
+            calendar.add(Calendar.HOUR_OF_DAY, hours);
         }
         if (minutes != 0) {
-            calendar.set(Calendar.MINUTE, minutes);
+            calendar.add(Calendar.MINUTE, minutes);
         }
         return calendar.getTime();
     }
@@ -2787,7 +2900,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static Date addHM(Date date, int hours, int minutes) {
-        return addHM(date, hours, minutes, TimeMode.BEGIN_OF_DAY);
+        return addHM(date, hours, minutes, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -2847,6 +2960,19 @@ public final class DateTimeUtils {
         array[3] = (int) seconds;
         array[4] = (int) milliseconds;
         return array;
+    }
+
+    /**
+     * 计算两个日期时间的相差数据数组，数组共5位，分别表示天、时、分、秒、毫秒
+     *
+     * @param beginDate 开始时间
+     * @param endDate   结束时间
+     * @return 数组值共5位，分别表示天、时、分、秒、毫秒
+     * @see Calendar#getTimeInMillis()
+     * @since 1.0
+     */
+    public static int[] diffArray(Date beginDate, Date endDate) {
+        return diffArray(beginDate, endDate, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -2948,7 +3074,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static int intervalDays(Date date) {
-        return diffDays(now());
+        return diffDays(date);
     }
 
     /**
@@ -3001,7 +3127,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 比较两个日期时间的大小（忽略时间），如果前者大于后者则返回1，如果前者小于后者返回-1，否则返回0
+     * 比较两个日期时间的大小，如果前者大于后者则返回1，如果前者小于后者返回-1，否则返回0
      *
      * @param date      第一个日期时间
      * @param otherDate 第二个日期时间
@@ -3010,7 +3136,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static int compare(Date date, Date otherDate) {
-        return compare(date, otherDate, TimeMode.BEGIN_OF_DAY);
+        return compare(date, otherDate, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -3023,11 +3149,11 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static int compareWithNow(Date date, TimeMode timeMode) {
-        return compare(date, now(), timeMode);
+        return compare(now(), date, timeMode);
     }
 
     /**
-     * 比较当前输入日期时间与当前日期时间的大小（忽略时间），如果输入日期时间大于当前日期时间则返回1，如果输入日期时间小于当前日期时间则返回-1，否则返回0
+     * 比较当前输入日期时间与当前日期时间的大小，如果输入日期时间大于当前日期时间则返回1，如果输入日期时间小于当前日期时间则返回-1，否则返回0
      *
      * @param date 输入日期时间
      * @return 在不计入时间的情况下，如果输入日期时间大于当前日期时间则返回1，如果输入日期时间小于当前日期时间则返回-1，否则返回0
@@ -3035,7 +3161,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static int compareWithNow(Date date) {
-        return compareWithNow(date, TimeMode.BEGIN_OF_DAY);
+        return compareWithNow(date, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -3052,7 +3178,7 @@ public final class DateTimeUtils {
             return false;
         }
         for (Date e : otherDate) {
-            if (compare(date, e) != 0) {
+            if (compare(date, e, TimeMode.BEGIN_OF_DAY) != 0) {
                 return false;
             }
         }
@@ -3075,7 +3201,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断一个日期时间是否在另一个日期时间之前（忽略时间）。如果前者在后者之前则返回true，否则返回false。
+     * 判断一个日期时间是否在另一个日期时间之前。如果前者在后者之前则返回true，否则返回false。
      *
      * @param date      第一个日期时间
      * @param otherDate 第二个日期时间
@@ -3084,7 +3210,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static boolean before(Date date, Date otherDate) {
-        return before(date, otherDate, TimeMode.BEGIN_OF_DAY);
+        return before(date, otherDate, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -3102,7 +3228,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断输入日期时间是否在当前日期时间之前（忽略时间）。如果输入日期时间在当前日期时间之前则返回true，否则返回false。
+     * 判断输入日期时间是否在当前日期时间之前。如果输入日期时间在当前日期时间之前则返回true，否则返回false。
      *
      * @param date 输入日期时间
      * @return 在不计入时间的情况下，如果输入日期时间在当前日期时间之前则返回true，否则返回false
@@ -3130,7 +3256,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断一个日期时间是否在另一个日期时间之后（忽略时间）。如果前者在后者之后则返回true，否则返回false。
+     * 判断一个日期时间是否在另一个日期时间之后。如果前者在后者之后则返回true，否则返回false。
      *
      * @param date      第一个日期时间
      * @param otherDate 第二个日期时间
@@ -3139,7 +3265,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static boolean after(Date date, Date otherDate) {
-        return after(date, otherDate, TimeMode.BEGIN_OF_DAY);
+        return after(date, otherDate, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -3157,7 +3283,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断输入日期时间是否在当前日期时间之后（忽略时间）。如果输入日期时间在当前日期时间之后则返回true，否则返回false。
+     * 判断输入日期时间是否在当前日期时间之后。如果输入日期时间在当前日期时间之后则返回true，否则返回false。
      *
      * @param date 输入日期
      * @return 在不计入时间的情况下，如果输入日期时间在当前日期时间之后则返回true，否则返回false
@@ -3184,7 +3310,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断两个日期时间是否相等（忽略时间）。如果相等则返回true，否则返回false。
+     * 判断两个日期时间是否相等。如果相等则返回true，否则返回false。
      *
      * @param date      第一个日期时间
      * @param otherDate 第二个日期时间
@@ -3211,7 +3337,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断输入的日期时间和当前日期时间是否相等（忽略时间）。如果相等则返回true，否则返回false。
+     * 判断输入的日期时间和当前日期时间是否相等。如果相等则返回true，否则返回false。
      *
      * @param date 输入的日期时间
      * @return 在不计入时间的情况下，如果相等则返回true，否则返回false
@@ -3238,7 +3364,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断一个日期时间是否在另一个日期时间的后一天之前（忽略时间）。如果是则返回true，否则返回false。     *
+     * 判断一个日期时间是否在另一个日期时间的后一天之前。如果是则返回true，否则返回false。     *
      *
      * @param date      第一个日期时间
      * @param otherDate 第二个日期时间
@@ -3265,7 +3391,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断一个日期时间是否在另一个日期时间的前一天之后（忽略时间）。如果相等则返回true，否则返回false。
+     * 判断一个日期时间是否在另一个日期时间的前一天之后。如果相等则返回true，否则返回false。
      *
      * @param date      第一个日期时间
      * @param otherDate 第二个日期时间
@@ -3291,7 +3417,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断输入的日期时间是否在当前日期时间的后一天之前（忽略时间）。如果是则返回true，否则返回false。
+     * 判断输入的日期时间是否在当前日期时间的后一天之前。如果是则返回true，否则返回false。
      *
      * @param date 输入的日期时间
      * @return 在不计入时间的情况下，如果前者在后者后一天之前则返回true，否则返回false
@@ -3316,7 +3442,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * 判断输入的日期时间是否在当前日期时间的前一天之后（忽略时间）。如果相等则返回true，否则返回false。
+     * 判断输入的日期时间是否在当前日期时间的前一天之后。如果相等则返回true，否则返回false。
      *
      * @param date 输入的日期时间
      * @return 在不计入时间的情况下，如果前者在后者前一天之后则返回true，否则返回false
@@ -3378,7 +3504,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static boolean isToday(Date date) {
-        return compareWithNow(date) == 0;
+        return compareWithNow(date, TimeMode.BEGIN_OF_DAY) == 0;
     }
 
     /**
@@ -3425,7 +3551,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static boolean isYesterday(Date date) {
-        return compare(date, yesterday()) == 0;
+        return compare(date, yesterday(), TimeMode.BEGIN_OF_DAY) == 0;
     }
 
     /**
@@ -3474,7 +3600,7 @@ public final class DateTimeUtils {
      * @since 1.0
      */
     public static boolean isTomorrow(Date date) {
-        return compare(date, tomorrow()) == 0;
+        return compare(date, tomorrow(), TimeMode.BEGIN_OF_DAY) == 0;
     }
 
     /**
@@ -3677,7 +3803,7 @@ public final class DateTimeUtils {
      * @see #parseSQLDate(long)
      * @since 1.0
      */
-    public static java.sql.Date nowSQLDateTime() {
+    public static java.sql.Date newSQLDateTime() {
         return parseSQLDate(System.currentTimeMillis());
     }
 

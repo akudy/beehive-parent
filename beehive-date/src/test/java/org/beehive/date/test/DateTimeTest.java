@@ -111,8 +111,9 @@ public class DateTimeTest {
 
     @Test
     public void testDiff() throws Exception {
-        DateTime dateTime1 = new DateTime();
+        DateTime dateTime1 = new DateTime(2019,11,1,23,56,13);
         DateTime dateTime2 = new DateTime(2019, 10, 2, 23, 56, 13, 873);
+        System.out.println(dateTime1+"\n"+dateTime2);
         DateTime.DiffValue diffValue = dateTime1.diff(dateTime2);
         System.out.println(diffValue.days() + "天" + diffValue.hours() + "时" + diffValue.minutes() + "分" + diffValue.seconds() + "秒" + diffValue.milliseconds() + "毫秒");
     }
