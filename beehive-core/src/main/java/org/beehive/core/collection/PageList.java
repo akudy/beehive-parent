@@ -12,13 +12,17 @@
 
 package org.beehive.core.collection;
 
+import org.beehive.util.ArrayUtils;
+import org.beehive.util.CollectionUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * 分页列表对象，扩展自{@link ArrayList}。针对{@link ArrayList}扩展了分页的元素信息。
+ * 分页列表对象，提供分页信息（页面数据、总数、当前页码、每页展示数量）。
  * <br>
- * 分页元素信息包含：页面数据、总数、当前页码、每页展示数量。当前的实现类与{@link ArrayList}耦合性较高。
+ * 在构建分页列表对象时，需要输入一个完整的列表数据；然后对该列表进行分页截取。分页列表的总数据量，在初始化是已经确定，不可修改。
  * <p>
  * <b>Type Informations:</b>
  * <ul>
@@ -57,14 +61,28 @@ import java.util.List;
 public class PageList<E> {
 
     /**
+     * 默认的页面数量
+     */
+    private static int DEFAULT_PAGE_SIZE = 10;
+
+    /**
+     * 设置默认的分页大小
+     *
+     * @param pageSize 页面大小
+     */
+    public static void setDefaultPageSize(int pageSize) {
+        DEFAULT_PAGE_SIZE = pageSize;
+    }
+
+    /**
      * 页面编号
      */
     private int pageNo;
 
     /**
-     * 页面数据流大小
+     * 页面数据流大小，-1表一个可以判断没有输入的值
      */
-    private int pageSize;
+    private int pageSize = -1;
 
     /**
      * 总页数
@@ -77,56 +95,116 @@ public class PageList<E> {
     private int totalSize;
 
     /**
-     * 页面数据量
+     * 总数据集合
+     */
+    private List<E> allData;
+
+    /**
+     * 当前页面数据
      */
     private List<E> pageData;
 
     /**
-     * 对列表进行分页
-     *
-     * @param pageNo 第几页
-     * @param list
-     * @return
+     * 计算页面数量
      */
-    public final PageList<E> paging(int pageNo, List<E> list) {
-        this.doPage(list, pageNo, this.pageSize);
+    protected void calcPageCount() {
+        int size = this.totalSize;
+        this.totalPage = (size % this.pageSize == 0) ? size / this.pageSize : (size / this.pageSize) + 1;
+    }
+
+    /**
+     * 分页处理，设置分页大小；同时计算总页数
+     *
+     * @return 当前页面对象
+     */
+    public final PageList<E> paging() {
+        return this.paging(DEFAULT_PAGE_SIZE);
+    }
+
+    /**
+     * 分页处理，设置分页大小；同时计算总页数
+     *
+     * @param pageSize 页面大小
+     * @return 当前页面对象
+     */
+    public final PageList<E> paging(int pageSize) {
+        this.pageSize = pageSize < 1 ? this.totalSize : pageSize;
+        this.calcPageCount();
         return this;
     }
 
-    protected void doPage(List<E> list, int pageNo, int pageSize) {
-        if (list == null) {
-            list = new ArrayList<>();
-        }
-        int size = list.size();
-        this.pageNo = pageNo < 0 ? 0 : pageNo;
-        this.pageSize = pageSize < 0 ? size : pageSize;
-        this.totalPage = (size % pageSize == 0) ? size / pageSize : size / pageSize + 1;
-        this.totalSize = size;
-        int startIndex = 0;
-        int endIndex = size;
-        if (pageNo > 0 && pageSize > 0) {
-            startIndex = pageSize * (pageNo - 1);
-            endIndex = pageSize * pageNo;
-            startIndex = startIndex > size ? size : startIndex;
-            endIndex = endIndex > size ? size : endIndex;
-        }
-        this.pageData = list.subList(startIndex, endIndex);
-    }
-
     /**
-     * 实例化一个默认页面列表对象
-     */
-    public PageList() {
-        this.pageSize = 10;
-    }
-
-    /**
-     * 使用指定的页面大小和页码实例化一个页面列表对象
+     * 获取指定页面的数据列表
      *
-     * @param pageSize 页面大小
+     * @param pageNo 页码，从1开始
+     * @return 指定页码的页面数据对象
      */
-    public PageList(int pageSize) {
-        this.pageSize = pageSize;
+    public final PageList<E> fetch(int pageNo) {
+        if (this.pageSize == -1) {
+            this.paging();
+        }
+        this.pageNo = pageNo < 1 ? 1 : pageNo;
+        int startIndex = 0;
+        int endIndex = this.totalSize;
+        if (pageNo > 0 && this.pageSize > 0) {
+            startIndex = this.pageSize * (pageNo - 1);
+            endIndex = this.pageSize * pageNo;
+            startIndex = startIndex > this.totalSize ? this.totalSize : startIndex;
+            endIndex = endIndex > this.totalSize ? this.totalSize : endIndex;
+        }
+        this.pageData = this.allData.subList(startIndex, endIndex);
+        return this;
+    }
+
+    /**
+     * 获取首页数据
+     *
+     * @return 首页数据列表对象
+     */
+    public final PageList<E> firstPage() {
+        return this.fetch(1);
+    }
+
+    /**
+     * 获取最后一页数据
+     *
+     * @return 最后一页数据列表对象
+     */
+    public final PageList<E> lastPage() {
+        return this.fetch(this.totalPage);
+    }
+
+    /**
+     * 使用一个数据列表来初始化一个分页列表对象
+     *
+     * @param list 源数据列表对象
+     */
+    public PageList(List<E> list) {
+        List<E> newList = null;
+        if (CollectionUtils.isEmpty(list)) {
+            newList = new ArrayList<>(16);
+        } else {
+            newList = new ArrayList<>(list.size());
+            newList.addAll(list);
+        }
+        this.allData = newList;
+        this.totalSize = this.allData.size();
+    }
+
+    /**
+     * 使用一个数组列表来初始化一个分页列表对象
+     *
+     * @param array 数组元素列表
+     */
+    public PageList(E... array) {
+        List<E> newList = null;
+        if (ArrayUtils.isEmpty(array)) {
+            newList = new ArrayList<>(16);
+        } else {
+            newList = Arrays.asList(array);
+        }
+        this.allData = newList;
+        this.totalSize = this.allData.size();
     }
 
     /**
@@ -166,12 +244,21 @@ public class PageList<E> {
     }
 
     /**
-     * 获取页面数据量
+     * 获取当前页面数据
      *
-     * @return pageData - 页面数据量
+     * @return pageData - 当前页面数据
      */
     public List<E> getPageData() {
         return this.pageData;
+    }
+
+    /**
+     * 获取页面总列表数据；这是输入的列表的一个副本，即使输入列表在外部再次改变，分页列表对象包含的数据不会改变。
+     *
+     * @return allData - 总列表数据
+     */
+    protected List<E> getAllData() {
+        return this.allData;
     }
 
 }

@@ -62,8 +62,8 @@ public class PageListTest {
     @Test
     public void test() {
         List<String> list = CollectionUtils.newArrayList("A", "B", "C", "D", "E");
-        PageList<String> pageList = new PageList<>(2);
-        pageList.paging(4, list);
+        PageList<String> pageList = new PageList<>(list);
+        pageList.paging(2).fetch(2);
 
         System.out.println(pageList.getPageNo() + "\t" + pageList.getPageSize() + "\t" + pageList.getTotalPage() + "\t" + pageList.getTotalSize());
         System.out.println(pageList.getPageData());
