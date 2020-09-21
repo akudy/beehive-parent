@@ -12,7 +12,6 @@
 
 package org.beehive.core.collection.test;
 
-import org.beehive.core.collection.PageList;
 import org.beehive.util.CollectionUtils;
 import org.junit.Test;
 
@@ -34,7 +33,7 @@ import java.util.List;
  * <b>Upgrade/Modify Description:</b>
  * <dl>
  * <dd>
- * <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade/Modify History>
+ * <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade&shy;Modify History>
  * <tr>
  * <th>Version</th>
  * <th>Environment</th>
@@ -62,12 +61,42 @@ public class PageListTest {
     @Test
     public void test() {
         List<String> list = CollectionUtils.newArrayList("A", "B", "C", "D", "E");
-        PageList<String> pageList = new PageList<>(list);
-        pageList.paging(2).fetch(2);
-
-        System.out.println(pageList.getPageNo() + "\t" + pageList.getPageSize() + "\t" + pageList.getTotalPage() + "\t" + pageList.getTotalSize());
-        System.out.println(pageList.getPageData());
-
+        PageList1<String> pageList = new PageList1<>(2,list);
+        System.out.println(pageList.getPageSize()+"\t"+pageList.getPageCount()+"\t"+pageList.getTotalCount());
+        System.out.println(pageList.fetch(2));
+//        pageList.paging(2).fetch(2);
+//
+//        System.out.println(pageList.getPageCount() + "\t" + pageList.getPageSize() + "\t" + pageList.getTotalPage() + "\t" + pageList.getTotalSize());
+//        System.out.println(pageList.getPageData());
+//
+//        Thread thread1 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                int i = 0;
+//                while (i < 10) {
+//                    pageList.paging(2).fetch(2);
+//                    String mss = "pageNum=" + pageList.getPageNo() + "\tpageSize=" + pageList.getPageSize() + "\tpageCount=" + pageList.getTotalPage() + "\ttotalCount=" + pageList.getTotalSize() + ":" + pageList.getPageData();
+//                    System.out.println("线程1 - " + mss);
+//                    i++;
+//                }
+//            }
+//        });
+//
+//        Thread thread2 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                int i = 0;
+//                while (i < 10) {
+//                    pageList.paging(1).fetch(2);
+//                    String mss = "pageNum=" + pageList.getPageNo() + "\tpageSize=" + pageList.getPageSize() + "\tpageCount=" + pageList.getTotalPage() + "\ttotalCount=" + pageList.getTotalSize() + ":" + pageList.getPageData();
+//                    System.out.println("线程2 - " + mss);
+//                    i++;
+//                }
+//            }
+//        });
+//
+//        thread1.start();
+//        thread2.start();
     }
 
 }

@@ -3,14 +3,14 @@
  * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
  * Project Name: beehive-parent
  * Module Name: beehive-core
- * File Name: org.beehive.core.collection.PageList
+ * File Name: org.beehive.core.collection.test.PageList2
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
- * Create Date: 2020-09-14
+ * Create Date: 2020-09-21
  * Comments: <简述该文件的内容和作用>
  */
 
-package org.beehive.core.collection;
+package org.beehive.core.collection.test;
 
 import org.beehive.util.ArrayUtils;
 import org.beehive.util.CollectionUtils;
@@ -20,14 +20,14 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 分页列表对象，提供分页信息（页面数据、总数、当前页码、每页展示数量）。
+ * Comments,使用一句话简述该类信息，句末请使用./。
  * <br>
- * 在构建分页列表对象时，需要输入一个完整的列表数据；然后对该列表进行分页截取。分页列表的总数据量，在初始化是已经确定，不可修改。
+ * Description,类的详细描述信息,可使用简单的HTML标签
  * <p>
  * <b>Type Informations:</b>
  * <ul>
  * <li>Package Name: <code>org.beehive.core.collection</code></li>
- * <li>Class Name: <code>PageList</code></li>
+ * <li>Class Name: <code>PageList2</code></li>
  * <li>Java Version Used: Java 8</li>
  * <li>Compile With Java Version: JDK 8</li>
  * </ul>
@@ -46,7 +46,7 @@ import java.util.List;
  * <tr>
  * <td align="center"><em>1.0</em></td>
  * <td align="center"><em>Java 8</em></td>
- * <td align="center"><em>2020/9/11</em></td>
+ * <td align="center"><em>2020/9/16</em></td>
  * <td align="center"><em>akudy</em></td>
  * <td><em>Define</em></td>
  * </tr>
@@ -58,7 +58,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public class PageList<E> {
+public class PageList2<E> {
 
     /**
      * 默认的页面数量
@@ -117,7 +117,7 @@ public class PageList<E> {
      *
      * @return 当前页面对象
      */
-    public final PageList<E> paging() {
+    public final PageList2<E> paging() {
         return this.paging(DEFAULT_PAGE_SIZE);
     }
 
@@ -127,7 +127,7 @@ public class PageList<E> {
      * @param pageSize 页面大小
      * @return 当前页面对象
      */
-    public final PageList<E> paging(int pageSize) {
+    public final PageList2<E> paging(int pageSize) {
         this.pageSize = pageSize < 1 ? this.totalSize : pageSize;
         this.calcPageCount();
         return this;
@@ -139,7 +139,7 @@ public class PageList<E> {
      * @param pageNo 页码，从1开始
      * @return 指定页码的页面数据对象
      */
-    public final PageList<E> fetch(int pageNo) {
+    public final PageList2<E> fetch(int pageNo) {
         if (this.pageSize == -1) {
             this.paging();
         }
@@ -161,7 +161,7 @@ public class PageList<E> {
      *
      * @return 首页数据列表对象
      */
-    public final PageList<E> firstPage() {
+    public final PageList2<E> firstPage() {
         return this.fetch(1);
     }
 
@@ -170,7 +170,7 @@ public class PageList<E> {
      *
      * @return 最后一页数据列表对象
      */
-    public final PageList<E> lastPage() {
+    public final PageList2<E> lastPage() {
         return this.fetch(this.totalPage);
     }
 
@@ -179,7 +179,7 @@ public class PageList<E> {
      *
      * @param list 源数据列表对象
      */
-    public PageList(List<E> list) {
+    public PageList2(List<E> list) {
         List<E> newList = null;
         if (CollectionUtils.isEmpty(list)) {
             newList = new ArrayList<>(16);
@@ -196,7 +196,7 @@ public class PageList<E> {
      *
      * @param array 数组元素列表
      */
-    public PageList(E... array) {
+    public PageList2(E... array) {
         List<E> newList = null;
         if (ArrayUtils.isEmpty(array)) {
             newList = new ArrayList<>(16);

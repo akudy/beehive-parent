@@ -31,7 +31,7 @@ import java.util.List;
  * <b>Upgrade/Modify Description:</b>
  * <dl>
  * <dd>
- * <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade/Modify History>
+ * <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade&shy;Modify History>
  * <tr>
  * <th>Version</th>
  * <th>Environment</th>
