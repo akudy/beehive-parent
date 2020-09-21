@@ -1,0 +1,44 @@
+@startuml
+
+interface Iterable
+interface Iterator
+abstract class AbstractList
+interface Pageable {
+    +getPageCount() : int<font color=red><&info><sup>默认函数</sup></font>
+    +getPageSize() : int
+    +getTotalCount() : int
+}
+abstract class AbstractListPage<E><<general>> {
+    +AbstractListPage(sourceData : List<E> )
+    +AbstractListPage(sourceData : List<E>, pageSize : int)
+    +getPage(pageNo : int) : Page<E>
+    +getFirstPage() : Page<E>
+    +getLastPage() : Page<E>
+    class PageIterator<Page<E>> {}
+    class UnmodifiableSubList<E> {}
+}
+
+class ListPage<<general>> {
+
+}
+
+class Page<E><<general>> {
+    ~Page(pageNo : int, pageSize : int, totalCount : int, pageCount : int, list : List<E>)
+    +{static} newCustomPage(pageNo : int, pageSize : int, totalCount : int, pageCount : int, list : List<E>) : Page<E>
+    +getPageNo() : int
+    +getPageSize() : int
+    +getTotalCount() : int
+    +getPageCount() : int
+    +getPageData() : List<E>
+}
+
+Pageable <|.. AbstractListPage
+Iterable <|.. AbstractListPage
+Page <.right. AbstractListPage
+AbstractListPage <|-- ListPage
+AbstractListPage +-up- PageIterator
+Iterator <|.down. PageIterator
+AbstractListPage +-up- UnmodifiableSubList
+AbstractList <|-down- UnmodifiableSubList
+
+@enduml
