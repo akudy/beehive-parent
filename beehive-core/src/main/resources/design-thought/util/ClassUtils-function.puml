@@ -9,6 +9,10 @@
 ****_ isValueType
 *****_ <b>registerValueType</b> <font color=red><&info><sup>辅助函数</sup></font>
 ****_ isArrayType
+*** 关系分析
+****_ implementOf
+****_ extendsOf
+****_ instanceOf
 
 ** 信息分析
 

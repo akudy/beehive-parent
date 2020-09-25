@@ -12,7 +12,10 @@
 
 package org.beehive.util.test;
 
+import org.beehive.util.ClassUtils;
 import org.junit.Test;
+
+import java.util.*;
 
 /**
  * Comments,使用一句话简述该类信息，句末请使用./。
@@ -57,6 +60,49 @@ public class ClassUtilsTest {
 
     @Test
     public void typeTest() {
+
+        Object[] obj = new Integer[]{};
+        System.out.println(String.format("getArrayType(%s) =  %s", Arrays.toString(obj), ClassUtils.getArrayType(obj)));
+
+        System.out.println(String.format("isPrimitiveType(%s) = %s", int.class, ClassUtils.isPrimitiveType(int.class)));
+        System.out.println(String.format("isPrimitiveType(%s) = %s", Integer.class, ClassUtils.isPrimitiveType(Integer.class)));
+        System.out.println(String.format("isPrimitiveType(%s) = %s", Date.class, ClassUtils.isPrimitiveType(Date.class)));
+        System.out.println(String.format("isWrapperType(%s) = %s", Integer.class, ClassUtils.isWrapperType(Integer.class)));
+        System.out.println(String.format("isWrapperType(%s) = %s", Integer.class, ClassUtils.isWrapperType(ArrayList.class)));
+        System.out.println(String.format("isValueType(%s) = %s", Integer.class, ClassUtils.isValueType(Integer.class)));
+        System.out.println(String.format("isValueType(%s) = %s", Date.class, ClassUtils.isValueType(Date.class)));
+        System.out.println(String.format("isValueType(%s) = %s", ArrayList.class, ClassUtils.isValueType(ArrayList.class)));
+        System.out.println("....register ArrayList to valueType....");
+        ClassUtils.registerValueType(ArrayList.class);
+        System.out.println(String.format("isValueType(%s) = %s", ArrayList.class, ClassUtils.isValueType(ArrayList.class)));
+    }
+
+    @Test
+    public void typeOfTest() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        System.out.println("----- implementOf -----");
+        System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, ArrayList.class, ClassUtils.implementOf(arrayList, ArrayList.class)));
+        System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, Collection.class, ClassUtils.implementOf(arrayList, Collection.class)));
+        System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, List.class, ClassUtils.implementOf(arrayList, List.class)));
+        System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, Iterable.class, ClassUtils.implementOf(arrayList, Iterable.class)));
+        System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, AbstractList.class, ClassUtils.implementOf(arrayList, AbstractList.class)));
+        System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, AbstractCollection.class, ClassUtils.implementOf(arrayList, AbstractCollection.class)));
+
+        System.out.println("----- extendsOf -----");
+        System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, ArrayList.class, ClassUtils.extendsOf(arrayList, ArrayList.class)));
+        System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, Collection.class, ClassUtils.extendsOf(arrayList, Collection.class)));
+        System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, List.class, ClassUtils.extendsOf(arrayList, List.class)));
+        System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, Iterable.class, ClassUtils.extendsOf(arrayList, Iterable.class)));
+        System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, AbstractList.class, ClassUtils.extendsOf(arrayList, AbstractList.class)));
+        System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, AbstractCollection.class, ClassUtils.extendsOf(arrayList, AbstractCollection.class)));
+
+        System.out.println("----- instanceOf -----");
+        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, ArrayList.class, ClassUtils.instanceOf(arrayList, ArrayList.class)));
+        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, Collection.class, ClassUtils.instanceOf(arrayList, Collection.class)));
+        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, List.class, ClassUtils.instanceOf(arrayList, List.class)));
+        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, Iterable.class, ClassUtils.instanceOf(arrayList, Iterable.class)));
+        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, AbstractList.class, ClassUtils.instanceOf(arrayList, AbstractList.class)));
+        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, AbstractCollection.class, ClassUtils.instanceOf(arrayList, AbstractCollection.class)));
 
     }
 

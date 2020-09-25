@@ -1,0 +1,20 @@
+@startmindmap
+
+* EnumUtils
+
+** 字符串输出
+***_ toString
+
+** 枚举项列表
+***_ getInstances
+
+** 枚举类型匹配
+***_ getInstances
+***_ getInstance
+***_ getInstanceOrDefault
+
+** 是否是枚举项
+***_ isEnumInstance
+
+
+@endmindmap

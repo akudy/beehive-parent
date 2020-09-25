@@ -14,6 +14,7 @@ package org.beehive.core.collection.test;
 
 import org.beehive.core.collection.ListPage;
 import org.beehive.core.collection.Page;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,8 @@ import java.util.List;
  */
 public class ListPageTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void listPageTest() {
         List<String> list = new ArrayList<>();
         char[] array = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
         for (int i = 0; i < 26; i++) {

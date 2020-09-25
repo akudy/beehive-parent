@@ -13,6 +13,7 @@
 package org.beehive.util;
 
 import org.beehive.core.algorithm.IndexRangeAlgorithm;
+import org.beehive.core.collection.ListPage;
 
 import java.util.*;
 
@@ -488,4 +489,22 @@ public class CollectionUtils {
     }
 
     /*----------------------------- list extract end ----------------------------------------*/
+
+    /*----------------------------- list page start ----------------------------------------*/
+
+    /**
+     * 将一个{@link List}列表对象转换为可分页的列表页面对象
+     *
+     * @param list     源集合列表对象
+     * @param pageSize 每页大小
+     * @param <E>      元素对象列表
+     * @return 可分页的列表页面对象
+     * @see ListPage
+     */
+    public static <E> ListPage<E> toListPage(List<E> list, int pageSize) {
+        return new ListPage<>(list, pageSize);
+    }
+
+    /*----------------------------- list page end ----------------------------------------*/
+
 }

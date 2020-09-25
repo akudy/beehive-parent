@@ -86,7 +86,7 @@ public class ClassUtils {
      * @see #isValueType(Class)
      * @since 1.0
      */
-    public void registerValueType(Class<?> clazz) {
+    public static void registerValueType(Class<?> clazz) {
         ClassUtils.valueTypeSet.add(clazz);
     }
 
@@ -111,10 +111,7 @@ public class ClassUtils {
      * @since 1.0
      */
     public static boolean isPrimitiveType(Class<?> clazz) {
-        if (clazz.isPrimitive()) {
-            return true;
-        }
-        return false;
+        return clazz.isPrimitive();
     }
 
     /**
@@ -190,6 +187,90 @@ public class ClassUtils {
         }
         return array.getClass().getComponentType();
     }
+
+    /**
+     * 判断给定的实例对象是否实现了某一个接口类型
+     *
+     * @param object 实例对象
+     * @param clazz  接口类型，如果非接口类型则返回false，否则逐层向上查找
+     * @return 如果给定的匹配类型非接口，则返回false；如果其直接或间接实现该接口则返回true
+     */
+    public static boolean implementOf(Object object, Class<?> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+        if (!clazz.isInterface()) {
+            return false;
+        }
+        Class<?>[] upperClassArray = object.getClass().getInterfaces();
+        if (upperClassArray == null || upperClassArray.length == 0) {
+            upperClassArray = object.getClass().getSuperclass().getInterfaces();
+        }
+        return findInterfaceClazz(clazz, upperClassArray);
+    }
+
+    /**
+     * 递归查找接口类
+     *
+     * @param clazz           待查找接口类型
+     * @param upperClazzArray 上层接口数组
+     * @return 如果待查找接口类型和上层接口类型一致则返回true，否则返回false
+     */
+    private static boolean findInterfaceClazz(Class<?> clazz, Class<?>[] upperClazzArray) {
+        if (upperClazzArray == null || upperClazzArray.length == 0) {
+            return false;
+        }
+        for (Class<?> upperClazz : upperClazzArray) {
+            if (upperClazz.isInterface()) {
+                if (clazz == upperClazz) {
+                    return true;
+                } else {
+                    return findInterfaceClazz(clazz, upperClazz.getInterfaces());
+                }
+            } else {
+                if (upperClazz != Object.class) {
+                    clazz = clazz.getSuperclass();
+                    return findInterfaceClazz(clazz, upperClazz.getInterfaces());
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断给定的实例对象是否继承了某个类型
+     *
+     * @param object 实例对象
+     * @param clazz  类类型
+     * @return 如果直接或间接继承该类则返回true；否则返回false
+     */
+    public static boolean extendsOf(Object object, Class<?> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+        Class<?> currentClazz = object.getClass().getSuperclass();
+        while (currentClazz != null && currentClazz != Object.class) {
+            if (clazz == currentClazz) {
+                return true;
+            }
+            currentClazz = currentClazz.getSuperclass();
+        }
+        return false;
+    }
+
+
+    /**
+     * 判断给定的实例对象是否是指定类型的实例
+     *
+     * @param object 对象实例
+     * @param clazz  类型
+     * @return 如果是指定类型的实例则返回true，否则返回false
+     */
+    public static boolean instanceOf(Object object, Class<?> clazz) {
+        return clazz.isInstance(object);
+    }
+
 
     /*----------------------------- class type end ----------------------------------------*/
 

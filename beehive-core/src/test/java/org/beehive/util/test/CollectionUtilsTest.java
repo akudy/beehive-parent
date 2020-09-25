@@ -12,13 +12,11 @@
 
 package org.beehive.util.test;
 
+import org.beehive.core.collection.ListPage;
 import org.beehive.util.CollectionUtils;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Comments,使用一句话简述该类信息，句末请使用./。
@@ -148,6 +146,23 @@ public class CollectionUtilsTest {
 
         System.out.println(String.format("extractList(%s, %s) = %s", list, Arrays.toString(new int[]{0, 4, 1, 2, 1, 3}), CollectionUtils.extractList(list, 0, 4, 1, 2, 1, 3)));
         System.out.println(String.format("extractList(%s, %s) = %s", list, Arrays.toString(new int[]{-1, 1, 1, 2, 1, 3}), CollectionUtils.extractList(list, -1, 1, 1, 2, 1, 3)));
+    }
+
+    @Test
+    public void pageTest() {
+        List<String> list = new ArrayList<>();
+        char[] array = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+        for (int i = 0; i < 26; i++) {
+            list.add(new String(new char[]{array[i], array[i], array[i]}));
+        }
+        System.out.println(list);
+
+        ListPage<String> listPage = CollectionUtils.toListPage(list, 5);
+        System.out.println("pageSize = " + listPage.getPageSize() + "\tpageCount = " + listPage.getPageCount() + "\ttotalCount = " + listPage.getTotalCount());
+        System.out.println(listPage.getFirstPage());
+        System.out.println(listPage.getLastPage());
+        System.out.println(listPage.getPage(2));
+
     }
 
 }
