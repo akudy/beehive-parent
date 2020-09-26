@@ -651,15 +651,15 @@ public final class DateTimeUtils {
      */
     public static Date newDateTimeOfNowDate(int hour, int minute, int second) {
         Calendar calendar = Calendar.getInstance();
-        if (hour < 1 || hour > 23) {
+        if (hour < 0 || hour > 23) {
             throw new IllegalArgumentException("value range of hour is [1,23]");
         }
         calendar.set(Calendar.HOUR_OF_DAY, hour);
-        if (minute < 1 || minute > 59) {
+        if (minute < 0 || minute > 59) {
             throw new IllegalArgumentException("value range of minute is [1,59]");
         }
         calendar.set(Calendar.MINUTE, minute);
-        if (second < 1 || second > 59) {
+        if (second < 0 || second > 59) {
             throw new IllegalArgumentException("value range of second is [1,59]");
         }
         calendar.set(Calendar.SECOND, second);

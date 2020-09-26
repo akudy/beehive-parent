@@ -1,0 +1,10 @@
+@startmindmap
+* DateTimeUtils
+
+** 时间构建模式（TimeMode）
+***_ NOW_OF_DAY（当前日期时间）
+***_ BEGIN_OF_DAY（开始日期时间）
+***_ END_OF_DAY（结束日期时间）
+
+
+@endmindmap
