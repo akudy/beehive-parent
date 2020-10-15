@@ -59,24 +59,71 @@ import java.util.Arrays;
 public class IndexRangeAlgorithmTest {
 
     @Test
-    public void test() {
-        int[] indexs = {1, 1, 2, 3, 5, 7};
-        String str = "ABCDEFG";
+    public void subOfSingleIndex() {
+        String str = "ABCDEFGHIJ";
+        System.out.println("to right: ");
+        System.out.println("\t" + test(str, 2));
+        System.out.println("\t" + test(str, 20));
+        System.out.println("to left：");
+        System.out.println("\t" + test(str, -2));
+        System.out.println("\t" + test(str, -20));
+    }
+
+    @Test
+    public void subOfDoubleIndex() {
+        String str = "ABCDEFGHIJ";
+        System.out.println(test(str, 1, 0));
+        System.out.println(test(str, 0, 1));
+        System.out.println(test(str, 2, 2));
+        System.out.println(test(str, 2, 4));
+        System.out.println(test(str, 4, 2));
+        System.out.println(test(str, 20, 2));
+        System.out.println(test(str, 2, 20));
+        System.out.println(test(str, 20, 20));
+        System.out.println();
+        System.out.println(test(str, -2, 0));
+        System.out.println(test(str, 0, -2));
+        System.out.println(test(str, -2, -2));
+        System.out.println(test(str, -2, -4));
+        System.out.println(test(str, -4, -2));
+        System.out.println(test(str, -20, -2));
+        System.out.println(test(str, -2, -20));
+        System.out.println(test(str, -20, -20));
+        System.out.println();
+        System.out.println(test(str, -2, -2));
+        System.out.println(test(str, -2, 2));
+        System.out.println(test(str, 2, -2));
+        System.out.println(test(str, 2, -4));
+        System.out.println(test(str, -4, 2));
+        System.out.println(test(str, -20, -2));
+        System.out.println(test(str, 2, -20));
+        System.out.println(test(str, -20, -20));
+    }
+
+    @Test
+    public void subOfMultipleIndex() {
+        String str = "ABCDEFGHIJ";
+        System.out.println(test(str, 1, 1, 2, 2, 3, 3, 4, 4));
+        System.out.println(test(str, 1, 2, 3, 4, 5));
+        System.out.println(test(str, 5, 4, 3, 2, 1));
+        System.out.println(test(str, 1, 3, 5, 7, 9));
+    }
+
+    public String test(String str, int... indexs) {
         if (indexs.length == 1) {
             int[] numbers = IndexRangeAlgorithm.indexRange(str.length(), indexs[0]);
-            System.out.println(str + Arrays.toString(numbers) + " = " + str.substring(numbers[0], numbers[1]));
+            return "(" + str + ", " + indexs[0] + ") -> " + str + Arrays.toString(numbers) + " = " + str.substring(numbers[0], numbers[1]);
         } else if (indexs.length == 2) {
             int[] numbers = IndexRangeAlgorithm.indexRange(str.length(), indexs[0], indexs[1]);
-            System.out.println(str + Arrays.toString(numbers) + " = " + str.substring(numbers[0], numbers[1]));
+            return "(" + str + ", " + indexs[0] + ", " + indexs[1] + ") -> " + str + Arrays.toString(numbers) + " = " + str.substring(numbers[0], numbers[1]);
         } else if (indexs.length > 2) {
             int[] numbers = IndexRangeAlgorithm.indexRange(str.length(), indexs);
-            System.out.println(Arrays.toString(numbers));
             StringBuffer sb = new StringBuffer();
             for (int i : numbers) {
                 sb.append(str.charAt(i));
             }
-            System.out.println(str + Arrays.toString(numbers) + " = " + sb.toString());
+            return "(" + str + ", " + Arrays.toString(indexs) + ") -> " + str + Arrays.toString(numbers) + " = " + sb.toString();
         }
-
+        return null;
     }
 }

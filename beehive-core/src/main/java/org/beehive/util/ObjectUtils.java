@@ -53,6 +53,8 @@ package org.beehive.util;
  */
 public class ObjectUtils {
 
+
+
     public static <T> String toString(T instance) {
         return instance.toString();
     }

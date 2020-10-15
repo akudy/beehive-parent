@@ -1,7 +1,7 @@
 @startmindmap
 
 * CollectionUtils
-** 数组检查
+** 集合检查
 ***  是否空对象
 ****_ isNull
 ****_ isNotNull
@@ -40,7 +40,7 @@
 
 ** List截取&提取
 ***_ subList
-***_ extractList
+***_ pickList
 
 ** 分页
 ***_ toListPage

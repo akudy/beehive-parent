@@ -1,0 +1,12 @@
+@startuml
+
+interface StringFormatter {
+    +format() : String
+}
+abstract class AbstractStringFormatter
+class Slf4jStringFormatter
+
+StringFormatter <|-- AbstractStringFormatter
+AbstractStringFormatter <|-- Slf4jStringFormatter
+
+@enduml

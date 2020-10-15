@@ -1,0 +1,25 @@
+@startmindmap
+* StringUtils
+
+** 模板字符串样式(TemplateStyle)
+***_ JAVA_STRING(Java字符串模式)
+***_ JAVA_MESSAGE(Java消息模式)
+***_ SLF4J_LOG(slf4j-log内容模式)<font color=red><&info><sup>默认格式器</sup></font>
+
+** 格式化
+***_ format
+***_ strFormat
+***_ msgFormat
+***_ logFormat
+
+** 字符串检查
+***_ isNull
+***_ isNotNull
+***_ isBlank
+***_ isNotBlank
+
+** List截取&提取
+***_ subStr
+***_ pickStr
+
+@endmindmap

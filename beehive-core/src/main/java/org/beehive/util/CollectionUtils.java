@@ -438,30 +438,61 @@ public class CollectionUtils {
      * 针对一个{@link List}集合列表进行截取，并返回一个新的子列表对象
      *
      * @param list  原{@link List}集合列表
-     * @param index 截取的索引列表（正数表示正向截取，负数表示逆向截取）<br/>
-     *              如果是一个值，则表示截取的个数；如果是两个值，则表示截取的开始位置和结束位置，较小的值表示开始位置，较大的值表示结束位置；如果大于两个值，则表示提取指定索引的元素
+     * @param index 截取的开始位置和元素个数（正数表示正向计算并截取，负数表示逆向计算并截取)
+     * @param <E>   元素类型
+     * @return 子集合列表
+     * @see IndexRangeAlgorithm
+     * @since 1.0
+     */
+    public static <E> List<E> subList(List<E> list, int index) {
+        if (list == null) {
+            return null;
+        }
+        int[] range = IndexRangeAlgorithm.indexRange(list.size(), index);
+        return list.subList(range[0], range[1]);
+    }
+
+    /**
+     * 针对一个{@link List}集合列表进行截取，并返回一个新的子列表对象
+     *
+     * @param list  原{@link List}集合列表
+     * @param index 截取的开始位置和元素个数（正数表示正向计算，负数表示逆向计算)
+     * @param count 截取的方向和元素个数（整数表示正向截取，负数表示逆向截取）
+     * @param <E>   元素类型
+     * @return 子集合列表
+     * @see IndexRangeAlgorithm
+     * @since 1.0
+     */
+    public static <E> List<E> subList(List<E> list, int index, int count) {
+        if (list == null) {
+            return null;
+        }
+        int[] range = IndexRangeAlgorithm.indexRange(list.size(), index, count);
+        return list.subList(range[0], range[1]);
+    }
+
+    /**
+     * 针对一个{@link List}集合列表进行截取，并返回一个新的子列表对象；将所有索引进行重新排序并去重，然后提取指定位置的元素组成新列表
+     *
+     * @param list  原{@link List}集合列表
+     * @param index 索引位置列表，超出范围或负值被剔除
      * @param <E>   元素类型
      * @return 子集合列表
      * @see IndexRangeAlgorithm
      * @since 1.0
      */
     public static <E> List<E> subList(List<E> list, int... index) {
+        if (list == null) {
+            return null;
+        }
         if (ArrayUtils.isEmpty(index)) {
             return list;
         }
         int size = list.size();
         List<E> subList = new ArrayList<>();
-        if (index.length == 1) {
-            int[] range = IndexRangeAlgorithm.indexRange(size, index[0]);
-            subList = list.subList(range[0], range[1]);
-        } else if (index.length == 2) {
-            int[] range = IndexRangeAlgorithm.indexRange(size, index[0], index[1]);
-            subList = list.subList(range[0], range[1]);
-        } else if (index.length > 2) {
-            int[] range = IndexRangeAlgorithm.indexRange(size, index);
-            for (int i : range) {
-                subList.add(list.get(i));
-            }
+        int[] range = IndexRangeAlgorithm.indexRange(size, index);
+        for (int i : range) {
+            subList.add(list.get(i));
         }
         return subList;
     }
@@ -475,13 +506,16 @@ public class CollectionUtils {
      * @return 子集合列表
      * @since 1.0
      */
-    public static <E> List<E> extractList(List<E> list, int... index) {
+    public static <E> List<E> pickList(List<E> list, int... index) {
+        if (list == null) {
+            return null;
+        }
         if (ArrayUtils.isEmpty(index)) {
             return list;
         }
         List<E> arrayList = new ArrayList<>();
         for (int i : index) {
-            if (i >= 0) {
+            if (i >= 0 && i < list.size()) {
                 arrayList.add(list.get(i));
             }
         }

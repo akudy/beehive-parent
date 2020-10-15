@@ -144,8 +144,8 @@ public class CollectionUtilsTest {
         System.out.println(String.format("subList(%s, %s) = %s", list, Arrays.toString(new int[]{-1, -3, 1, 2, 0, 3}), CollectionUtils.subList(list, -1, -3, 1, 2, 0, 3)));
         System.out.println(String.format("subList(%s, %s) = %s", list, Arrays.toString(new int[]{-1, 1, 1, 2, 1, 3}), CollectionUtils.subList(list, -1, 1, 1, 2, 1, 3)));
 
-        System.out.println(String.format("extractList(%s, %s) = %s", list, Arrays.toString(new int[]{0, 4, 1, 2, 1, 3}), CollectionUtils.extractList(list, 0, 4, 1, 2, 1, 3)));
-        System.out.println(String.format("extractList(%s, %s) = %s", list, Arrays.toString(new int[]{-1, 1, 1, 2, 1, 3}), CollectionUtils.extractList(list, -1, 1, 1, 2, 1, 3)));
+        System.out.println(String.format("extractList(%s, %s) = %s", list, Arrays.toString(new int[]{0, 4, 1, 2, 1, 3}), CollectionUtils.pickList(list, 0, 4, 1, 2, 1, 3)));
+        System.out.println(String.format("extractList(%s, %s) = %s", list, Arrays.toString(new int[]{-1, 1, 1, 2, 1, 3}), CollectionUtils.pickList(list, -1, 1, 1, 2, 1, 3)));
     }
 
     @Test
