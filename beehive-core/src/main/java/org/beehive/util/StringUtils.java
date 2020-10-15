@@ -15,10 +15,12 @@ package org.beehive.util;
 import org.beehive.core.algorithm.IndexRangeAlgorithm;
 import org.beehive.core.convert.ConvertException;
 import org.beehive.core.string.Slf4jStringFormatter;
+import org.beehive.core.string.StringDictComparator;
 import org.beehive.core.string.StringFormatter;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.Formatter;
 
 /**
@@ -289,7 +291,7 @@ public class StringUtils {
      * @return 存在任一个相等时返回true，否则（全部不相等）返回false
      * @since 1.0
      */
-    public static boolean equalsOnce(String source, String... target) {
+    public static boolean equalsAny(String source, String... target) {
         if (source == null) {
             return false;
         }
@@ -336,7 +338,7 @@ public class StringUtils {
      * @return 存在任一个相等时返回true，否则（全部不相等）返回false
      * @since 1.0
      */
-    public static boolean equalsOnceIgnoreCase(String source, String... target) {
+    public static boolean equalsAnyIgnoreCase(String source, String... target) {
         if (source == null) {
             return false;
         }
@@ -357,21 +359,23 @@ public class StringUtils {
      * @param str1 被比较字符串文本
      * @param str1 比较字符串文本
      * @return 如果被比较字符串大于比较字符串则返回大于0；如果被比较字符串小于比较字符串则返回小于0；否则返回0
-     * @see String#compareToIgnoreCase(String)
+     * @see StringDictComparator
+     * @since 1.0
      */
     public static int compareWithDict(String str1, String str2) {
-        if (str1 == null && str2 == null) {
-            return 0;
-        }
-        if (str1 == null && str2 != null) {
-            return -1;
-        }
-        if (str1 != null && str2 == null) {
-            return 1;
-        }
-        String newText1 = encode(str1, "GBK");
-        String newText2 = encode(str2, "GBK");
-        return newText1.compareToIgnoreCase(newText2);
+        return compare(str1, str2, new StringDictComparator());
+    }
+
+    /**
+     * 比较两个字符串的大小
+     * @param str1 被比较字符串文本
+     * @param str1 比较字符串文本
+     * @return 如果被比较字符串大于比较字符串则返回大于0；如果被比较字符串小于比较字符串则返回小于0；否则返回0
+     * @param comparator 比较器
+     * @since  1.0
+     */
+    public static int compare(String str1, String str2, Comparator<String> comparator) {
+        return comparator.compare(str1, str2);
     }
 
     /****************************** equals & compare end **********************************/

@@ -18,6 +18,23 @@
 ***_ isBlank
 ***_ isNotBlank
 
+** 比较
+***_ equalsAll
+***_ equalsAny
+***_ equalsAllIgnoreCase
+***_ equalsAnyIgnoreCase
+***_ compareWithDict
+***_ compare
+
+** 转换
+*** 转码
+****_ encode
+****_ decode
+****_ transcode
+*** 大小写
+****_ upperCase
+****_ lowerCase
+
 ** List截取&提取
 ***_ subStr
 ***_ pickStr

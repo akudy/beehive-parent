@@ -6,7 +6,25 @@ interface StringFormatter {
 abstract class AbstractStringFormatter
 class Slf4jStringFormatter
 
-StringFormatter <|-- AbstractStringFormatter
+StringFormatter <|.. AbstractStringFormatter
 AbstractStringFormatter <|-- Slf4jStringFormatter
+
+interface Comparator<T>
+class StringDictComparator<String>
+
+Comparator <|.. StringDictComparator
+
+interface RandomStringFactory {
+    +random() : String
+}
+abstract class AbstractRandomStrFactory
+class RandomAlphabetStrFactory
+class RandomDigitStrFactory
+class RandomAlphanumericStrFactory
+
+RandomStringFactory <|.. AbstractRandomStrFactory
+AbstractRandomStrFactory <|-- RandomAlphabetStrFactory
+AbstractRandomStrFactory <|-- RandomDigitStrFactory
+AbstractRandomStrFactory <|-- RandomAlphanumericStrFactory
 
 @enduml

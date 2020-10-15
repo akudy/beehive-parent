@@ -60,6 +60,7 @@ public interface Converter<S, T> {
      * @param source 源对象实例
      * @return 目标对象实例
      * @throws ConvertException
+     * @since 1.0
      */
     T convert(S source) throws ConvertException;
 
@@ -69,6 +70,7 @@ public interface Converter<S, T> {
      * @param source       源对象实例
      * @param defaultValue 如果转换失败，则返回默认值
      * @return 目标对象实例
+     * @since 1.0
      */
     default T convert(S source, T defaultValue) {
         try {
