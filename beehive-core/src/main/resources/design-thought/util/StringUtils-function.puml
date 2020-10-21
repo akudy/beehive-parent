@@ -35,8 +35,16 @@
 ****_ upperCase
 ****_ lowerCase
 
-** List截取&提取
+** 创建
+*** 随机字符串
+****_ random
+****_ randomDigit
+****_ randomLetter
+****_ randomDigitAndLetter
+
+** 截取&提取
 ***_ subStr
 ***_ pickStr
+***_ ofStr
 
 @endmindmap

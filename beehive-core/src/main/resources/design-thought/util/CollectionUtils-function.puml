@@ -41,6 +41,7 @@
 ** List截取&提取
 ***_ subList
 ***_ pickList
+***_ ofList
 
 ** 分页
 ***_ toListPage

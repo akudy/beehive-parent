@@ -13,8 +13,6 @@
 package org.beehive.core.string;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 提供类似slf4j的信息格式化实现方式。
@@ -55,7 +53,7 @@ import java.util.Set;
  * @version 1.0
  * @since 1.0
  */
-public class Slf4jStringFormatter extends AbstractStringFormatter {
+public class Slf4jStringFormatter extends StringFormatter {
 
     /**
      * 约定占位符号的开始符号

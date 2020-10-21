@@ -481,7 +481,7 @@ public class CollectionUtils {
      * @see IndexRangeAlgorithm
      * @since 1.0
      */
-    public static <E> List<E> subList(List<E> list, int... index) {
+    public static <E> List<E> pickList(List<E> list, int... index) {
         if (list == null) {
             return null;
         }
@@ -506,7 +506,7 @@ public class CollectionUtils {
      * @return 子集合列表
      * @since 1.0
      */
-    public static <E> List<E> pickList(List<E> list, int... index) {
+    public static <E> List<E> ofList(List<E> list, int... index) {
         if (list == null) {
             return null;
         }

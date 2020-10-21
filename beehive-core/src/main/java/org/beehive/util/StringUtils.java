@@ -14,6 +14,7 @@ package org.beehive.util;
 
 import org.beehive.core.algorithm.IndexRangeAlgorithm;
 import org.beehive.core.convert.ConvertException;
+import org.beehive.core.string.RandomStringFactory;
 import org.beehive.core.string.Slf4jStringFormatter;
 import org.beehive.core.string.StringDictComparator;
 import org.beehive.core.string.StringFormatter;
@@ -368,11 +369,12 @@ public class StringUtils {
 
     /**
      * 比较两个字符串的大小
-     * @param str1 被比较字符串文本
-     * @param str1 比较字符串文本
-     * @return 如果被比较字符串大于比较字符串则返回大于0；如果被比较字符串小于比较字符串则返回小于0；否则返回0
+     *
+     * @param str1       被比较字符串文本
+     * @param str1       比较字符串文本
      * @param comparator 比较器
-     * @since  1.0
+     * @return 如果被比较字符串大于比较字符串则返回大于0；如果被比较字符串小于比较字符串则返回小于0；否则返回0
+     * @since 1.0
      */
     public static int compare(String str1, String str2, Comparator<String> comparator) {
         return comparator.compare(str1, str2);
@@ -426,7 +428,7 @@ public class StringUtils {
      * @see IndexRangeAlgorithm
      * @since 1.0
      */
-    public static String subStr(String str, int... index) {
+    public static String pickStr(String str, int... index) {
         if (str == null) {
             return null;
         }
@@ -449,7 +451,7 @@ public class StringUtils {
      * @return 子集合列表
      * @since 1.0
      */
-    public static String pickStr(String str, int... index) {
+    public static String ofStr(String str, int... index) {
         if (str == null) {
             return null;
         }
@@ -466,6 +468,56 @@ public class StringUtils {
     }
 
     /****************************** sub & pick end **********************************/
+
+    /****************************** create start **********************************/
+
+    /**
+     * 在一个字符串序列中随机产生一个指定字符个数的新字符串
+     *
+     * @param strSequence 字符串序列
+     * @param count       字符个数
+     * @return 新的随机字符串
+     * @since 1.0
+     */
+    public static String random(String strSequence, int count) {
+        RandomStringFactory factory = RandomStringFactory.newFactory(strSequence);
+        return factory.random(count);
+    }
+
+    /**
+     * 产生一个随机数字字符串
+     *
+     * @param count 数字个数
+     * @return 随机的数组字符串
+     * @since 1.0
+     */
+    public static String randomDigit(int count) {
+        return RandomStringFactory.newDigitFactory().random(count);
+    }
+
+    /**
+     * 产生一个随机字母字符串
+     *
+     * @param count 字母个数
+     * @return 随机的字母字符串
+     * @since 1.0
+     */
+    public static String randomLetter(int count) {
+        return RandomStringFactory.newAlphabetFactory().random(count);
+    }
+
+    /**
+     * 产生一个随机字母和数字组成的字符串
+     *
+     * @param count 字符个数
+     * @return 随机的字母和数字字符串
+     * @since 1.0
+     */
+    public static String randomDigitAndLetter(int count) {
+        return RandomStringFactory.newAlphanumericFactory().random(count);
+    }
+
+    /****************************** create end **********************************/
 
     /****************************** convert start **********************************/
     /**
