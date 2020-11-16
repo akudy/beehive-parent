@@ -3,7 +3,7 @@
  * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
  * Project Name: beehive-parent
  * Module Name: beehive-core
- * File Name: org.beehive.core.string.StringFactory
+ * File Name: org.beehive.core.string.RandomStringFactory
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
  * Create Date: 2020-10-17
@@ -12,22 +12,20 @@
 
 package org.beehive.core.string;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 
 /**
- * 字符串工厂，用于产生字符串。包含共用方法和接口定义。
+ * 随机字符串工厂，用于产生字符串。包含共用方法和接口定义。
  * <br>
  * 包括产生随机字符串等。
  * <p>
  * <b>Type Informations:</b>
  * <ul>
  * <li>Package Name: <code>org.beehive.core.string</code></li>
- * <li>Class Name: <code>StringFactory</code></li>
+ * <li>Class Name: <code>RandomStringFactory</code></li>
  * <li>Java Version Used: Java 8</li>
  * <li>Compile With Java Version: JDK 8</li>
  * </ul>
@@ -58,7 +56,7 @@ import java.util.ResourceBundle;
  * @version 1.0
  * @since 1.0
  */
-public class StringFactory {
+public class RandomStringFactory {
 
     /**
      * 对象池的最大的容量，默认16
@@ -68,14 +66,14 @@ public class StringFactory {
     /**
      * 随机字符串工厂池
      */
-    private static Map<Integer, StringFactory> pool = new HashMap<>(POOL_MAX_SIZE);
+    private static Map<Integer, RandomStringFactory> pool = new HashMap<>(POOL_MAX_SIZE);
 
     /**
      * 元符号字符串
      */
     protected String metaSymbol;
 
-    protected StringFactory(String metaSymbol) {
+    private RandomStringFactory(String metaSymbol) {
         this.metaSymbol = metaSymbol;
     }
 
@@ -85,13 +83,13 @@ public class StringFactory {
      * @param metaSymbol 元符号字符串
      * @since 1.0
      */
-    public static StringFactory newFactory(String metaSymbol) {
-        StringFactory factory = null;
+    public static RandomStringFactory newFactory(String metaSymbol) {
+        RandomStringFactory factory = null;
         Integer key = metaSymbol == null ? null : metaSymbol.hashCode();
         if (pool.containsKey(key)) {
             factory = pool.get(key);
         } else {
-            factory = new StringFactory(metaSymbol);
+            factory = new RandomStringFactory(metaSymbol);
             synchronized (pool) {
                 if (pool.size() > POOL_MAX_SIZE) {
                     pool.clear();
@@ -109,7 +107,7 @@ public class StringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static StringFactory newFactory(char[] metaSymbol) {
+    public static RandomStringFactory newFactory(char[] metaSymbol) {
         return newFactory(new String(metaSymbol));
     }
 
@@ -135,6 +133,12 @@ public class StringFactory {
         return buffer.toString();
     }
 
+
+
+
+
+
+
     /**
      * 资源文件地址
      */
@@ -146,21 +150,24 @@ public class StringFactory {
      * @param charKey 资源key，位于"string/factory/common_characters"文件中
      * @return 随机字符串工厂对象
      */
-    private synchronized static StringFactory newFactoryFromResource(String charKey) {
+    private synchronized static RandomStringFactory newFactoryFromResource(String charKey) {
+        ClassLoader classLoader = RandomStringFactory.class.getClassLoader();
+        System.out.println(classLoader.getResource(".").getPath());
+
         System.err.println("========================");
-        if (StringFactory.charResource == null) {
+        if (RandomStringFactory.charResource == null) {
             String loader = ClassLoader.getSystemClassLoader().getResource(".").getPath();
             System.err.println(loader);
-            InputStream is = new FileInputStream(new File(loader + "/string/factory/common-characters.properties"));
+//            InputStream is = new FileInputStream(new File(loader + "/string/factory/common-characters.properties"));
 //            System.err.println(is);
             System.err.println("is null");
-            StringFactory.charResource = ResourceBundle.getBundle("string/factory/common-characters");
+            RandomStringFactory.charResource = ResourceBundle.getBundle("string/factory/common-characters");
         }
         System.err.println("suc");
-        String metaSymbol = StringFactory.charResource.getString(charKey);
+        String metaSymbol = RandomStringFactory.charResource.getString(charKey);
         System.err.println(metaSymbol);
         if (metaSymbol != null) {
-            return new StringFactory(metaSymbol);
+            return new RandomStringFactory(metaSymbol);
         }
         return null;
     }
@@ -172,7 +179,7 @@ public class StringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static StringFactory newDigitFactory() {
+    public static RandomStringFactory newDigitFactory() {
         return newFactoryFromResource("digit.chars");
     }
 
@@ -183,7 +190,7 @@ public class StringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static StringFactory newAlphabetFactory() {
+    public static RandomStringFactory newAlphabetFactory() {
         return newFactoryFromResource("alphabet.chars");
     }
 
@@ -194,7 +201,7 @@ public class StringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static StringFactory newAlphanumericFactory() {
+    public static RandomStringFactory newAlphanumericFactory() {
         return newFactoryFromResource("alphanumeric.chars");
     }
 
@@ -205,7 +212,7 @@ public class StringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static StringFactory newGraphemeFactory() {
+    public static RandomStringFactory newGraphemeFactory() {
         return newFactoryFromResource("inputable.chars");
     }
 
@@ -216,7 +223,7 @@ public class StringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static StringFactory newLocalLanguageFactory() {
+    public static RandomStringFactory newLocalLanguageFactory() {
         return newFactoryFromResource("common.local.language.chars");
     }
 

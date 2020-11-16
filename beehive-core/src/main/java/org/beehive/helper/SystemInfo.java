@@ -199,7 +199,7 @@ public class SystemInfo {
         public static final String RUNTIME_ROOT_PATH = System.getProperty("sun.boot.library.path");
 
         /**
-         * Java运行环境的类路径，例如：C:\Program Files\Java\jdk1.8.0_172\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_172\jre\lib\rt.jar;...
+         * Java运行环境启动的类路径，例如：C:\Program Files\Java\jdk1.8.0_172\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_172\jre\lib\rt.jar;...
          *
          * @see #RUNTIME_ROOT_PATH
          * @see #CLASS_PATH

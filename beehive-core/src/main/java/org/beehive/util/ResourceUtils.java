@@ -13,9 +13,9 @@
 package org.beehive.util;
 
 /**
- * Comments,使用一句话简述该类信息，句末请使用./。
+ * 资源工具类。提供资源文件的读写接口定义。
  * <br>
- * Description,类的详细描述信息,可使用简单的HTML标签
+ * 包含资源文件的读取、写入等操作。
  * <p>
  * <b>Type Informations:</b>
  * <ul>

@@ -271,8 +271,47 @@ public class ClassUtils {
         return clazz.isInstance(object);
     }
 
-
     /*----------------------------- class type end ----------------------------------------*/
+
+    /*----------------------------- class loader start ----------------------------------------*/
+
+    /**
+     * 获取默认的{@link ClassLoader}类加载器对象。
+     * <br/>
+     * {@link ClassLoader}类加载器，可根据一个指定的类的全限定名,找到对应的Class字节码文件,然后加载它转化成一个java.lang.Class类的一个实例。<br/>
+     * Java应用程序的类加载器分为四类（优先级依次递减）：
+     * <ol>
+     *     <li>启动类加载器(Bootstrap ClassLoader)：这个类加载器负责将\lib目录下的类库加载到虚拟机内存中,用来加载java的核心库,此类加载器并不继承于java.lang.ClassLoader,不能被java程序直接调用,代码是使用C++编写的.是虚拟机自身的一部分.</li>
+     *     <li>扩展类加载器(Extendsion ClassLoader)：这个类加载器负责加载\lib\ext目录下的类库,用来加载java的扩展库,开发者可以直接使用这个类加载器.</li>
+     *     <li>应用程序类加载器(Application ClassLoader)：这个类加载器负责加载用户类路径(CLASSPATH)下的类库,一般我们编写的java类都是由这个类加载器加载,这个类加载器是CLassLoader中的getSystemClassLoader()方法的返回值,所以也称为系统类加载器.一般情况下这就是系统默认的类加载器.</li>
+     *     <li>自定义类加载器(Custom ClassLoader)：自己定义的类加载器,用来满足特殊的需求,需要继承java.lang.ClassLoader类.</li>
+     * </ol>
+     * Java的类加载器使用了双亲委托模型，当需要加载一个类时，优先交个启动类加载器；如果没有找到被加载类，则交给扩展类加载器；如果没有找到被加载类，则交给应用程序加载器；
+     * 如果还是没有找到被加载类，则返回给给委托的发起者，并由它到制定的文件系统或网路URL中加载该类，如果没有，则抛出ClassNotFoundException异常。这种模型可以避免类的重复加载。
+     *
+     * @return
+     * @see ClassLoader
+     */
+    public static ClassLoader getDefaultClassLoader() {
+        ClassLoader classLoader = null;
+        // 当前线程的类加载器（应用程序级别）
+        classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader == null) {
+            // 当前类所在的类加载器（应用程序级别）
+            classLoader = ClassUtils.class.getClassLoader();
+        }
+        if (classLoader == null) {
+            // 系统类加载器（应用程序级别顶层类加载器）
+            classLoader = ClassLoader.getSystemClassLoader();
+        }
+        return classLoader;
+    }
+
+    public static ClassLoader getClassLoader(Class<?> clazz) {
+        return clazz.getClassLoader();
+    }
+
+    /*----------------------------- class loader end ----------------------------------------*/
 
 
     /*----------------------------- class info start ----------------------------------------*/

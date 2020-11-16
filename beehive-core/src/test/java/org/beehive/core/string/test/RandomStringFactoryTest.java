@@ -12,7 +12,7 @@
 
 package org.beehive.core.string.test;
 
-import org.beehive.core.string.StringFactory;
+import org.beehive.core.string.RandomStringFactory;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;
@@ -59,7 +59,7 @@ import java.util.concurrent.Executors;
  */
 public class RandomStringFactoryTest {
 
-    private void testRandom(StringFactory factory, int charCount) {
+    private void testRandom(RandomStringFactory factory, int charCount) {
         for (int i = 0; i < 10; i++) {
             System.out.println(factory.random(charCount));
         }
@@ -67,44 +67,48 @@ public class RandomStringFactoryTest {
 
     @Test
     public void testRandomCustom() {
-        StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
+        RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
         testRandom(factory, 3);
     }
 
     @Test
     public void testRandomDigit() {
-        StringFactory factory = StringFactory.newDigitFactory();
+        RandomStringFactory factory = RandomStringFactory.newDigitFactory();
         testRandom(factory, 6);
     }
 
     @Test
     public void testRandomAlphabet() {
-        StringFactory factory = StringFactory.newAlphabetFactory();
+        RandomStringFactory factory = RandomStringFactory.newAlphabetFactory();
         testRandom(factory, 6);
     }
 
     @Test
     public void testRandomAlphanumeric() {
-        StringFactory factory = StringFactory.newAlphanumericFactory();
+        RandomStringFactory factory = RandomStringFactory.newAlphanumericFactory();
         testRandom(factory, 6);
     }
 
     @Test
     public void testRandomGrapheme() {
-        StringFactory factory = StringFactory.newGraphemeFactory();
+        RandomStringFactory factory = RandomStringFactory.newGraphemeFactory();
         testRandom(factory, 6);
     }
 
     @Test
     public void testLocalLanguage(){
-        StringFactory factory = StringFactory.newLocalLanguageFactory();
+        RandomStringFactory factory = RandomStringFactory.newLocalLanguageFactory();
         testRandom(factory, 20);
+        for (int i = 0; i < 10; i++) {
+            factory = RandomStringFactory.newLocalLanguageFactory();
+            System.out.println(factory+"->"+factory.random(20));
+        }
     }
 
     @Test
     public void testRandomFactory() {
         for (int i = 0; i < 10; i++) {
-            StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
+            RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
             System.out.println(factory + "->" + factory.random(3));
         }
     }
@@ -134,7 +138,7 @@ public class RandomStringFactoryTest {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
-                    StringFactory factory = StringFactory.newDigitFactory();
+                    RandomStringFactory factory = RandomStringFactory.newDigitFactory();
                     System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
                 }
             }
@@ -143,7 +147,7 @@ public class RandomStringFactoryTest {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
-                    StringFactory factory = StringFactory.newLocalLanguageFactory();
+                    RandomStringFactory factory = RandomStringFactory.newLocalLanguageFactory();
                     System.out.println(this.getName() + ": " + factory + "->" + factory.random(10));
                 }
             }
