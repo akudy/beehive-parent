@@ -3,7 +3,7 @@
  * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
  * Project Name: beehive-parent
  * Module Name: beehive-core
- * File Name: org.beehive.core.string.RandomStringFactory
+ * File Name: org.beehive.core.string.StringFactory
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
  * Create Date: 2020-10-17
@@ -12,19 +12,22 @@
 
 package org.beehive.core.string;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 /**
- * 随机字符串工厂，用于产生字符串。包含共用方法和接口定义。
+ * 字符串工厂，用于产生字符串。包含共用方法和接口定义。
  * <br>
  * 包括产生随机字符串等。
  * <p>
  * <b>Type Informations:</b>
  * <ul>
  * <li>Package Name: <code>org.beehive.core.string</code></li>
- * <li>Class Name: <code>RandomStringFactory</code></li>
+ * <li>Class Name: <code>StringFactory</code></li>
  * <li>Java Version Used: Java 8</li>
  * <li>Compile With Java Version: JDK 8</li>
  * </ul>
@@ -55,7 +58,7 @@ import java.util.Random;
  * @version 1.0
  * @since 1.0
  */
-public class RandomStringFactory {
+public class StringFactory {
 
     /**
      * 对象池的最大的容量，默认16
@@ -65,34 +68,14 @@ public class RandomStringFactory {
     /**
      * 随机字符串工厂池
      */
-    private static Map<String, RandomStringFactory> pool = new HashMap<>(POOL_MAX_SIZE);
-
-    /**
-     * 数字元符号
-     */
-    private static final String DIGIT_SYMBOL = "0123456789";
-
-    /**
-     * 字母元符号
-     */
-    private static final String ALPHABET_SYMBOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-    /**
-     * 字母数字符号
-     */
-    private static final String ALPHANUMERIC_SYMBOL = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-    /**
-     * 可显示的符号，除空格符号
-     */
-    private static final String GRAPHEME_SYMBOL = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@$$%^&*()_+-={}[]|\\;:'\"<>,.?/";
+    private static Map<Integer, StringFactory> pool = new HashMap<>(POOL_MAX_SIZE);
 
     /**
      * 元符号字符串
      */
     protected String metaSymbol;
 
-    private RandomStringFactory(String metaSymbol) {
+    protected StringFactory(String metaSymbol) {
         this.metaSymbol = metaSymbol;
     }
 
@@ -102,17 +85,18 @@ public class RandomStringFactory {
      * @param metaSymbol 元符号字符串
      * @since 1.0
      */
-    public static RandomStringFactory newFactory(String metaSymbol) {
-        RandomStringFactory factory = null;
-        if (pool.containsKey(metaSymbol)) {
-            factory = pool.get(metaSymbol);
+    public static StringFactory newFactory(String metaSymbol) {
+        StringFactory factory = null;
+        Integer key = metaSymbol == null ? null : metaSymbol.hashCode();
+        if (pool.containsKey(key)) {
+            factory = pool.get(key);
         } else {
-            factory = new RandomStringFactory(metaSymbol);
+            factory = new StringFactory(metaSymbol);
             synchronized (pool) {
                 if (pool.size() > POOL_MAX_SIZE) {
                     pool.clear();
                 }
-                pool.put(metaSymbol, factory);
+                pool.put(key, factory);
             }
         }
         return factory;
@@ -125,7 +109,7 @@ public class RandomStringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static RandomStringFactory newFactory(char[] metaSymbol) {
+    public static StringFactory newFactory(char[] metaSymbol) {
         return newFactory(new String(metaSymbol));
     }
 
@@ -152,14 +136,44 @@ public class RandomStringFactory {
     }
 
     /**
+     * 资源文件地址
+     */
+    private static ResourceBundle charResource;
+
+    /**
+     * 根据指定的资源key来构建随机字符串工厂
+     *
+     * @param charKey 资源key，位于"string/factory/common_characters"文件中
+     * @return 随机字符串工厂对象
+     */
+    private synchronized static StringFactory newFactoryFromResource(String charKey) {
+        System.err.println("========================");
+        if (StringFactory.charResource == null) {
+            String loader = ClassLoader.getSystemClassLoader().getResource(".").getPath();
+            System.err.println(loader);
+            InputStream is = new FileInputStream(new File(loader + "/string/factory/common-characters.properties"));
+//            System.err.println(is);
+            System.err.println("is null");
+            StringFactory.charResource = ResourceBundle.getBundle("string/factory/common-characters");
+        }
+        System.err.println("suc");
+        String metaSymbol = StringFactory.charResource.getString(charKey);
+        System.err.println(metaSymbol);
+        if (metaSymbol != null) {
+            return new StringFactory(metaSymbol);
+        }
+        return null;
+    }
+
+    /**
      * 构建一个随机数字字符串工厂，元符号包含0-9的数字
      *
      * @return 随机数字字符串工厂
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static RandomStringFactory newDigitFactory() {
-        return newFactory(DIGIT_SYMBOL);
+    public static StringFactory newDigitFactory() {
+        return newFactoryFromResource("digit.chars");
     }
 
     /**
@@ -169,8 +183,8 @@ public class RandomStringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static RandomStringFactory newAlphabetFactory() {
-        return newFactory(ALPHABET_SYMBOL);
+    public static StringFactory newAlphabetFactory() {
+        return newFactoryFromResource("alphabet.chars");
     }
 
     /**
@@ -180,8 +194,8 @@ public class RandomStringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static RandomStringFactory newAlphanumericFactory() {
-        return newFactory(ALPHANUMERIC_SYMBOL);
+    public static StringFactory newAlphanumericFactory() {
+        return newFactoryFromResource("alphanumeric.chars");
     }
 
     /**
@@ -191,7 +205,19 @@ public class RandomStringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static RandomStringFactory newGraphemeFactory() {
-        return newFactory(GRAPHEME_SYMBOL);
+    public static StringFactory newGraphemeFactory() {
+        return newFactoryFromResource("inputable.chars");
     }
+
+    /**
+     * 构建一个本地语言的字符串工厂，不包含常规标点符号；比如在中文平台下为常规汉字字符
+     *
+     * @return 随机字符串工厂
+     * @see #newFactory(String)
+     * @since 1.0
+     */
+    public static StringFactory newLocalLanguageFactory() {
+        return newFactoryFromResource("common.local.language.chars");
+    }
+
 }

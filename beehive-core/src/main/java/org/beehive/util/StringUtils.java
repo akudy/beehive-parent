@@ -14,7 +14,7 @@ package org.beehive.util;
 
 import org.beehive.core.algorithm.IndexRangeAlgorithm;
 import org.beehive.core.convert.ConvertException;
-import org.beehive.core.string.RandomStringFactory;
+import org.beehive.core.string.StringFactory;
 import org.beehive.core.string.Slf4jStringFormatter;
 import org.beehive.core.string.StringDictComparator;
 import org.beehive.core.string.StringFormatter;
@@ -480,7 +480,7 @@ public class StringUtils {
      * @since 1.0
      */
     public static String random(String strSequence, int count) {
-        RandomStringFactory factory = RandomStringFactory.newFactory(strSequence);
+        StringFactory factory = StringFactory.newFactory(strSequence);
         return factory.random(count);
     }
 
@@ -492,7 +492,7 @@ public class StringUtils {
      * @since 1.0
      */
     public static String randomDigit(int count) {
-        return RandomStringFactory.newDigitFactory().random(count);
+        return StringFactory.newDigitFactory().random(count);
     }
 
     /**
@@ -503,7 +503,7 @@ public class StringUtils {
      * @since 1.0
      */
     public static String randomLetter(int count) {
-        return RandomStringFactory.newAlphabetFactory().random(count);
+        return StringFactory.newAlphabetFactory().random(count);
     }
 
     /**
@@ -514,7 +514,18 @@ public class StringUtils {
      * @since 1.0
      */
     public static String randomDigitAndLetter(int count) {
-        return RandomStringFactory.newAlphanumericFactory().random(count);
+        return StringFactory.newAlphanumericFactory().random(count);
+    }
+
+    /**
+     * 产生一个本地语言环境下的随机字符串
+     *
+     * @param count 字符个数
+     * @return 本地语言字符构成的字符串
+     * @since 1.0
+     */
+    public static String randomLanguageSymbol(int count) {
+        return StringFactory.newLocalLanguageFactory().random(count);
     }
 
     /****************************** create end **********************************/

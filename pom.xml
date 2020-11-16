@@ -9,10 +9,10 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
+        <module>beehive-core</module>
         <module>beehive-util</module>
         <module>beehive-date</module>
         <module>beehive-validator</module>
-        <module>beehive-core</module>
     </modules>
 
     <name>beehive-parent</name>
@@ -24,6 +24,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <junit.version>4.13.1</junit.version>
+
+        <beehive.core.version>1.0.0-SNAPSHOT</beehive.core.version>
+        <beehive.text.version>1.0.0-SNAPSHOT</beehive.text.version>
+
     </properties>
 
     <!-- dependencies 描述强制必须依赖项，子模块无须手动依赖，默认会自动添加依赖 -->
@@ -57,6 +61,17 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <encoding>UTF-8</encoding>
+                        <compilerArguments>
+                            <verbose/>
+                            <bootclasspath>
+                                ${JAVA_HOME}/jre/lib/rt.jar${path.separator}${JAVA_HOME}/jre/lib/jce.jar
+                            </bootclasspath>
+                        </compilerArguments>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>

@@ -12,7 +12,7 @@
 
 package org.beehive.core.string.test;
 
-import org.beehive.core.string.RandomStringFactory;
+import org.beehive.core.string.StringFactory;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;
@@ -59,7 +59,7 @@ import java.util.concurrent.Executors;
  */
 public class RandomStringFactoryTest {
 
-    private void testRandom(RandomStringFactory factory, int charCount) {
+    private void testRandom(StringFactory factory, int charCount) {
         for (int i = 0; i < 10; i++) {
             System.out.println(factory.random(charCount));
         }
@@ -67,75 +67,91 @@ public class RandomStringFactoryTest {
 
     @Test
     public void testRandomCustom() {
-        RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
+        StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
         testRandom(factory, 3);
     }
 
     @Test
     public void testRandomDigit() {
-        RandomStringFactory factory = RandomStringFactory.newDigitFactory();
+        StringFactory factory = StringFactory.newDigitFactory();
         testRandom(factory, 6);
     }
 
     @Test
     public void testRandomAlphabet() {
-        RandomStringFactory factory = RandomStringFactory.newAlphabetFactory();
+        StringFactory factory = StringFactory.newAlphabetFactory();
         testRandom(factory, 6);
     }
 
     @Test
     public void testRandomAlphanumeric() {
-        RandomStringFactory factory = RandomStringFactory.newAlphanumericFactory();
+        StringFactory factory = StringFactory.newAlphanumericFactory();
         testRandom(factory, 6);
     }
 
     @Test
     public void testRandomGrapheme() {
-        RandomStringFactory factory = RandomStringFactory.newGraphemeFactory();
+        StringFactory factory = StringFactory.newGraphemeFactory();
         testRandom(factory, 6);
+    }
+
+    @Test
+    public void testLocalLanguage(){
+        StringFactory factory = StringFactory.newLocalLanguageFactory();
+        testRandom(factory, 20);
     }
 
     @Test
     public void testRandomFactory() {
         for (int i = 0; i < 10; i++) {
-            RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
+            StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
             System.out.println(factory + "->" + factory.random(3));
         }
     }
 
     @Test
     public void concurrentTestRandomFactory() {
-        ExecutorService executor = Executors.newFixedThreadPool(3);
-        Thread thread1 = new Thread("Thread1") {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
-                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
-                }
-            }
-        };
-        Thread thread2 = new Thread("Thread2") {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
-                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
-                }
-            }
-        };
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+//        Thread thread1 = new Thread("Thread1") {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 10; i++) {
+//                    StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
+//                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
+//                }
+//            }
+//        };
+//        Thread thread2 = new Thread("Thread2") {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 10; i++) {
+//                    StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
+//                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
+//                }
+//            }
+//        };
         Thread thread3 = new Thread("Thread3") {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
-                    RandomStringFactory factory = RandomStringFactory.newDigitFactory();
+                    StringFactory factory = StringFactory.newDigitFactory();
                     System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
                 }
             }
         };
-        executor.submit(thread1);
-        executor.submit(thread2);
+        Thread thread4 = new Thread("Thread4") {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    StringFactory factory = StringFactory.newLocalLanguageFactory();
+                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(10));
+                }
+            }
+        };
+//        executor.submit(thread1);
+//        executor.submit(thread2);
         executor.submit(thread3);
+        executor.submit(thread4);
 
         executor.shutdown();
     }
