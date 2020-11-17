@@ -63,26 +63,68 @@ public class PropertiesFileUtils {
     private static final String SUFFIX = ".properties";
 
     /**
-     * 加载指定的属性文件列表，并返回一个属性对象。重复的key将会被替换，与指定的加载文件顺序有关。
+     * 加载指定的属性文件，并将属性文件内容填充到指定的属性对象中。
      *
-     * @param paths 文件路径列表，可以不包含后缀名
+     * @param properties   属性对象
+     * @param relativePath 文件相对类加载目录的路径，可以不包含后缀名
+     * @throws IOException 读取文件异常
+     */
+    public static void load(Properties properties, String relativePath) throws IOException {
+        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+        InputStream is = null;
+        if (!hasSuffix(relativePath)) {
+            relativePath += SUFFIX;
+        }
+        is = classLoader.getResourceAsStream(relativePath);
+        properties.load(is);
+    }
+
+    /**
+     * 加载指定的属性文件，并返回属性对象。
+     *
+     * @param relativePath 属性文件相对类加载目录的路径，可以不包含后缀名
      * @return 属性对象
      * @throws IOException 读取文件异常
      */
-    public static Properties load(String... paths) throws IOException {
+    public static Properties load(String relativePath) throws IOException {
         Properties properties = new Properties();
-        if (ArrayUtils.isEmpty(paths)) {
-            return properties;
-        }
-        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-        InputStream is = null;
-        for (String path : paths) {
-            if (!hasSuffix(path)) {
-                path += SUFFIX;
+        load(properties, relativePath);
+        return properties;
+    }
+
+    /**
+     * 加载多个指定的属性文件，并将属性文件内容填充到指定的属性对象中。<br/>
+     * 多个文件中重复的key将会被替换，与指定的加载文件顺序有关。
+     *
+     * @param properties    属性对象
+     * @param relativePaths 属性文件相对类加载目录的路径列表，可以不包含后缀名
+     * @throws IOException 读取文件异常
+     */
+    public static void loads(Properties properties, String... relativePaths) throws IOException {
+        if (ArrayUtils.isNotEmpty(relativePaths)) {
+            ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+            InputStream is = null;
+            for (String path : relativePaths) {
+                if (!hasSuffix(path)) {
+                    path += SUFFIX;
+                }
+                is = classLoader.getResourceAsStream(path);
+                properties.load(is);
             }
-            is = classLoader.getResourceAsStream(path);
-            properties.load(is);
         }
+    }
+
+    /**
+     * 加载指定的属性文件列表，并返回一个属性对象。<br/>
+     * 多个文件中重复的key将会被替换，与指定的加载文件顺序有关。
+     *
+     * @param relativePaths 属性文件相对类加载目录的路径列表，可以不包含后缀名
+     * @return 属性对象
+     * @throws IOException 读取文件异常
+     */
+    public static Properties loads(String... relativePaths) throws IOException {
+        Properties properties = new Properties();
+        loads(properties, relativePaths);
         return properties;
     }
 
@@ -96,19 +138,49 @@ public class PropertiesFileUtils {
         return path.endsWith(SUFFIX);
     }
 
-
-    public static Properties loadAll(String directory) {
+    /**
+     * 加载指定目录下的所有属性文件，并返回一个属性对象。<br/>
+     * 多个文件中重复的key将会被替换，与指定的加载文件顺序有关。
+     *
+     * @param relativeDirectoryPath 相对类加载目录的目录路径
+     * @return 属性对象
+     * @throws IOException 读取异常
+     */
+    public static Properties loadAll(String relativeDirectoryPath) throws IOException {
+//        Properties properties = new Properties();
+//        URL classPathUrl = ClassUtils.getDefaultClassLoadPath();
+//        if (classPathUrl == null) {
+//            return properties;
+//        }
+//        File file = new File(classPathUrl.getPath() + relativeDirectoryPath);
+//        if (!file.isDirectory()) {
+//            throw new IllegalArgumentException("[" + relativeDirectoryPath + "] is not directory.");
+//        }
 
         return null;
     }
 
-    public static Properties loadFromClassPath(Class<?> clazz, String... paths) {
+    /**
+     * 从指定的类目录加载指定的属性文件，并将顺序内容填充到指定的属性对象中。
+     *
+     * @param properties 属性对象
+     * @param clazz      类定义
+     * @param fileName   文件名称
+     * @return 顺序对象
+     */
+    public static Properties loadFromClassPath(Properties properties, Class<?> clazz, String fileName) {
         return null;
     }
 
-    public static String getValue(String key, String... paths) {
+    /**
+     * 从指定的类目录加载指定的属性文件，并返回属性对象。
+     *
+     * @param clazz    类定义
+     * @param fileName 文件名称
+     * @return 顺序对象
+     */
+    public static Properties loadFromClassPath(Class<?> clazz, String fileName) {
         return null;
     }
-
 
 }

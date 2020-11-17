@@ -524,8 +524,8 @@ public class StringUtils {
      * @return 本地语言字符构成的字符串
      * @since 1.0
      */
-    public static String randomLanguageSymbol(int count) {
-        return RandomStringFactory.newLocalLanguageFactory().random(count);
+    public static String randomChineseChar(int count) {
+        return RandomStringFactory.newChineseCharFactory().random(count);
     }
 
     /****************************** create end **********************************/
