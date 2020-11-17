@@ -116,24 +116,24 @@ public class RandomStringFactoryTest {
     @Test
     public void concurrentTestRandomFactory() {
         ExecutorService executor = Executors.newFixedThreadPool(10);
-//        Thread thread1 = new Thread("Thread1") {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 10; i++) {
-//                    StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
-//                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
-//                }
-//            }
-//        };
-//        Thread thread2 = new Thread("Thread2") {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 10; i++) {
-//                    StringFactory factory = StringFactory.newFactory("我是中国人，我爱我的祖国");
-//                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
-//                }
-//            }
-//        };
+        Thread thread1 = new Thread("Thread1") {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
+                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
+                }
+            }
+        };
+        Thread thread2 = new Thread("Thread2") {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    RandomStringFactory factory = RandomStringFactory.newFactory("我是中国人，我爱我的祖国");
+                    System.out.println(this.getName() + ": " + factory + "->" + factory.random(3));
+                }
+            }
+        };
         Thread thread3 = new Thread("Thread3") {
             @Override
             public void run() {
@@ -152,8 +152,8 @@ public class RandomStringFactoryTest {
                 }
             }
         };
-//        executor.submit(thread1);
-//        executor.submit(thread2);
+        executor.submit(thread1);
+        executor.submit(thread2);
         executor.submit(thread3);
         executor.submit(thread4);
 

@@ -12,6 +12,10 @@
 
 package org.beehive.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * 资源工具类。提供资源文件的读写接口定义。
  * <br>
@@ -53,6 +57,60 @@ package org.beehive.util;
  */
 public class ResourceUtils {
 
+    /**
+     * 加载多个资源文件
+     * @param resourcePaths
+     * @return
+     * @throws IOException
+     */
+    public static Properties loadResources(String... resourcePaths) throws IOException {
+        Properties properties = new Properties();
+        if (ArrayUtils.isEmpty(resourcePaths)) {
+            return properties;
+        }
+        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+        if (classLoader == null) {
+            return properties;
+        }
+        for (String resourcePath : resourcePaths) {
+            InputStream inputStream = classLoader.getResourceAsStream(resourcePath);
+            properties.load(inputStream);
+        }
+        return properties;
+    }
 
+    public static Properties loadResources(Class<?> clazz, String... resourcePaths) {
+        return null;
+    }
+
+    public static Properties loadResourcesFromClassPath(Class<?> clazz, String... resourcePaths) {
+        return null;
+    }
+
+
+
+//    public static File loadFile(String resourcePath) {
+//        return null;
+//    }
+//
+//    public static File loadFile(String resourcePath, Class<?> clazz) {
+//        return null;
+//    }
+//
+//    public static File loadFileFromClassPath(String resourcePath, Class<?> clazz) {
+//        return null;
+//    }
+//
+//    public static InputStream loadFileAsStream(String resourcePath) {
+//        return null;
+//    }
+//
+//    public static InputStream loadFileAsStream(String resourcePath, Class<?> clazz) {
+//        return null;
+//    }
+//
+//    public static InputStream loadFileAsStreamFromClassPath(String resourcePath, Class<?> clazz) {
+//        return null;
+//    }
 
 }

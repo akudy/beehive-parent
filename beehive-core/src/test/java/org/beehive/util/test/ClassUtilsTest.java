@@ -106,4 +106,32 @@ public class ClassUtilsTest {
 
     }
 
+    @Test
+    public void classLoaderTest() {
+        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+        System.out.println(String.format("getDefaultClassLoader() = %s", classLoader));
+        // /D:/workspace/IdeaProjects/my/beehive-parent/beehive-core/target/classes/string/factory/common-characters.properties
+        System.out.println(String.format("\tclassLoader.getResource(\"%s\") = %s", "string/factory/common-characters.properties", classLoader.getResource("string/factory/common-characters.properties").getPath()));
+        // /D:/workspace/IdeaProjects/my/beehive-parent/beehive-core/target/test-classes/
+        System.out.println(String.format("\tclassLoader.getResource(\"%s\") = %s", ".", classLoader.getResource(".").getPath()));
+        // /D:/workspace/IdeaProjects/my/beehive-parent/beehive-core/target/test-classes/
+        System.out.println(String.format("\tclassLoader.getResource(\"%s\") = %s", "", classLoader.getResource("").getPath()));
+        System.out.println(String.format("getClassLoader(%s) = %s", String.class, ClassUtils.getClassLoader(String.class)));
+        System.out.println(String.format("getClassLoader(%s) = %s", ClassUtils.class, ClassUtils.getClassLoader(ClassUtils.class)));
+        System.out.println(String.format("getClassLoader(%s) = %s", ClassUtilsTest.class, ClassUtils.getClassLoader(ClassUtilsTest.class)));
+    }
+
+    @Test
+    public void classPathTest() {
+        System.out.println(String.format("getDefaultClassLoadPath() = %s", ClassUtils.getDefaultClassLoadPath()));
+
+        System.out.println(String.format("getClassLoadPath(%s) = %s", String.class, ClassUtils.getClassLoadPath(String.class)));
+        System.out.println(String.format("getClassLoadPath(%s) = %s", ClassUtils.class, ClassUtils.getClassLoadPath(ClassUtils.class)));
+        System.out.println(String.format("getClassLoadPath(%s) = %s", ClassUtilsTest.class, ClassUtils.getClassLoadPath(ClassUtilsTest.class)));
+
+        System.out.println(String.format("getCurrentClassLoadPath(%s) = %s", String.class, ClassUtils.getCurrentClassLoadPath(String.class)));
+        System.out.println(String.format("getCurrentClassLoadPath(%s) = %s", ClassUtils.class, ClassUtils.getCurrentClassLoadPath(ClassUtils.class)));
+        System.out.println(String.format("getCurrentClassLoadPath(%s) = %s", ClassUtilsTest.class, ClassUtils.getCurrentClassLoadPath(ClassUtilsTest.class)));
+    }
+
 }

@@ -14,6 +14,7 @@ package org.beehive.util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -289,8 +290,9 @@ public class ClassUtils {
      * Java的类加载器使用了双亲委托模型，当需要加载一个类时，优先交个启动类加载器；如果没有找到被加载类，则交给扩展类加载器；如果没有找到被加载类，则交给应用程序加载器；
      * 如果还是没有找到被加载类，则返回给给委托的发起者，并由它到制定的文件系统或网路URL中加载该类，如果没有，则抛出ClassNotFoundException异常。这种模型可以避免类的重复加载。
      *
-     * @return
+     * @return 默认的类加载器对象
      * @see ClassLoader
+     * @see #getClassLoader(Class)
      */
     public static ClassLoader getDefaultClassLoader() {
         ClassLoader classLoader = null;
@@ -307,8 +309,63 @@ public class ClassUtils {
         return classLoader;
     }
 
+    /**
+     * 获取指定类的类加载器
+     *
+     * @param clazz 类型定义
+     * @return 该类所属的类加载器
+     * @see ClassLoader
+     * @see #getDefaultClassLoader()
+     */
     public static ClassLoader getClassLoader(Class<?> clazz) {
-        return clazz.getClassLoader();
+        ClassLoader classLoader = clazz.getClassLoader();
+        if (classLoader == null) {
+            // 系统类加载器（应用程序级别顶层类加载器）
+            classLoader = ClassLoader.getSystemClassLoader();
+        }
+        return classLoader;
+    }
+
+    /**
+     * 获取默认的类加载路径目录地址（完整URL地址）。
+     *
+     * @return 默认的类加载路径目录地址
+     * @see #getDefaultClassLoader()
+     * @see ClassLoader#getResource(String)
+     * @see URL
+     */
+    public static URL getDefaultClassLoadPath() {
+        if (getDefaultClassLoader() == null) {
+            return null;
+        }
+        return getDefaultClassLoader().getResource("");
+    }
+
+    /**
+     * 获取指定类的类加载路径目录地址（完整URL地址）。
+     *
+     * @param clazz 类型定义
+     * @return 指定类所在的类加载路径目录地址
+     * @see #getClassLoader(Class)
+     * @see ClassLoader#getResource(String)
+     * @see URL
+     */
+    public static URL getClassLoadPath(Class<?> clazz) {
+        if (getClassLoader(clazz) == null) {
+            return null;
+        }
+        return getClassLoader(clazz).getResource("");
+    }
+
+    /**
+     * 获取指定类路径目录地址（完整URL地址）。<br/>
+     * 如果类型是一个JDK中的类型，则返回null。
+     *
+     * @param clazz 类型定义
+     * @return 指定类所在的类目录地址
+     */
+    public static URL getCurrentClassLoadPath(Class<?> clazz) {
+        return clazz.getResource("");
     }
 
     /*----------------------------- class loader end ----------------------------------------*/
