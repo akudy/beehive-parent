@@ -17,6 +17,7 @@
 ***_ isNotNull
 ***_ isBlank
 ***_ isNotBlank
+***_ containsBlank
 
 ** 比较
 ***_ equalsAll
@@ -41,6 +42,7 @@
 ****_ randomDigit
 ****_ randomLetter
 ****_ randomDigitAndLetter
+****_ randomChineseChar
 
 ** 截取&提取
 ***_ subStr

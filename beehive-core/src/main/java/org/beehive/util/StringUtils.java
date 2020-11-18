@@ -488,7 +488,7 @@ public class StringUtils {
      * 产生一个随机数字字符串
      *
      * @param count 数字个数
-     * @return 随机的数组字符串
+     * @return 随机的数值字符串
      * @since 1.0
      */
     public static String randomDigit(int count) {
@@ -502,7 +502,7 @@ public class StringUtils {
      * @return 随机的字母字符串
      * @since 1.0
      */
-    public static String randomLetter(int count) {
+    public static String randomEnLetter(int count) {
         return RandomStringFactory.newAlphabetFactory().random(count);
     }
 
@@ -513,7 +513,7 @@ public class StringUtils {
      * @return 随机的字母和数字字符串
      * @since 1.0
      */
-    public static String randomDigitAndLetter(int count) {
+    public static String randomDigitAndEnLetter(int count) {
         return RandomStringFactory.newAlphanumericFactory().random(count);
     }
 
@@ -524,8 +524,8 @@ public class StringUtils {
      * @return 本地语言字符构成的字符串
      * @since 1.0
      */
-    public static String randomChineseChar(int count) {
-        return RandomStringFactory.newChineseCharFactory().random(count);
+    public static String randomZhCharacter(int count) {
+        return RandomStringFactory.newChineseCharacterFactory().random(count);
     }
 
     /****************************** create end **********************************/
@@ -616,4 +616,20 @@ public class StringUtils {
     }
 
     /****************************** convert end **********************************/
+
+    /****************************** type start **********************************/
+
+    public static boolean isNumber(String str){
+        return false;
+    }
+
+    public static boolean isEnLetter(String str) {
+        return false;
+    }
+
+    public static boolean isZhLetter(String str){
+        return false;
+    }
+
+    /****************************** type end **********************************/
 }

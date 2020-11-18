@@ -3,24 +3,24 @@
  * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
  * Project Name: beehive-parent
  * Module Name: beehive-core
- * File Name: org.beehive.util.test.StringUtilsTest
+ * File Name: org.beehive.util.RegexUtils
  * Encoding: UTF-8
  * Creator: akudy(akudys@163.com)
- * Create Date: 2020-10-15
+ * Create Date: 2020-11-18
  * Comments: <简述该文件的内容和作用>
  */
 
-package org.beehive.util.test;
+package org.beehive.util;
 
 /**
- * Comments,使用一句话简述该类信息，句末请使用./。
+ * 正则表达式工具类，包含常用的正常表达式匹配功能。
  * <br>
- * Description,类的详细描述信息,可使用简单的HTML标签
+ * 提供常用的正则表达式匹配功能，正则表达式使用简化功能。
  * <p>
  * <b>Type Informations:</b>
  * <ul>
- * <li>Package Name: <code>org.beehive.util.test</code></li>
- * <li>Class Name: <code>StringUtilsTest</code></li>
+ * <li>Package Name: <code>org.beehive.util</code></li>
+ * <li>Class Name: <code>RegexUtils</code></li>
  * <li>Java Version Used: Java 8</li>
  * <li>Compile With Java Version: JDK 8</li>
  * </ul>
@@ -39,7 +39,7 @@ package org.beehive.util.test;
  * <tr>
  * <td align="center"><em>1.0</em></td>
  * <td align="center"><em>Java 8</em></td>
- * <td align="center"><em>2020/10/15</em></td>
+ * <td align="center"><em>2020/11/18</em></td>
  * <td align="center"><em>akudy</em></td>
  * <td><em>Define</em></td>
  * </tr>
@@ -51,8 +51,5 @@ package org.beehive.util.test;
  * @version 1.0
  * @since 1.0
  */
-public class StringUtilsTest {
-
-    public void
-
+public class RegexUtils {
 }

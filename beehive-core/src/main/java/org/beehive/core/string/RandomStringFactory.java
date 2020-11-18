@@ -245,7 +245,7 @@ public class RandomStringFactory {
      * @see #newFactory(String)
      * @since 1.0
      */
-    public static RandomStringFactory newChineseCharFactory() {
+    public static RandomStringFactory newChineseCharacterFactory() {
         return newFactory(CHINESE_CHARACTERS_SYMBOL);
     }
 
