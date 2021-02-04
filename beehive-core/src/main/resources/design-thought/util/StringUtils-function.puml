@@ -26,6 +26,8 @@
 ***_ equalsAnyIgnoreCase
 ***_ compareWithDict
 ***_ compare
+***_ containsAny
+***_ containsAnyIgnoreCase
 
 ** 转换
 *** 转码

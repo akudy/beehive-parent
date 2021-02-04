@@ -3000,7 +3000,6 @@ public class DateTimeUtils {
      * @see #newDateTime(long)
      * @see SimpleDateFormat#setTimeZone(TimeZone)
      * @see #format(Date, String, TimeZone, Locale)
-     * @see Calendar#cachedLocaleData
      * @since 1.0
      */
     public static String format(Calendar calendar, String pattern, TimeZone timeZone, Locale locale) {

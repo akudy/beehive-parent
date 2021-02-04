@@ -12,9 +12,9 @@
 
 package org.beehive.core.string;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 随机字符串工厂，用于产生字符串。包含共用方法和接口定义。
@@ -65,7 +65,7 @@ public class RandomStringFactory {
     /**
      * 随机字符串工厂池
      */
-    private static Map<Integer, RandomStringFactory> pool = new HashMap<>(POOL_MAX_SIZE);
+    private static Map<Integer, RandomStringFactory> pool = new ConcurrentHashMap<>(POOL_MAX_SIZE);
 
     /**
      * 元符号字符串
@@ -89,12 +89,13 @@ public class RandomStringFactory {
             factory = pool.get(key);
         } else {
             factory = new RandomStringFactory(metaSymbol);
-            synchronized (pool) {
-                if (pool.size() > POOL_MAX_SIZE) {
-                    pool.clear();
-                }
-                pool.put(key, factory);
+            // 使用ConcurrentHashMap后去掉同步块
+            //synchronized (pool) {
+            if (pool.size() > POOL_MAX_SIZE) {
+                pool.clear();
             }
+            pool.put(key, factory);
+            //}
         }
         return factory;
     }

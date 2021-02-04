@@ -1,0 +1,55 @@
+@startmindmap
+* 核心库
+** 工具库
+
+*** 数组
+**** Util
+*****_ ArrayUtils
+
+*** 集合
+**** Util
+*****_ CollectionUtils
+*****_ MapUtils
+**** 分页
+*****_ Pageable
+*****_ ListPage
+*****_ Page
+
+*** 枚举
+**** Util
+*****_ EnumUtils
+**** 字典
+*****_ DictionaryEnumeration
+
+*** 对象
+**** Util
+*****_ ObjectUtils
+
+*** 字符串
+**** Util
+*****_ StringUtils
+**** 格式化
+*****_ StringFormatter
+*****_ Slf4jStringFormatter
+**** 排序
+*****_ StringDictComparator
+**** 随机字符串
+*****_ RandomStringFactory
+
+*** 类
+**** Util
+*****_ ClassUtils
+
+*** 属性文件
+
+
+*** 日期时间
+**** Util
+*****_ DateTimeUtils
+
+*** 表达式
+**** Ant
+*****_ AntMatcher
+*****_ AntPathMatcher
+
+@endmindmap

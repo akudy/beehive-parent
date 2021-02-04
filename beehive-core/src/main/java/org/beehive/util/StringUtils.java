@@ -21,8 +21,7 @@ import org.beehive.core.string.StringFormatter;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
-import java.util.Comparator;
-import java.util.Formatter;
+import java.util.*;
 
 /**
  * 字符串工具类，定义参见的字符串处理等操作。
@@ -309,7 +308,7 @@ public class StringUtils {
 
     /**
      * 比较源字符串与目标字符串（不区分大小写），当全部相等时返回true，否则返回false。<br/>
-     * 同： <code>source.equals(target[0]) && source.equals(target[1]) && ...</code>
+     * 同： <code>source.equalsIgnoreCase(target[0]) && source.equalsIgnoreCase(target[1]) && ...</code>
      *
      * @param source 源字符串
      * @param target 目标字符串
@@ -332,7 +331,7 @@ public class StringUtils {
 
     /**
      * 比较源字符串与目标字符串（不区分大小写），当存在任一个相等时返回true，否则返回false。<br/>
-     * 同： <code>source.equals(target[0]) || source.equals(target[1]) || ...</code>
+     * 同： <code>source.equalsIgnoreCase(target[0]) || source.equalsIgnoreCase(target[1]) || ...</code>
      *
      * @param source 源字符串
      * @param target 目标字符串
@@ -353,6 +352,103 @@ public class StringUtils {
         }
         return false;
     }
+
+    /**
+     * 判断源字符串中是否包含任意指定的字符，如果包含任意一个字符则返回true，否则返回false。<br/>
+     * 同：<code>source.contains(chars[0]) || source.contains(chars[1]) || ...</code>
+     *
+     * @param source 源字符串
+     * @param chars  指定的字符
+     * @return 如果存在任意一个指定字符，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean containsAny(String source, char... chars) {
+        if (source == null) {
+            return false;
+        }
+        if (chars == null || chars.length == 0) {
+            return false;
+        }
+        for (char ch : chars) {
+            if (source.indexOf(ch) != -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断源字符串中是否包含任意指定的字符（忽略大小写），如果包含任意一个字符则返回true，否则返回false。<br/>
+     * 同：<code>source.toLowerCase().contains(Character.toUpperCase(chars[0])) || source.toLowerCase().contains(Character.toUpperCase(chars[1])) || ...</code>
+     *
+     * @param source 源字符串
+     * @param chars  指定的字符
+     * @return 如果存在任意一个指定字符，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean containsAnyIgnoreCase(String source, char... chars) {
+        if (source == null) {
+            return false;
+        }
+        if (chars == null || chars.length == 0) {
+            return false;
+        }
+        String newSource = source.toLowerCase();
+        char[] newChars = new char[chars.length];
+        for (int i = 0; i < newChars.length; i++) {
+            newChars[i] = Character.toLowerCase(chars[i]);
+        }
+        return containsAny(newSource, newChars);
+    }
+
+    /**
+     * 判断源字符串中是否包含任意指定的子字符串，如果包含任意一个子字符串则返回true，否则返回false。<br/>
+     * 同：<code>source.contains(target[0]) || source.contains(target[1]) || ...</code>
+     *
+     * @param source 源字符串
+     * @param target 指定的子字符串
+     * @return 如果存在任意一个指定子字符串，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean containsAny(String source, String... target) {
+        if (source == null) {
+            return false;
+        }
+        if (target == null || target.length == 0) {
+            return false;
+        }
+        for (String str : target) {
+            if (source.contains(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断源字符串中是否包含任意指定的子字符串（忽略大小写），如果包含任意一个子字符串则返回true，否则返回false。<br/>
+     * 同：<code>source.contains(target[0]) || source.contains(target[1]) || ...</code>
+     *
+     * @param source 源字符串
+     * @param target 指定的子字符串
+     * @return 如果存在任意一个指定子字符串，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean containsAnyIgnoreCase(String source, String... target) {
+        if (source == null) {
+            return false;
+        }
+        if (target == null || target.length == 0) {
+            return false;
+        }
+        String newSource = source.toLowerCase();
+        String[] newTarget = new String[target.length];
+        for (int i = 0; i < newTarget.length; i++) {
+            newTarget[i] = target[i].toLowerCase();
+        }
+        return containsAny(newSource, newTarget);
+    }
+
 
     /**
      * 按照字典顺序进行字符串大小比较
@@ -465,6 +561,41 @@ public class StringUtils {
             }
         }
         return strBuf.toString();
+    }
+
+    /**
+     * 将一个字符串按照指定分隔符进行分割，并返回分割后的字符串数组。
+     *
+     * @param str       字符串
+     * @param delimiter 分割字符
+     * @return 按照分割符分割后的字符串数组
+     * @see #split(String, String)
+     * @since 1.0
+     */
+    public static String[] split(String str, char... delimiter) {
+        return split(str, new String(delimiter));
+    }
+
+    /**
+     * 将一个字符串按照指定的分割字符进行分割，并非返回分割后的字符串数组。
+     *
+     * @param str        字符串
+     * @param delimiters 分割字符组成的字符串
+     * @return 按照分割符分割后的字符串数组
+     * @see StringTokenizer
+     * @since 1.0
+     */
+    public static String[] split(String str, String delimiters) {
+        if (str == null) {
+            return new String[0];
+        }
+        StringTokenizer tokenizer = new StringTokenizer(str, delimiters);
+        List<String> tokens = new ArrayList<>();
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            tokens.add(token);
+        }
+        return tokens.toArray(new String[]{});
     }
 
     /****************************** sub & pick end **********************************/
@@ -619,7 +750,7 @@ public class StringUtils {
 
     /****************************** type start **********************************/
 
-    public static boolean isNumber(String str){
+    public static boolean isNumber(String str) {
         return false;
     }
 
@@ -627,7 +758,7 @@ public class StringUtils {
         return false;
     }
 
-    public static boolean isZhLetter(String str){
+    public static boolean isZhLetter(String str) {
         return false;
     }
 

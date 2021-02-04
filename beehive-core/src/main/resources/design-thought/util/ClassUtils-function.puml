@@ -14,9 +14,22 @@
 ****_ extendsOf
 ****_ instanceOf
 
-** 信息分析
+** 类信息分析
+*** 类加载器和路径
+****_ getDefaultClassLoader
+****_ getDefaultClassLoadURL
+****_ getClassLoader
+****_ getClassLoadURL
+****_ getCurrentClassURL
+*** 类名称
+****_ getFullName
+****_ getAbbreviatedName
+****_ getShortName
+*** 在某个包下
+****_ fromPackage
+****_ matchPackage
 
-** 字段解析
+** 字段分析
 
 ** 方法解析
 

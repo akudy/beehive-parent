@@ -12,6 +12,8 @@
 
 package org.beehive.util;
 
+import org.beehive.core.file.AntPathMatcher;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
@@ -94,16 +96,16 @@ public class ClassUtils {
     /**
      * 判断输入的类型是否为基础数据类型；基础数据类型为8个：<br/>
      * <pre>
-     *  类型    |长度(bit)    |取值范围      |默认值
-     *  --------|-------------|--------------|-----------
-     *  byte    |8            |-2^7~2^7-1    |0
-     *  char    |16           |\u0000~\uffff |\u0000
-     *  short   |16           |-2^15~2^15-1  |0
-     *  int     |32           |-2^31~2^31-1  |0
-     *  long    |64           |-2^63~2^63-1  |0
-     *  float   |32           |              |0.0F
-     *  double  |64           |              |0.0D
-     *  boolean |1            |true/false    |false
+     *  类型    |长度(bit)    |取值范围             |默认值
+     *  --------|-------------|-----------------|-----------
+     *  byte    |8            |-2^7~2^7-1       |0
+     *  char    |16           |\'u0000~\'uffff  |\'u0000
+     *  short   |16           |-2^15~2^15-1     |0
+     *  int     |32           |-2^31~2^31-1     |0
+     *  long    |64           |-2^63~2^63-1     |0
+     *  float   |32           |                 |0.0F
+     *  double  |64           |                 |0.0D
+     *  boolean |1            |true/false       |false
      * </pre>
      *
      * @param clazz 待判定的输入类型
@@ -118,7 +120,7 @@ public class ClassUtils {
     /**
      * 判断输入的类型是否为基础数据类型的包装类型；基础数据对象对应的包装类型：
      * <pre>
-     *   基础数据类型  |  包装类型
+     *   基础数据类型   |  包装类型
      *   --------------|----------------------
      *   byte          |  java.lang.Byte
      *   char          |  java.lang.Character
@@ -195,6 +197,7 @@ public class ClassUtils {
      * @param object 实例对象
      * @param clazz  接口类型，如果非接口类型则返回false，否则逐层向上查找
      * @return 如果给定的匹配类型非接口，则返回false；如果其直接或间接实现该接口则返回true
+     * @since 1.0
      */
     public static boolean implementOf(Object object, Class<?> clazz) {
         if (clazz == null) {
@@ -216,6 +219,7 @@ public class ClassUtils {
      * @param clazz           待查找接口类型
      * @param upperClazzArray 上层接口数组
      * @return 如果待查找接口类型和上层接口类型一致则返回true，否则返回false
+     * @since 1.0
      */
     private static boolean findInterfaceClazz(Class<?> clazz, Class<?>[] upperClazzArray) {
         if (upperClazzArray == null || upperClazzArray.length == 0) {
@@ -245,6 +249,7 @@ public class ClassUtils {
      * @param object 实例对象
      * @param clazz  类类型
      * @return 如果直接或间接继承该类则返回true；否则返回false
+     * @since 1.0
      */
     public static boolean extendsOf(Object object, Class<?> clazz) {
         if (clazz == null) {
@@ -267,6 +272,7 @@ public class ClassUtils {
      * @param object 对象实例
      * @param clazz  类型
      * @return 如果是指定类型的实例则返回true，否则返回false
+     * @since 1.0
      */
     public static boolean instanceOf(Object object, Class<?> clazz) {
         return clazz.isInstance(object);
@@ -293,6 +299,7 @@ public class ClassUtils {
      * @return 默认的类加载器对象
      * @see ClassLoader
      * @see #getClassLoader(Class)
+     * @since 1.0
      */
     public static ClassLoader getDefaultClassLoader() {
         ClassLoader classLoader = null;
@@ -316,6 +323,7 @@ public class ClassUtils {
      * @return 该类所属的类加载器
      * @see ClassLoader
      * @see #getDefaultClassLoader()
+     * @since 1.0
      */
     public static ClassLoader getClassLoader(Class<?> clazz) {
         ClassLoader classLoader = clazz.getClassLoader();
@@ -333,8 +341,9 @@ public class ClassUtils {
      * @see #getDefaultClassLoader()
      * @see ClassLoader#getResource(String)
      * @see URL
+     * @since 1.0
      */
-    public static URL getDefaultClassLoadPath() {
+    public static URL getDefaultClassLoadURL() {
         if (getDefaultClassLoader() == null) {
             return null;
         }
@@ -349,8 +358,9 @@ public class ClassUtils {
      * @see #getClassLoader(Class)
      * @see ClassLoader#getResource(String)
      * @see URL
+     * @since 1.0
      */
-    public static URL getClassLoadPath(Class<?> clazz) {
+    public static URL getClassLoadURL(Class<?> clazz) {
         if (getClassLoader(clazz) == null) {
             return null;
         }
@@ -363,17 +373,104 @@ public class ClassUtils {
      *
      * @param clazz 类型定义
      * @return 指定类所在的类目录地址
+     * @since 1.0
      */
-    public static URL getCurrentClassLoadPath(Class<?> clazz) {
+    public static URL getCurrentClassURL(Class<?> clazz) {
         return clazz.getResource("");
     }
 
     /*----------------------------- class loader end ----------------------------------------*/
 
-
     /*----------------------------- class info start ----------------------------------------*/
 
+    /**
+     * 获取类型定义的全名称（包含包名）。例如：org.beehive.util.EnumUtils
+     *
+     * @param clazz 类型定义
+     * @return 类型定义的全名称（包含包名）
+     * @since 1.0
+     */
+    public static String getFullName(Class<?> clazz) {
+        return clazz.getCanonicalName();
+    }
+
+    /**
+     * 获取类型定义的缩略名称（包含缩略的包名称）。例如：org.beehive.util.EnumUtils被重新修饰为o.b.u.EnumUtils
+     *
+     * @param clazz 类型定义
+     * @return 类型定义的缩略名称（包含包的缩略名）
+     * @since 1.0
+     */
+    public static String getAbbreviatedName(Class<?> clazz) {
+        String fullName = getFullName(clazz);
+        String[] packageArrays = fullName.split("\\.");
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0, size = packageArrays.length; i < size; i++) {
+            if (i < size - 1) {
+                builder.append(packageArrays[i].charAt(0)).append(".");
+            } else {
+                builder.append(packageArrays[i]);
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 获取类型定义的短名称（不包含包名称）。例如：org.beehive.util.EnumUtils将返回EnumUtils
+     *
+     * @param clazz 类型定义
+     * @return 类型定义的短名称（不包含包名称）
+     * @since 1.0
+     */
+    public static String getShortName(Class<?> clazz) {
+        return clazz.getSimpleName();
+    }
+
+    /**
+     * 判断指定的类型定义是否来自该package。<br/>
+     * eg:<br/>
+     * (java.lang.String.class, "java.lang") ==> true<br/>
+     * (org.beehive.util.ClassUtils.class, "org.beehive") ==> true<br/>
+     * (org.beehive.util.ClassUtils.class, "org") ==> true<br/>
+     *
+     * @param clazz       类型定义
+     * @param packageName 比对的包名称字符串
+     * @return 如果类型的在指定的包下（即具有相同的开始包名称），则返回true，否则返回false
+     * @since 1.0
+     */
+    public static boolean fromPackage(Class<?> clazz, String packageName) {
+        String fullName = getFullName(clazz);
+        return fullName.startsWith(packageName);
+    }
+
+    /**
+     * Ant 路径匹配器
+     */
+    private static AntPathMatcher antPathMatcher;
+
+    /**
+     * 判断指定的类型定义是否来自Ant模式package下。<br/>
+     * eg:<br/>
+     * (java.lang.String.class, "java.*") ==> true<br/>
+     * (org.beehive.util.ClassUtils.class, "org.**") ==> true<br/>
+     * (org.beehive.util.ClassUtils.class, "org") ==> false<br/>
+     *
+     * @param clazz          类型定义
+     * @param packagePattern 比对的包Ant模式字符串
+     * @return 如果类型与指定的Ant模式包名称匹配，则返回true，否则返回false
+     */
+    public static boolean matchPackage(Class<?> clazz, String packagePattern) {
+        if (antPathMatcher == null) {
+            antPathMatcher = new AntPathMatcher(".", true);
+        }
+        String clazzPackage = clazz.getPackage() != null ? clazz.getPackage().getName() : "";
+        return antPathMatcher.match(packagePattern, clazzPackage);
+    }
 
     /*----------------------------- class info end ----------------------------------------*/
+
+    /*----------------------------- xx start ----------------------------------------*/
+
+    /*----------------------------- xx end ----------------------------------------*/
 
 }

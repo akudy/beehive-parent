@@ -123,15 +123,33 @@ public class ClassUtilsTest {
 
     @Test
     public void classPathTest() {
-        System.out.println(String.format("getDefaultClassLoadPath() = %s", ClassUtils.getDefaultClassLoadPath()));
+        System.out.println(String.format("getDefaultClassLoadURL() = %s", ClassUtils.getDefaultClassLoadURL()));
 
-        System.out.println(String.format("getClassLoadPath(%s) = %s", String.class, ClassUtils.getClassLoadPath(String.class)));
-        System.out.println(String.format("getClassLoadPath(%s) = %s", ClassUtils.class, ClassUtils.getClassLoadPath(ClassUtils.class)));
-        System.out.println(String.format("getClassLoadPath(%s) = %s", ClassUtilsTest.class, ClassUtils.getClassLoadPath(ClassUtilsTest.class)));
+        System.out.println(String.format("getClassLoadURL(%s) = %s", String.class, ClassUtils.getClassLoadURL(String.class)));
+        System.out.println(String.format("getClassLoadURL(%s) = %s", ClassUtils.class, ClassUtils.getClassLoadURL(ClassUtils.class)));
+        System.out.println(String.format("getClassLoadURL(%s) = %s", ClassUtilsTest.class, ClassUtils.getClassLoadURL(ClassUtilsTest.class)));
 
-        System.out.println(String.format("getCurrentClassLoadPath(%s) = %s", String.class, ClassUtils.getCurrentClassLoadPath(String.class)));
-        System.out.println(String.format("getCurrentClassLoadPath(%s) = %s", ClassUtils.class, ClassUtils.getCurrentClassLoadPath(ClassUtils.class)));
-        System.out.println(String.format("getCurrentClassLoadPath(%s) = %s", ClassUtilsTest.class, ClassUtils.getCurrentClassLoadPath(ClassUtilsTest.class)));
+        System.out.println(String.format("getCurrentClassURL(%s) = %s", String.class, ClassUtils.getCurrentClassURL(String.class)));
+        System.out.println(String.format("getCurrentClassURL(%s) = %s", ClassUtils.class, ClassUtils.getCurrentClassURL(ClassUtils.class)));
+        System.out.println(String.format("getCurrentClassURL(%s) = %s", ClassUtilsTest.class, ClassUtils.getCurrentClassURL(ClassUtilsTest.class)));
+    }
+
+    @Test
+    public void testClassName() {
+        System.out.println(String.format("getClassName(%s) = %s", String.class, ClassUtils.getFullName(String.class)));
+        System.out.println(String.format("getClassName(%s) = %s", ClassUtils.class, ClassUtils.getFullName(ClassUtils.class)));
+
+        System.out.println(String.format("getAbbreviatedName(%s) = %s", String.class, ClassUtils.getAbbreviatedName(String.class)));
+        System.out.println(String.format("getAbbreviatedName(%s) = %s", ClassUtils.class, ClassUtils.getAbbreviatedName(ClassUtils.class)));
+
+        System.out.println(String.format("getSimpleName(%s) = %s", String.class, ClassUtils.getShortName(String.class)));
+        System.out.println(String.format("getSimpleName(%s) = %s", ClassUtils.class, ClassUtils.getShortName(ClassUtils.class)));
+
+        System.out.println(String.format("fromPackage(%s, %s) = %s", String.class, "org.beehive", ClassUtils.fromPackage(String.class, "org.beehive")));
+        System.out.println(String.format("fromPackage(%s, %s) = %s", ClassUtils.class, "org.beehive", ClassUtils.fromPackage(ClassUtils.class, "org.beehive")));
+
+        System.out.println(String.format("matchPackage(%s, %s) = %s", String.class, "org.beehive.**", ClassUtils.matchPackage(String.class, "org.beehive.**")));
+        System.out.println(String.format("matchPackage(%s, %s) = %s", ClassUtils.class, "org.beehive.**", ClassUtils.matchPackage(ClassUtils.class, "org.beehive.**")));
     }
 
 }

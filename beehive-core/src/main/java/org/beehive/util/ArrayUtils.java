@@ -2168,7 +2168,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static <E> E[] subArray(E[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /**
@@ -2182,7 +2182,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static byte[] subArray(byte[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /**
@@ -2196,7 +2196,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static char[] subArray(char[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end+1);
     }
 
     /**
@@ -2209,7 +2209,7 @@ public class ArrayUtils {
      * @see Arrays#copyOfRange(int[], int, int)
      */
     public static int[] subArray(int[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end+1);
     }
 
     /**
@@ -2223,7 +2223,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static short[] subArray(short[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end+1);
     }
 
     /**
@@ -2237,7 +2237,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static long[] subArray(long[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end+1);
     }
 
     /**
@@ -2251,7 +2251,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static float[] subArray(float[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end+1);
     }
 
     /**
@@ -2265,7 +2265,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static double[] subArray(double[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end);
+        return Arrays.copyOfRange(array, start, end+1);
     }
 
     /*----------------------------- extract end ----------------------------------------*/
