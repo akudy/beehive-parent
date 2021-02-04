@@ -13,7 +13,7 @@
 package org.beehive.util;
 
 import org.beehive.core.algorithm.IndexRangeAlgorithm;
-import org.beehive.core.convert.ConvertException;
+import org.beehive.core.converter.ConvertException;
 import org.beehive.core.string.RandomStringFactory;
 import org.beehive.core.string.Slf4jStringFormatter;
 import org.beehive.core.string.StringDictComparator;

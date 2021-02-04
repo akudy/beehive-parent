@@ -458,6 +458,7 @@ public class ClassUtils {
      * @param clazz          类型定义
      * @param packagePattern 比对的包Ant模式字符串
      * @return 如果类型与指定的Ant模式包名称匹配，则返回true，否则返回false
+     * @since 1.0
      */
     public static boolean matchPackage(Class<?> clazz, String packagePattern) {
         if (antPathMatcher == null) {
@@ -469,8 +470,9 @@ public class ClassUtils {
 
     /*----------------------------- class info end ----------------------------------------*/
 
-    /*----------------------------- xx start ----------------------------------------*/
+    /*----------------------------- field analysis start ----------------------------------------*/
 
-    /*----------------------------- xx end ----------------------------------------*/
+
+    /*----------------------------- field analysis end ----------------------------------------*/
 
 }

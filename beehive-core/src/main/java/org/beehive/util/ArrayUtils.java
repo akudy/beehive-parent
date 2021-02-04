@@ -12,7 +12,7 @@
 
 package org.beehive.util;
 
-import org.beehive.core.convert.Converter;
+import org.beehive.core.converter.Converter;
 
 import java.lang.reflect.Array;
 import java.util.*;

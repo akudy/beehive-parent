@@ -12,8 +12,8 @@
 
 package org.beehive.util.test;
 
-import org.beehive.core.convert.ConvertException;
-import org.beehive.core.convert.Converter;
+import org.beehive.core.converter.ConvertException;
+import org.beehive.core.converter.Converter;
 import org.beehive.util.ArrayUtils;
 import org.junit.Test;
 

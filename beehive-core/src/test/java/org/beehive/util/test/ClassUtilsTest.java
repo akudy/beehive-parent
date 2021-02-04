@@ -15,6 +15,7 @@ package org.beehive.util.test;
 import org.beehive.util.ClassUtils;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -150,6 +151,12 @@ public class ClassUtilsTest {
 
         System.out.println(String.format("matchPackage(%s, %s) = %s", String.class, "org.beehive.**", ClassUtils.matchPackage(String.class, "org.beehive.**")));
         System.out.println(String.format("matchPackage(%s, %s) = %s", ClassUtils.class, "org.beehive.**", ClassUtils.matchPackage(ClassUtils.class, "org.beehive.**")));
+    }
+
+    @Test
+    public void test(){
+        Field field = String.class.getDeclaredFields()[0];
+        System.out.println(field.getDeclaringClass());
     }
 
 }
