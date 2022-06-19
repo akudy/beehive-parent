@@ -131,18 +131,18 @@ public final class IndexRangeAlgorithm {
      * 重新整理指定的索引，并从小到大，去重
      *
      * @param size  总大小
-     * @param index 索引列表
+     * @param indexes 索引列表
      * @return 截取的索引范围数组；被去重可重新排序后的索引值
      * @since 1.0
      */
-    public static int[] indexRange(int size, int[] index) {
-        int[] indexTemp = Arrays.copyOf(index, index.length);
+    public static int[] indexRange(int size, int[] indexes) {
+        int[] indexTemp = Arrays.copyOf(indexes, indexes.length);
         Arrays.sort(indexTemp);
         int count = 0;
-        int[] posTemp = new int[index.length];
-        for (int i = 0, length = index.length; i < length; i++) {
+        int[] posTemp = new int[indexes.length];
+        for (int i = 0, length = indexes.length; i < length; i++) {
             posTemp[i] = -1;
-            if (index[i] < 0 || index[i] >= size || (i > 0 && index[i] == index[i - 1])) {
+            if (indexes[i] < 0 || indexes[i] >= size || (i > 0 && indexes[i] == indexes[i - 1])) {
                 continue;
             }
             count++;

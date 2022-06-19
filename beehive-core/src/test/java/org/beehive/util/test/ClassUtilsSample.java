@@ -12,13 +12,16 @@
 
 package org.beehive.util.test;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import org.beehive.util.ClassUtils;
+
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Comments,使用一句话简述该类信息，句末请使用./。
@@ -62,6 +65,7 @@ import java.util.Map;
 public class ClassUtilsSample {
 
     // 泛型接口
+    @InterfaceAnnotation
     interface InterfaceA<E> {
 
     }
@@ -76,17 +80,115 @@ public class ClassUtilsSample {
 
     }
 
+    // 普通接口
+    interface InterfaceD extends InterfaceB {
+
+    }
+
     // 泛型类
     class ClassA<E> {
+
+        private int a;
+        int b;
+        protected int c;
+        public int d;
+
+        ClassA() {
+        }
+
+        private ClassA(int a) {
+            this.a = a;
+        }
+
+        ClassA(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        protected ClassA(int a, int b, int c) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+        }
+
+        public ClassA(int a, int b, int c, int d) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.d = d;
+        }
+
+        private int getA() {
+            return 'a';
+        }
+
+        int getB() {
+            return 'b';
+        }
+
+        protected int getC() {
+            return 'c';
+        }
+
+        public int getD() {
+            return 'd';
+        }
 
     }
 
     // 普通类继承泛型类
     class ClassB extends ClassA<Integer> {
 
+        private String a;
+        String b;
+        protected String c;
+        public String d;
+
+        ClassB() {
+        }
+
+        private ClassB(String a) {
+            this.a = a;
+        }
+
+        ClassB(String a, String b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        protected ClassB(String a, String b, String c) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+        }
+
+        public ClassB(String a, String b, String c, String d) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.d = d;
+        }
+
+        private String getA() {
+            return "a";
+        }
+
+        String getBB() {
+            return "b";
+        }
+
+        protected String getCC() {
+            return "C";
+        }
+
+        public String getDD() {
+            return "D";
+        }
+
     }
 
     //普通类
+    @ClassAnnotation
     class ClassC {
 
     }
@@ -100,79 +202,60 @@ public class ClassUtilsSample {
 
     }
 
-    /**
-     * 判断一个类型是否是泛型类型
-     *
-     * @param clazz 输入的类型
-     * @return 如果是泛型类型，则返回true，否则返回false
-     */
-    public static boolean isGenericType(Class<?> clazz) {
-        TypeVariable[] typeVariableArray = clazz.getTypeParameters();
-        if (typeVariableArray != null && typeVariableArray.length > 0) {
-            return true;
-        }
-        /*Class<?> clazzTemp = clazz;
-        while (Object.class != clazzTemp && clazzTemp != null) {
-            Type type = clazz.getGenericSuperclass();
-            if (type instanceof ParameterizedType) {
-                return true;
-            }
-            clazzTemp = clazz.getSuperclass();
-        }*/
-        return false;
+    @Deprecated
+    class ClassE extends ClassC implements InterfaceA {
+
     }
 
-    /**
-     * 获取一个泛型类的真实泛型类型
-     *
-     * @param clazz 泛型类
-     * @return 泛型类型列表
-     */
-    public static Class<?>[] getGenericType(Class<?> clazz) {
-        Type type = clazz.getGenericSuperclass();
-        if (type instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) type;
-            Type[] actualTypeArray = parameterizedType.getActualTypeArguments();
-            int length = actualTypeArray.length;
-            Class<?>[] classArray = new Class<?>[length];
-            for (int i = 0; i < length; i++) {
-                if (actualTypeArray[i] instanceof Class) {
-                    classArray[i] = (Class<?>) actualTypeArray[i];
-                }
-            }
-            return classArray;
-        }
-        return null;
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Inherited
+    @interface InterfaceAnnotation {
+
     }
 
-    public void genericTypeTest() {
-        System.out.println(String.format("isGenericType(%s) = %s", InterfaceA.class, isGenericType(InterfaceA.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", InterfaceB.class, isGenericType(InterfaceB.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", InterfaceC.class, isGenericType(InterfaceC.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", ClassA.class, isGenericType(ClassA.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", ClassB.class, isGenericType(ClassB.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", ClassC.class, isGenericType(ClassC.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", ClassD.class, isGenericType(ClassD.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", List.class, isGenericType(List.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", Map.class, isGenericType(Map.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", Object.class, isGenericType(Object.class)));
-        System.out.println(String.format("isGenericType(%s) = %s", Class.class, isGenericType(Class.class)));
+    @Retention(RetentionPolicy.RUNTIME)
+    @Inherited
+    @interface ClassAnnotation {
 
-        System.out.println();
-        List<Integer> list = new ArrayList<>();
-        StringArrayList list2 = new StringArrayList();
-
-        System.out.println(isGenericType(list2.getClass()));
-//        System.out.println(list.getClass().getGenericSuperclass());
-//        System.out.println(list2.getClass().getGenericSuperclass());
-        Type type = list.getClass().getGenericSuperclass();
-        System.out.println(((ParameterizedType) type).getRawType());
-        System.out.println(String.format("getGenericType(%s) =  %s", list, Arrays.toString(getGenericType(list.getClass()))));
     }
+
 
     public static void main(String[] args) {
-        ClassUtilsSample sample = new ClassUtilsSample();
-        sample.genericTypeTest();
+        List<Field> field1 = ClassUtils.getFieldList(ClassA.class, true);
+        for (Field field : field1) {
+            System.out.println(field.getName() + "\t" + field.getDeclaringClass().getName() + "\t" + field);
+        }
+        List<Field> field2 = ClassUtils.getFieldList(ClassB.class, true);
+        System.out.println();
+        for (Field field : field2) {
+            System.out.println(field.getName() + "\t" + field.getDeclaringClass().getName() + "\t" + field);
+        }
+
+        System.out.println("\n\n-------------------------------------------------------------------------");
+
+        List<Constructor<?>> constructor1 = ClassUtils.getConstructorList(ClassA.class);
+        for (Constructor field : constructor1) {
+            System.out.println(field.getName() + "\t" + field.getDeclaringClass().getName() + "\t" + field);
+        }
+        System.out.println();
+        List<Constructor<?>> constructor2 = ClassUtils.getConstructorList(ClassB.class);
+        for (Constructor field : constructor2) {
+            System.out.println(field.getName() + "\t" + field.getDeclaringClass().getName() + "\t" + field);
+        }
+
+        System.out.println("\n\n-------------------------------------------------------------------------");
+
+        List<Method> method1 = ClassUtils.getMethodList(ClassA.class, true);
+        for (Method field : method1) {
+            System.out.println(field.getName() + "\t" + field.getDeclaringClass().getName() + "\t" + field);
+        }
+        System.out.println();
+        List<Method> method2 = ClassUtils.getMethodList(ClassB.class, true);
+        for (Method field : method2) {
+            System.out.println(field.getName() + "\t" + field.getDeclaringClass().getName() + "\t" + field);
+        }
+
     }
 
 

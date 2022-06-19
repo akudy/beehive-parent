@@ -96,11 +96,11 @@ public class RandomStringFactoryTest {
     }
 
     @Test
-    public void testChineseChar(){
-        RandomStringFactory factory = RandomStringFactory.newChineseCharacterFactory();
+    public void testLocalChar(){
+        RandomStringFactory factory = RandomStringFactory.newLocalCharacterFactory();
         testRandom(factory, 20);
         for (int i = 0; i < 10; i++) {
-            factory = RandomStringFactory.newChineseCharacterFactory();
+            factory = RandomStringFactory.newLocalCharacterFactory();
             System.out.println(factory+"->"+factory.random(20));
         }
     }
@@ -147,7 +147,7 @@ public class RandomStringFactoryTest {
             @Override
             public void run() {
                 for (int i = 0; i < 10; i++) {
-                    RandomStringFactory factory = RandomStringFactory.newChineseCharacterFactory();
+                    RandomStringFactory factory = RandomStringFactory.newLocalCharacterFactory();
                     System.out.println(this.getName() + ": " + factory + "->" + factory.random(10));
                 }
             }

@@ -15,7 +15,9 @@ package org.beehive.util.test;
 import org.beehive.util.ClassUtils;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -80,7 +82,7 @@ public class ClassUtilsTest {
 
     @Test
     public void typeOfTest() {
-        ArrayList<String> arrayList = new ArrayList<>();
+        Class<ArrayList> arrayList = ArrayList.class;
         System.out.println("----- implementOf -----");
         System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, ArrayList.class, ClassUtils.implementOf(arrayList, ArrayList.class)));
         System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, Collection.class, ClassUtils.implementOf(arrayList, Collection.class)));
@@ -88,6 +90,7 @@ public class ClassUtilsTest {
         System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, Iterable.class, ClassUtils.implementOf(arrayList, Iterable.class)));
         System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, AbstractList.class, ClassUtils.implementOf(arrayList, AbstractList.class)));
         System.out.println(String.format("implementOf(%s, %s) = %s", arrayList, AbstractCollection.class, ClassUtils.implementOf(arrayList, AbstractCollection.class)));
+        System.out.println(String.format("implementOf(%s, %s) = %s", Integer.class, Serializable.class, ClassUtils.implementOf(Integer.class, Serializable.class)));
 
         System.out.println("----- extendsOf -----");
         System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, ArrayList.class, ClassUtils.extendsOf(arrayList, ArrayList.class)));
@@ -96,23 +99,15 @@ public class ClassUtilsTest {
         System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, Iterable.class, ClassUtils.extendsOf(arrayList, Iterable.class)));
         System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, AbstractList.class, ClassUtils.extendsOf(arrayList, AbstractList.class)));
         System.out.println(String.format("extendsOf(%s, %s) = %s", arrayList, AbstractCollection.class, ClassUtils.extendsOf(arrayList, AbstractCollection.class)));
-
-        System.out.println("----- instanceOf -----");
-        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, ArrayList.class, ClassUtils.instanceOf(arrayList, ArrayList.class)));
-        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, Collection.class, ClassUtils.instanceOf(arrayList, Collection.class)));
-        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, List.class, ClassUtils.instanceOf(arrayList, List.class)));
-        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, Iterable.class, ClassUtils.instanceOf(arrayList, Iterable.class)));
-        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, AbstractList.class, ClassUtils.instanceOf(arrayList, AbstractList.class)));
-        System.out.println(String.format("instanceOf(%s, %s) = %s", arrayList, AbstractCollection.class, ClassUtils.instanceOf(arrayList, AbstractCollection.class)));
-
+        System.out.println(String.format("implementOf(%s, %s) = %s", BufferedInputStream.class, InputStream.class, ClassUtils.extendsOf(BufferedInputStream.class, InputStream.class)));
     }
 
     @Test
     public void classLoaderTest() {
         ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
         System.out.println(String.format("getDefaultClassLoader() = %s", classLoader));
-        // /D:/workspace/IdeaProjects/my/beehive-parent/beehive-core/target/classes/string/factory/common-characters.properties
-        System.out.println(String.format("\tclassLoader.getResource(\"%s\") = %s", "string/factory/common-characters.properties", classLoader.getResource("string/factory/common-characters.properties").getPath()));
+        // /D:/workspace/IdeaProjects/my/beehive-parent/beehive-core/target/classes/string/factory/common-characters_zh_CN.properties
+        System.out.println(String.format("\tclassLoader.getResource(\"%s\") = %s", "string/factory/common-characters_zh_CN.properties", classLoader.getResource("string/factory/common-characters_zh_CN.properties").getPath()));
         // /D:/workspace/IdeaProjects/my/beehive-parent/beehive-core/target/test-classes/
         System.out.println(String.format("\tclassLoader.getResource(\"%s\") = %s", ".", classLoader.getResource(".").getPath()));
         // /D:/workspace/IdeaProjects/my/beehive-parent/beehive-core/target/test-classes/
@@ -153,10 +148,183 @@ public class ClassUtilsTest {
         System.out.println(String.format("matchPackage(%s, %s) = %s", ClassUtils.class, "org.beehive.**", ClassUtils.matchPackage(ClassUtils.class, "org.beehive.**")));
     }
 
+    /***************/
+    // 泛型接口
+    interface InterfaceA<E> {
+
+    }
+
+    // 普通接口继承泛型接口
+    interface InterfaceB extends InterfaceA<Integer> {
+
+    }
+
+    // 普通接口
+    interface InterfaceC {
+
+    }
+
+    // 普通接口
+    interface InterfaceD extends InterfaceB {
+
+    }
+
+    // 泛型子接口
+    interface InterfaceE<T> extends InterfaceA<T>, Comparable<T> {
+
+    }
+
+    //普通子接口
+    interface InterfaceF extends InterfaceE<String> {
+
+    }
+
+    //普通子接口
+    interface InterfaceG extends InterfaceA {
+
+    }
+
+    //普通子接口
+    interface InterfaceH extends InterfaceB {
+
+    }
+
+    // 泛型类
+    class ClassA<E> {
+
+    }
+
+    // 普通类继承泛型类
+    class ClassB extends ClassA<Integer> {
+
+    }
+
+    // 普通类
+    class ClassC {
+
+    }
+
+    // 普通类
+    class ClassD extends ClassB {
+
+    }
+
+    // 泛型子类
+    class ClassE<T> extends ClassA<T> {
+
+    }
+
+    //普通子类
+    class ClassF extends ClassE<String> {
+
+    }
+
+    //普通子类
+    class ClassG extends ClassA {
+
+    }
+
+    //普通子类
+    class ClassH extends ClassB implements InterfaceA<String>, Comparable<String> {
+
+        @Override
+        public int compareTo(String o) {
+            return 0;
+        }
+    }
+
+    class ClassJ<K> extends HashMap<K, ClassB> implements InterfaceA<String> {
+
+    }
+
+    class ClassO extends ClassJ<Integer> {
+
+    }
+
+    /***************/
+
     @Test
-    public void test(){
-        Field field = String.class.getDeclaredFields()[0];
-        System.out.println(field.getDeclaringClass());
+    public void testGenericType() {
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceA.class, ClassUtils.isDeclaredGenericType(InterfaceA.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceB.class, ClassUtils.isDeclaredGenericType(InterfaceB.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceC.class, ClassUtils.isDeclaredGenericType(InterfaceC.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceD.class, ClassUtils.isDeclaredGenericType(InterfaceD.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceE.class, ClassUtils.isDeclaredGenericType(InterfaceE.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceF.class, ClassUtils.isDeclaredGenericType(InterfaceF.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceG.class, ClassUtils.isDeclaredGenericType(InterfaceG.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceH.class, ClassUtils.isDeclaredGenericType(InterfaceH.class)));
+
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassA.class, ClassUtils.isDeclaredGenericType(ClassA.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassB.class, ClassUtils.isDeclaredGenericType(ClassB.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassC.class, ClassUtils.isDeclaredGenericType(ClassC.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassD.class, ClassUtils.isDeclaredGenericType(ClassD.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassE.class, ClassUtils.isDeclaredGenericType(ClassE.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassF.class, ClassUtils.isDeclaredGenericType(ClassF.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassH.class, ClassUtils.isDeclaredGenericType(ClassH.class)));
+        System.out.println(String.format("isDeclaredGenericType(%s) => %s", ClassG.class, ClassUtils.isDeclaredGenericType(ClassG.class)));
+
+        System.out.println();
+
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceA.class, ClassUtils.isGenericType(InterfaceA.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceB.class, ClassUtils.isGenericType(InterfaceB.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceC.class, ClassUtils.isGenericType(InterfaceC.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceD.class, ClassUtils.isGenericType(InterfaceD.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceE.class, ClassUtils.isGenericType(InterfaceE.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceF.class, ClassUtils.isGenericType(InterfaceF.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceG.class, ClassUtils.isGenericType(InterfaceG.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", InterfaceH.class, ClassUtils.isGenericType(InterfaceH.class)));
+
+        System.out.println(String.format("isGenericType(%s) => %s", ClassA.class, ClassUtils.isGenericType(ClassA.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", ClassB.class, ClassUtils.isGenericType(ClassB.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", ClassC.class, ClassUtils.isGenericType(ClassC.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", ClassD.class, ClassUtils.isGenericType(ClassD.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", ClassE.class, ClassUtils.isGenericType(ClassE.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", ClassF.class, ClassUtils.isGenericType(ClassF.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", ClassH.class, ClassUtils.isGenericType(ClassH.class)));
+        System.out.println(String.format("isGenericType(%s) => %s", ClassG.class, ClassUtils.isGenericType(ClassG.class)));
+
+        System.out.println();
+
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceA.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceA.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceB.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceB.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceC.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceC.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceD.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceD.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceE.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceE.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceF.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceF.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceG.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceG.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", InterfaceH.class, Arrays.toString(ClassUtils.getDeclaredGenericType(InterfaceH.class))));
+
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassA.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassA.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassB.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassB.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassC.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassC.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassD.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassD.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassE.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassE.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassF.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassF.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassH.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassH.class))));
+        System.out.println(String.format("getDeclaredGenericType(%s) => %s", ClassG.class, Arrays.toString(ClassUtils.getDeclaredGenericType(ClassG.class))));
+
+        System.out.println();
+
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceA.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceA.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceB.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceB.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceC.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceC.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceD.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceD.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceE.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceE.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceF.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceF.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceG.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceG.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", InterfaceH.class, Arrays.toString(ClassUtils.getActualGenericType(InterfaceH.class))));
+
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassA.class, Arrays.toString(ClassUtils.getActualGenericType(ClassA.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassB.class, Arrays.toString(ClassUtils.getActualGenericType(ClassB.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassC.class, Arrays.toString(ClassUtils.getActualGenericType(ClassC.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassD.class, Arrays.toString(ClassUtils.getActualGenericType(ClassD.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassE.class, Arrays.toString(ClassUtils.getActualGenericType(ClassE.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassF.class, Arrays.toString(ClassUtils.getActualGenericType(ClassF.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassH.class, Arrays.toString(ClassUtils.getActualGenericType(ClassH.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassG.class, Arrays.toString(ClassUtils.getActualGenericType(ClassG.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassJ.class, Arrays.toString(ClassUtils.getActualGenericType(ClassJ.class))));
+        System.out.println(String.format("getActualGenericType(%s) => %s", ClassO.class, Arrays.toString(ClassUtils.getActualGenericType(ClassO.class))));
+
     }
 
 }

@@ -1,0 +1,1404 @@
+## 这是一行注释 开头4个空格，列间隔2个空格
+## The Unicode Standard, Version 13.0 by CodeCharts-20201102.pdf
+Latin  拉丁文
+    ## 基本拉丁字母
+    0x0000  0x001F  Control  C0控制字符
+    0x0020  0x002F  Punctuation,Common  ASCII标点符号
+    0x0030  0x0039  Digit,Literal,Common  ASCII数字
+    0x003A  0x0040  Punctuation,Common  ASCII标点符号
+    0x0041  0x005A  Letter,Literal,Common  大写拉丁字母
+    0x005B  0x0060  Punctuation,Common  ASCII标点符号
+    0x0061  0x007A  Letter,Literal,Common  小写拉丁字母
+    0x007B  0x007E  Punctuation,Common  ASCII标点符号
+    0x007F  0x007F  Control  控制符号-DEL
+    ## 拉丁文增补1
+    0x0080  0x009F  Control  C1控制字符
+    0x00A0  0x00BB  Punctuation  标点符号
+    0x00BC  0x00BE  Math_Fraction  数学分数形式
+    0x00BF  0x00BF  Punctuation  标点符号
+    0x00C0  0x00D6  Letter  字母
+    0x00D7  0x00D7  Math  数学符号
+    0x00D8  0x00F6  Letter  字母
+    0x00F7  0x00F7  Math  数学符号
+    0x00F8  0x00FF  Letter  字母
+    ## 拉丁文扩展A
+    0x0100  0x0148  Letter  欧洲拉丁文
+    0x0149  0x0149  Letter  弃用的字母
+    0x014A  0x017F  Letter  欧洲拉丁文
+    ## 拉丁文扩展B
+    0x0180  0x01BF  Letter  非欧洲拉丁文
+    0x01C0  0x01C3  Letter  非洲拉丁字母
+    0x01C4  0x01CC  Letter  匹配西里尔字母的拉丁文
+    0x01CD  0x01DC  Vowel,Letter  拼音变音元音组合
+    0x01DD  0x01FF  Phonetic,Letter  语音字母
+    0x0200  0x0217  Letter  斯洛文尼亚语和克罗地亚语的补充
+    0x0218  0x021B  Letter  罗马尼亚语的补充
+    0x021C  0x0229  Special  杂项
+    0x022A  0x0233  Letter  利沃尼亚语的补充
+    0x0234  0x0236  Letter  汉字语言学补充
+    0x0237  0x0237  Special  杂项
+    0x0238  0x0239  Letter  非洲语言学补充
+    0x023A  0x023E  Letter  Sencoten补充
+    0x023F  0x0240  Letter  非洲语言学补充
+    0x0241  0x024F  Special  杂项
+    ## 间距修饰符号
+    0x02B0  0x02B8  Modifier,Letter  拉丁文上标修饰字母
+    ## 音标扩展
+    0x1D00  0x1D25  Letter  拉丁文字母
+    0x1D2C  0x1D5C  Modifier,Letter  拉丁文上标修饰字母
+    0x1D62  0x1D65  Modifier,Letter  拉丁文上标修饰字母
+    0x1D6B  0x1D6B  Letter  拉丁文字母
+    0x1D6C  0x1D76  Letter  带中线的拉丁文字母
+    ## 音标扩展增补
+    0x1D80  0x1D8E  Letter  带前折钩的拉丁文字母
+    0x1D8F  0x1D9A  Letter  带后折钩的拉丁文字母
+    ## 拉丁文扩展增补
+    0x1E00  0x1E9B  Letter  拉丁文通用扩展
+    0x1E9C  0x1E9D  Special  中世纪研究学符号扩展
+    0x1E9E  0x1E9E  Letter  德语版拉丁字母添加
+    0x1E9F  0x1E9F  Special  中世纪研究学符号扩展
+    0x1EA0  0x1EF1  Letter  越南语的拉丁文扩展
+    0x1EF2  0x1EF9  Letter  拉丁文通用扩展
+    0x1EFA  0x1EFF  Special  中世纪研究学符号扩展
+    ## 拉丁文扩展C
+    0x2C60  0x2C66  Letter  拉丁正字法增补
+    0x2C67  0x2C6C  Letter  维吾尔语增补
+    0x2C6D  0x2C74  Letter  其他补充
+    0x2C75  0x2C76  Letter  克劳迪亚字母
+    0x2C77  0x2C7D  Letter  UPA增补
+    0x2C7E  0x2C7F  Letter  Shona增补
+    ## 拉丁文扩展D
+    0xA720  0xA721  Special UPA扩展
+    0xA722  0xA725  Special 埃及学增补
+
+Greek  希腊文
+    ## 组合变音标记
+    0x0342  0x0345  Vowel,Special  希腊语扩展标记
+    ## 希腊文和科普特文
+    0x0370  0x0373  Letter  古老的字母
+    0x0374  0x0375  Digit,Special  数字标记
+    0x0376  0x0377  Letter  古老的字母
+    0x037A  0x037A  Letter,Special  字母下标
+    0x037B  0x037D  Special  小写编辑标记
+    0x037E  0x037E  Punctuation  标点符号
+    0x037F  0x037F  Letter   增补字母
+    0x0384  0x0385  Special  间距标记
+    0x0386  0x0386  Letter  字母
+    0x0387  0x0387  Punctuation  标点符号
+    0x0388  0x03CE  Letter  字母
+    0x03CF  0x03D7  Special   信件符号
+    0x03D8  0x03E1  Letter  古老的字母
+    0x03E2  0x03EF  Letter  通俗的科普特字母
+    0x03F0  0x03F2  Special  信件符号
+    0x03F3  0x03F3  Letter  增补字母
+    0x03F4  0x03F6  Special  信件符号
+    0x03F7  0x03F8  Letter  增补古典字母
+    0x03F9  0x03F9  Special  信件符号
+    0x03FA  0x03FB  Letter  古老的字母
+    0x03FC  0x03FC  Special  符号
+    0x03FD  0x03FF  Special  大写编辑标记
+    ## 音标扩展
+    0x1D26  0x1D2A  Letter  希腊字母
+    0x1D5D  0x1D61  Modifier,Letter  希腊文上标修饰字母
+    0x1D66  0x1D6A  Modifier,Letter  希腊文上标修饰字母
+    ## 组合变音标记扩展
+    0x1DC0  0x1DC1  Special  古希腊符号
+    ## 希腊语扩展
+    0x1F00  0x1FFE  Vowel,Special  多音调的古希腊文
+Cyrillic  西里尔文
+    ## 西里尔文
+    0x0400  0x040F  Letter  字母扩展
+    0x0410  0x044F  Letter  基本俄语字母
+    0x0450  0x045F  Letter  字母扩展
+    0x0460  0x0477  Letter  历史字母
+    0x0478  0x0479  Digit  历史数字
+    0x047A  0x0481  Letter  历史字母
+    0x0482  0x0489  Special  历史杂项
+    0x048A  0x04F9  Letter  扩展字母
+    0x04FA  0x04FF  Letter  Nivkh附加
+    ## 西里尔文扩展
+    0x0500  0x050F  Letter  Komi字母
+    0x0510  0x0511  Letter  Khanty字母
+    0x0512  0x0513  Letter  Chukchi字母
+    0x0514  0x0519  Letter  Mordvin字母
+    0x051A  0x051D  Letter  Kurdish字母
+    0x051E  0x051F  Letter  Aleut字母
+    0x0520  0x0523  Letter  Chuvash字母
+    0x0524  0x0525  Letter  Abkhaz字母
+    0x0526  0x0527  Letter  Azerbaijani字母
+    0x0528  0x0529  Letter  Orok字母
+    0x052A  0x052D  Letter  Komi字母
+    0x052E  0x052F  Letter  Khanty字母
+    ## 西里尔文扩展C
+    0x1C80  0x1C88  Letter  历史字母
+    ## 音标扩展
+    0x1D2B  0x1D2B  Letter  西里尔字母
+    ## 西里尔文扩展A
+    0x2DE0  0x2DFF  Letter  古教会斯拉夫文组合字母
+    ## 西里尔文扩展B
+    0xA640  0xA66E  Letter  旧西里尔字母
+    0xA66F  0xA66F  Special  缩写标记
+    0xA670  0xA672  Special  组合数字符号
+    0xA673  0xA673  Punctuation  标点符号
+    0xA674  0xA67D  Special  旧西里尔组合符号
+    0xA67E  0xA67E  Punctuation  标点符号
+    0xA67F  0xA67F  Letter  修饰字母
+    0xA680  0xA697  Letter  旧Abkhasian字母
+    0xA698  0xA69B  Letter  旧西里尔字母
+    0xA69C  0xA69D  Special  立陶宛方言语调标志
+    0xA69E  0xA69F  Special  旧西里尔组合符号
+Armenian  亚美尼亚文
+    ## 亚美尼亚文
+    0x0531  0x0556  Letter  大写字母
+    0x0559  0x055F  Modifier  修饰字母
+    0x0560  0x0588  Letter  小写字母
+    0x0589  0x058A  Punctuation  标点符号
+    0x058D  0x058E  Special  宗教符号
+    0x058F  0x058F  Currency,Special  货币符号
+Hebrew  希伯来文
+    ## 希伯来文
+    0x0591  0x05AF  Special  经歌符号
+    0x05B0  0x05C3  Punctuation  标点符号
+    0x05C4  0x05C5  Special  特殊符号
+    0x05C6  0x05C7  Punctuation  标点符号
+    0x05D0  0x05EA  Letter  基础字母
+    0x05EF  0x05EF  Special  特殊标记
+    0x05F0  0x05F2  Special  其他杂项
+    0x05F3  0x05F4  Punctuation  扩展标点符号
+    0x2135  0x2138  Special  字母式数学符号
+Arabic  阿拉伯文
+    ## 阿拉伯文
+    0x0600  0x0604  Special  位置标记
+    0x0605  0x0605  Special  位置标记
+    0x0606  0x0607  Math  基数符号
+    0x0608  0x0608  Letter  字母符号
+    0x0609  0x060A  Punctuation  标点符号
+    0x060B  0x060B  Currency,Special  货币符号
+    0x060C  0x060D  Punctuation  标点符号
+    0x060E  0x060F  Special  诗歌标记
+    0x0610  0x0614  Special  称呼符号
+    0x0615  0x0615  Special  古兰经注释符号
+    0x0616  0x0616  Special  扩展的阿拉伯文标记
+    0x0617  0x061A  Special  古兰经注释符号
+    0x061B  0x061B  Punctuation  标点符号
+    0x061C  0x061C  Letter  格式字符
+    0x061E  0x061F  Punctuation  标点符号
+    0x0620  0x0620  Letter  对克什米尔的补充
+    0x0621  0x063A  Letter  基础字母
+    0x063B  0x063F  Letter  早期波斯语和阿塞拜疆语的补充
+    0x0640  0x064A  Letter  基础字母
+    0x064B  0x0652  Letter  Tashkil字母
+    0x0653  0x0655  Special  maddah和hamza组合标记
+    0x0656  0x065F  Special  其他组合标记
+    0x0660  0x0669  Digit  阿拉伯印度数字
+    0x066A  0x066D  Punctuation  标点符号
+    0x066E  0x066F  Letter  阿拉伯字母
+    0x0670  0x0670  Letter  Tashkil字母
+    0x0671  0x0672  Letter  阿拉伯字母扩展
+    0x0673  0x0673  Letter  过期的字母
+    0x0674  0x06D3  Letter  阿拉伯字母扩展
+    0x06D4  0x06D4  Punctuation  标点符号
+    0x06D5  0x06D5  Letter  阿拉伯字母扩展
+    0x06D6  0x06ED  Special  古兰经注释符号
+    0x06EE  0x06EF  Letter  对Parkari的阿拉伯字母扩展
+    0x06F0  0x06F9  Digit  东阿拉伯印度数字
+    0x06FA  0x06FC  Letter  阿拉伯字母扩展
+    0x06FD  0x06FE  Special  Sindhi标记
+    0x06FF  0x06FF  Letter  对Parkari的阿拉伯字母扩展
+    ## 阿拉伯文增补
+    0x0750  0x076D  Letter  阿拉伯字母扩展
+    0x076E  0x0771  Letter  Khowar字母扩展
+    0x0772  0x0772  Letter  Torwali字母扩展
+    0x0773  0x077D  Letter  Burushaski字母扩展
+    0x077E  0x077F  Letter  早期波斯语字母扩展
+    ## 阿拉伯文扩展A
+    0x08A0  0x08A9  Letter  非洲阿拉伯文字母
+    0x08AA  0x08AC  Vowel,Special  罗兴亚语辅音
+    0x08AD  0x08B1  Letter  欧洲和中亚阿拉伯文字母
+    0x08B2  0x08B2  Letter  Berber阿拉伯文字母
+    0x08B3  0x08B4  Letter  Arwi阿拉伯文字母
+    0x08B6  0x08BA  Letter  Bravanese阿拉伯文字母
+    0x08BB  0x08BD  Letter  Warsh拼写的阿拉伯文字母
+    0x08BE  0x08C2  Letter  Hindko阿拉伯文字母
+    0x08C3  0x08C6  Letter  Hausa_Wolof_其他非洲拼写的阿拉伯文字母
+    0x08C7  0x08C7  Letter  Punjabi阿拉伯文字母
+    0x08D3  0x08E2  Special  古兰经注释符号
+    0x08E3  0x08E3  Vowel,Special  Arwi扩展元音标记
+    0x08E4  0x08E9  Vowel,Special  Rohingya扩展元音标记
+    0x08EA  0x08EF  Vowel,Special  Rohingya注音标记
+    0x08F4  0x08FD  Vowel,Special  非洲注音标记
+    0x08FE  0x08FF  Vowel,Special  扩展注音标记
+Syriac  叙利亚文
+    ## 叙利亚文
+    0x0700  0x070D  Punctuation,Special  标点符号
+    0x070F  0x070F  Letter  格式控制字符
+    0x0710  0x072C  Letter  叙利亚字母
+    0x072D  0x072F  Letter  波斯语字母
+    0x0730  0x073F  Vowel,Special  叙利亚元音标记
+    0x0740  0x074A  Special  叙利亚语标记
+    0x074D  0x074F  Letter  索格德语字母
+    ## 叙利亚文增补
+    0x0860  0x086A  Letter  叙利亚文字母
+Thaana  塔安那文
+    ## 塔安那文
+    0x0780  0x0797  Vowel,Special  基本辅音
+    0x0798  0x07A5  Letter  阿拉伯文扩展
+    0x07A6  0x07B0  Vowel,Special  元音
+    0x07B1  0x07B1  Vowel,Special  Addu方言辅音
+NKo  西非文
+    ## 恩科字母
+    0x07C0  0x07C9  Digit  数字
+    0x07CA  0x07E7  Letter  字母
+    0x07E8  0x07EA  Letter  阿拉伯字母
+    0x07EB  0x07F1  Special  声调标记
+    0x07F2  0x07F3  Special  其他标记符号
+    0x07F6  0x07F6  Special  符号
+    0x07F7  0x07F9  Punctuation  标点符号
+    0x07FA  0x07FA  Letter  字母扩展
+    0x07FD  0x07FD  Special  缩写符号
+    0x07FE  0x07FF  Currency,Special  货币符号
+Samaritan  撒玛利亚文
+    ## 撒玛利亚文
+    0x0800  0x0815  Letter  字母
+    0x0816  0x081B  Modifier,Special  辅音修饰语
+    0x081C  0x082C  Vowel  元音标记
+    0x082D  0x082D  Special  变体阅读标志
+    0x0830  0x083E  Punctuation  标点符号
+Mandaic  曼达洛文
+    ## 曼达洛文
+    0x0840  0x0858  Letter  字母
+    0x0859  0x085B  Vowel,Special 变音符号
+    0x085E  0x085E  Punctuation  标点符号
+Devanagari  天城体文字
+    ## 天城体文字，伽里字母（用于梵语、印地语等印度语）
+    0x0900  0x0903  Special  特殊标志
+    0x0904  0x0914  Vowel,Special  独立的元音符号
+    0x0915  0x0939  Vowel,Special  辅音符号
+    0x093A  0x093B  Vowel,Special  元音标记扩展
+    0x093C  0x093D  Special  特殊标志
+    0x093E  0x094C  Vowel,Special  元音标记扩展
+    0x094D  0x094D  Special  Virama标记
+    0x094E  0x094F  Vowel,Special  元音标记扩展
+    0x0950  0x0950  Special  标记
+    0x0951  0x0952  Vowel,Special  Vedic音标
+    0x0953  0x0954  Special  重音符号
+    0x0955  0x0955  Vowel,Special  元音标记扩展
+    0x0956  0x0957  Vowel,Special  Kashmiri元音标记扩展
+    0x0958  0x095F  Vowel,Special  附加辅音符号
+    0x0960  0x0963  Vowel,Special  Sanskrit元音标记扩展
+    0x0964  0x0965  Punctuation  印度文字通用标点符号
+    0x0966  0x096F  Digit  数字
+    0x0970  0x0971  Special  附加标记
+    0x0972  0x0972  Vowel,Special  Marathi独立元音符号
+    0x0973  0x0975  Vowel,Special  独立元音符号
+    0x0978  0x097A  Vowel,Special  附加辅音符号
+    0x097B  0x097C  Vowel,Special  Sindhi破音
+    0x097D  0x097D  Vowel,Special  喉塞音
+    0x097E  0x097F  Vowel,Special  Sindhi破音
+Bengali  孟加拉文
+    ##  孟加拉文字
+    0x0980  0x0983  Special  特殊标志
+    0x0985  0x0994  Vowel,Special  独立的元音符号
+    0x0995  0x09B9  Vowel,Special  辅音符号
+    0x09BC  0x09BD  Special  特殊标志
+    0x09BE  0x09C8  Vowel,Special  元音符号扩展
+    0x09CB  0x09CC  Vowel,Special  两段元音符号扩展
+    0x09CD  0x09CD  Special  Virama符号
+    0x09CE  0x09CE  Vowel,Special  辅音符号扩展
+    0x09D7  0x09D7  Special  特殊标志
+    0x09DC  0x09DF  Vowel,Special  辅音符号扩展
+    0x09E0  0x09E3  Vowel,Special  Sanskrit元音符号扩展
+    0x09E4  0x09E5  Special  保留符号
+    0x09E6  0x09EF  Digit  数字
+    0x09F0  0x09F1  Special  阿萨姆语扩展
+    0x09F2  0x09F3  Currency,Special  货币符号
+    0x09F4  0x09F9  Math_Fraction  分数的历史符号
+    0x09FA  0x09FA  Special  特殊标志
+    0x09FB  0x09FB  Currency,Special  历史货币符号
+    0x09FC  0x09FD  Special  特殊标志
+Gurmukhi  锡克教文
+    ## 锡克教文
+    0x0A01  0x0A03  Special  特殊标志
+    0x0A05  0x0A14  Vowel,Special  独立的元音符号
+    0x0A15  0x0A39  Vowel,Special  辅音符号
+    0x0A3C  0x0A3C  Special  特使标志
+    0x0A3E  0x0A4C  Vowel,Special  元音符号扩展
+    0x0A4D  0x0A4D  Special  Virama符号
+    0x0A51  0x0A51  Special  特殊标志
+    0x0A59  0x0A5E  Vowel,Special  辅音符号扩展
+    0x0A64  0x0A65  Special  保留符号
+    0x0A66  0x0A6F  Digit  数字
+    0x0A70  0x0A71  Special  特殊标志
+    0x0A72  0x0A73  Vowel,Special  基础元音符号
+    0x0A74  0x0A76  Special  特使标志
+Gujarati  古吉拉特文
+    ## 古吉拉特语
+    0x0A81  0x0A83  Special  特殊标志
+    0x0A85  0x0A94  Vowel,Special  独立的元音符号
+    0x0A95  0x0AB9  Vowel,Special  辅音符号
+    0x0ABC  0x0ABD  Special  特殊标志
+    0x0ABE  0x0ACC  Vowel,Special  元音符号扩展
+    0x0ACD  0x0ACD  Special  Virama符号
+    0x0AD0  0x0AD0  Special  特殊标志
+    0x0AE0  0x0AE3  Vowel,Special  梵文元音扩展
+    0x0AE4  0x0AE5  Special  保留符号
+    0x0AE6  0x0AEF  Digit  数字
+    0x0AF0  0x0AF0  Special  缩写符号
+    0x0AF1  0x0AF1  Currency,Special  货币符号
+    0x0AF9  0x0AF9  Vowel,Special  辅音符号扩展
+    0x0AFA  0x0AFF  Special  音译标志
+Oriya  印欧雅利安文（印度）
+    ## 印欧语系的印欧雅利安语分支
+    0x0B01  0x0B03  Special  特殊标志
+    0x0B05  0x0B14  Vowel,Special  独立的元音符号
+    0x0B15  0x0B39  Vowel,Special  辅音符号
+    0x0B3C  0x0B3D  Special  特殊标志
+    0x0B3E  0x0B48  Vowel,Special  元音符号扩展
+    0x0B4B  0x0B4C  Vowel,Special  两段元音符号扩展
+    0x0B4D  0x0B4D  Special  Virama符号
+    0x0B55  0x0B57  Special  特殊壁纸
+    0x0B5C  0x0B5F  Vowel,Special  辅音符号扩展
+    0x0B60  0x0B61  Vowel,Special  梵文元音扩展
+    0x0B62  0x0B63  Vowel,Special  元音符号扩展
+    0x0B64  0x0B65  Special  保留符号
+    0x0B66  0x0B6F  Digit  数字
+    0x0B70  0x0B70  Special  特殊标记
+    0x0B71  0x0B71  Vowel,Special  辅音符号扩展
+    0x0B72  0x0B77  Math_Fraction  分数符号
+Tamil  泰米尔文
+    ## 泰米尔语
+    0x0B82  0x0B83  Special  特殊标志
+    0x0B85  0x0B94  Vowel,Special  独立的元音符号
+    0x0B95  0x0BB9  Vowel,Special  辅音符号
+    0x0BBE  0x0BC8  Vowel,Special  元音符号扩展
+    0x0BCA  0x0BCC  Vowel,Special  两段元音符号扩展
+    0x0BCD  0x0BCD  Special  Virama符号
+    0x0BD0  0x0BD7  Special  特殊标志
+    0x0BE4  0x0BE5  Special  保留符号
+    0x0BE6  0x0BEF  Digit  数字
+    0x0BF0  0x0BF2  Digit  泰米尔数字
+    0x0BF3  0x0BF5  Special  泰米尔历法符号
+    0x0BF6  0x0BF8  Special  泰米尔教士符号
+    0x0BF9  0x0BF9  Currency,Special  货币符号
+    0x0BFA  0x0BFA  Special  泰米尔教士符号
+Telugu  泰卢固文
+    ## 泰卢固语-印度语的一种
+    0x0C00  0x0C04  Special  特殊标志
+    0x0C05  0x0C14  Vowel,Special  独立的元音符号
+    0x0C15  0x0C39  Vowel,Special  辅音符号
+    0x0C3D  0x0C3D  Special  梵文扩展
+    0x0C3E  0x0C4C  Vowel,Special  元音符号扩展
+    0x0C4D  0x0C4D  Special  Virama符号
+    0x0C55  0x0C56  Special  特殊标志
+    0x0C58  0x0C5A  Special  历史语音变体
+    0x0C60  0x0C61  Vowel,Special  梵文元音扩展
+    0x0C62  0x0C63  Vowel,Special  元音符号扩展
+    0x0C64  0x0C65  Special  保留符号
+    0x0C66  0x0C6F  Digit  数字
+    0x0C77  0x0C77  Special  特殊标志
+    0x0C78  0x0C7F  Math_Fraction  泰卢固语分数符号
+Kannada  卡纳达文
+    ## 卡纳达语-印度西南部卡纳塔克邦语言
+    0x0C80  0x0C84  Special  特殊标志
+    0x0C85  0x0C94  Vowel,Special  独立的元音符号
+    0x0C95  0x0CB9  Vowel,Special  辅音符号
+    0x0CBC  0x0CBD  Special  特殊标志
+    0x0CBE  0x0CCC  Vowel,Special  元音符号扩展
+    0x0CCD  0x0CCD  Special  Virama符号
+    0x0CD5  0x0CD6  Special  特殊标志
+    0x0CE0  0x0CE1  Vowel,Special  梵文元音符号扩展
+    0x0CE2  0x0CE3  Vowel,Special  元音符号扩展
+    0x0CE4  0x0CE5  Special  保留符号
+    0x0CE6  0x0CEF  Digit  数字
+    0x0CF1  0x0CF2  Special  梵文标志
+Malayalam  马拉雅拉姆文
+    ## 马拉雅拉姆语-印度西南部喀拉拉邦的语言
+    0x0D00  0x0D04  Special  特殊标志
+    0x0D05  0x0D14  Vowel,Special  独立的元音符号
+    0x0D15  0x0D3A  Vowel,Special  辅音符号
+    0x0D3B  0x0D3C  Special  Virama变体符号
+    0x0D3D  0x0D3D  Special  梵文扩展
+    0x0D3E  0x0D48  Vowel,Special  元音符号扩展
+    0x0D4A  0x0D4C  Vowel,Special  两段元音符号扩展
+    0x0D4D  0x0D4D  Special  Virama符号
+    0x0D4E  0x0D4E  Special  圆点
+    0x0D4F  0x0D4F  Special  测量符号
+    0x0D54  0x0D56  Letter  其他历史性的齐鲁字母
+    0x0D57  0x0D57  Vowel,Special  元音符号扩展
+    0x0D58  0x0D5E  Math_Fraction  微积分符号
+    0x0D5F  0x0D5F  Vowel,Special  历史元音符号扩展
+    0x0D60  0x0D61  Vowel,Special  梵文元音符号扩展
+    0x0D62  0x0D63  Vowel,Special  元音符号扩展
+    0x0D64  0x0D65  Special  保留符号
+    0x0D66  0x0D6F  Digit  数字
+    0x0D70  0x0D72  Digit  马拉雅拉姆数字
+    0x0D73  0x0D78  Math_Fraction  分数符号
+    0x0D79  0x0D79  Special  日期标记
+    0x0D7A  0d0D7F  Letter  马拉雅拉姆字母
+Sinhala  僧伽罗文
+    ## 僧伽罗语-是一种印度雅利安语，主要是斯里兰卡人使用
+    0x0D81  0x0D83  Special  特殊标志
+    0x0D85  0x0D96  Vowel,Special  独立的元音符号
+    0x0D9A  0x0DC6  Vowel,Special  辅音符号
+    0x0DCA  0x0DCA  Special  特殊标志
+    0X0DCF  0x0DDB  Vowel,Special  元音符号扩展
+    0x0DDC  0x0DDE  Vowel,Special  两段元音符号扩展
+    0x0DDF  0x0DDF  Vowel,Special  元音符号扩展
+    0x0DE6  0x0DEF  Digit  数字
+    0x0DF2  0x0DF3  Vowel,Special  元音符号扩展
+    0x0DF4  0x0DF4  Punctuation  标点符号
+Thai  泰文
+    ## 泰国语
+    0x0E01  0x0E2E  Vowel,Special  辅音符号
+    0x0E2F  0x0E2F  Special  特殊标志
+    0x0E30  0x0E3A  Vowel,Special  元音符号
+    0x0E3F  0x0E3F  Currency,Special  货币符号
+    0x0E40  0x0E44  Vowel,Special  元音符号
+    0x0E45  0x0E45  Vowel,Special  元音长符号
+    0x0E46  0x0E46  Special  重复标记
+    0x0E47  0x0E47  Vowel,Special  元音符号
+    0x0E48  0x0E4B  Vowel,Special  注音标记
+    0x0E4C  0x0E4F  Special  特殊标记
+    0x0E50  0x0E59  Digit  数字
+    0x0E5A  0x0E5B  Special  特殊标记
+Lao  老挝文
+    ## 老挝语
+    0x0E81  0x0EAE  Vowel,Special  辅音符号
+    0x0EAF  0x0EAF  Special  特殊标记
+    0x0EB0  0x0EB9  Vowel,Special  元音符号
+    0x0EBA  0x0EBA  Special  Virama符号
+    0x0EBB  0x0EBB  Vowel,Special  元音符号
+    0x0EBC  0x0EBD  Special  特殊标记
+    0x0EC0  0x0EC4  Vowel,Special  元音符号
+    0x0EC6  0x0EC6  Special  重复标记
+    0x0EC8  0x0ECB  Vowel,Special  注音标记
+    0x0ECC  0x0ECD  Special  特殊标记
+    0x0ED0  0x0ED9  Digit  数字
+    0x0EDC  0x0EDD  Letter  复合字母
+    0x0EDE  0x0EDF  Vowel,Special  Khmu辅音符号
+Tibetan  藏文
+    ## 藏族语言-中国
+    0x0F00  0x0F00  Special  音节
+    0x0F01  0x0F07  Special  音符
+    0x0F08  0x0F14  Special  标记符号
+    0x0F15  0x0F1F  Special  星象符号
+    0x0F20  0x0F29  Digit  数字
+    0x0F2A  0x0F33  Digit  数字减半
+    0x0F34  0x0F39  Special  标记符号
+    0x0F3A  0x0F3D  Punctuation  配对标点
+    0x0F3E  0x0F3F  Special  星象符号
+    0x0F40  0x0F6A  Vowel,Special  辅音符号
+    0x0F6B  0x0F6C  Special  Balti扩展
+    0x0F71  0x0F7D  Vowel,Special  元音符号扩展
+    0x0F7E  0x0F7F  Modifier,Special  词汇修饰符
+    0x0F80  0x0F81  Vowel,Special  元音符号扩展
+    0x0F82  0x0F87  Special   标记符号
+    0x0F88  0x0F8C  Letter,Special  音译首字母
+    0x0F8D  0x0F8F  Special  音译次要标志
+    0x0F90  0x0FB9  Vowel,Special  次要辅音符号
+    0x0FBA  0x0FBC  Vowel,Special  固定形式的次要辅音符号
+    0x0FBE  0x0FBF  Special  标记符号
+    0x0FC0  0x0FC3  Special  手势标记
+    0x0FC4  0x0FCC  Special  标记符号
+    0x0FCE  0x0FCF  Special  星象符号
+    0x0FD0  0x0FD2  Special  标记符号
+    0x0FD3  0x0FD4  Special  音符
+    0x0FD5  0x0FD8  Special  宗教符号
+    0x0FD9  0x0FDA  Special  注解符号
+Myanmar  缅甸文
+    ## 缅甸语
+    0x1000  0x1020  Vowel,Special  辅音符号
+    0x1021  0x102A  Vowel,Special  独立的元音符号
+    0x102B  0x1035  Vowel,Special  元音符号扩展
+    0x1036  0x1038  Special  特殊标记
+    0x1039  0x103A  Special  Virama符号
+    0x103B  0x103E  Vowel,Special  辅音符号扩展
+    0x103F  0x103F  Vowel,Special  辅音符号
+    0x1040  0x1049  Digit  数字
+    0x104A  0x104B  Punctuation  标点符号
+    0x104C  0x104F  Special  特殊标记
+    0x1050  0x1059  Special  巴利语和梵语扩展
+    0x105A  0x1060  Special  Mon扩展
+    0x1061  0x1064  Special  S'gaw克伦语扩展
+    0x1065  0x106D  Special  东山区克伦族语扩展
+    0x106E  0x1070  Special  Geba克伦语扩展
+    0x1071  0x1074  Special  Kayah扩展
+    0x1075  0x108D  Special  扩展
+    0x108E  0x108F  Special  古罗马Palaung扩展
+    0x1090  0x1099  Digit  掸语数字
+    0x109A  0x109B  Special  Khamti掸语扩展
+    0x109C  0x109D  Special  Aiton和Phake扩展
+    0x109E  0x109F  Special  掸语标记符号
+Georgian  格鲁吉亚文
+    ## 格鲁吉亚语
+    0x10A0  0x10C5  Letter  大写字母
+    0x10C7  0x10C7  Letter  字母扩展
+    0x10CD  0x10CD  Letter  奥塞特语字母扩展
+    0x10D0  0x10F0  Letter  字母
+    0x10F1  0x10F6  Letter  古文字母
+    0x10F7  0x10F8  Letter  字母扩展
+    0x10F9  0x10FA  Letter  字母扩展
+    0x10FB  0x10FB  Punctuation  标点符号
+    0x10FC  0x10FC  Modifier,Letter  修饰字母
+    0x10FD  0x10FF  Letter  奥塞特语和阿布哈兹语字母扩展
+    ## 格鲁吉亚语扩展
+    0x1C90  0x1CB0  Letter  Mtavruli大写字母
+    0x1CB1  0x1CB6  Letter  古文字母
+    0x1CB7  0x1CB8  Letter  字母扩展
+    0x1CBD  0x1CBF  Letter  字母扩展
+    ## 格鲁吉亚语增补
+    0x2D00  0x2D25  Letter  小写字母
+    0x2D27  0x2D27  Letter  字母增补
+    0x2D2D  0x2D2D  Letter  Ossetian字母增补
+Hangul_Jamo  朝鲜文
+    ## 朝鲜文
+    0x1100  0x1112  Vowel,Special  声母
+    0x1113  0x115F  Vowel,Special  旧声母
+    0x1160  0x1175  Vowel,Special  韵母
+    0x1176  0x11A7  Vowel,Special  旧韵母
+    0x11A8  0x11C2  Vowel,Special  词尾辅音
+    0x11C3  0x11FF  Vowel,Special  旧词尾辅音
+Ethiopic  埃塞俄比亚文
+    ## 埃塞俄比亚文
+    0x1200  0x135A  Vowel,Special  音节
+    0x135D  0x135F  Special  组合标记
+    0x1360  0x1368  Punctuation  标点符号
+    0x1369  0x1371  Digit  数字
+    0x1372  0x137C  Digit  数值
+    ## 埃塞俄比亚文补充
+    0x1380  0x138F  Vowel,Special  Sebatbeit音节
+    0x1390  0x1399  Vowel,Special  声调标记
+    ## 埃塞俄比亚文扩展
+    0x2D80  0x2D92  Vowel,Special  Me'en音节
+    0x2D93  0x2D96  Vowel,Special  Blin音节
+    0x2DA0  0x2DBE  Vowel,Special  Bench音节
+    0x2DC0  0x2DDE  Vowel,Special  Sebatbeit音节
+Cherokee  切罗基文
+    ## 切罗基人(美洲土著，其中很多现居于美国俄克拉何马州和北卡罗来纳州)
+    0x13A0  0x13F4  Vowel,Special  大写音节
+    0x13F5  0x13F5  Vowel,Special  古老的大写音节
+    0x13F8  0x13FC  Vowel,Special  小写音节
+    0x13FD  0x13FD  Vowel,Special  古老的小写音节
+Canadian  加拿大文
+    ## 统一加拿大土著语音节
+    0x1400  0x1400  Punctuation  标点符号
+    0x1401  0x166C  Vowel,Special  音节
+    0x166D  0x166D  Special  符号
+    0x166E  0x166E  Punctuation  标点符号
+    0x166F  0x167F  Vowel,Special  音节
+    ## 加拿大土著统一音节扩展
+    0x18B0  0x18C5  Vowel,Special  驼鹿克里族的音节
+    0x18C6  0x18D3  Vowel,Special  克里族和奥吉布韦的音节
+    0x18D4  0x18DF  Vowel,Special  克里族和奥吉布韦的韵母
+    0x18E0  0x18F2  Vowel,Special  音节
+    0x18F3  0x18F5  Vowel,Special  韵母
+Ogham  早期爱尔兰文
+    ## 一种主要用于书写早期爱尔兰语的中世纪早期字母表
+    0x1680  0x1680  Special  空白
+    0x1681  0x1694  Letter  字母
+    0x1695  0x1695  Letter  补充字母
+    0x169B  0x169C  Punctuation  标点符号
+Runic  北欧古文
+    ## 北欧古文字
+    0x16A0  0x16EA  Letter  字母
+    0x16EB  0x16ED  Punctuation  标点符号
+    0x16EE  0x16F0  Digit  特殊数字符号
+    0x16F1  0x16F3  Special  Tolkienian扩展
+    0x16F4  0x16F8  Letter,Special  密码字母
+Tagalog  他加禄文
+    ## 他加禄语(通行于菲律宾群岛)
+    0x1700  0x1702  Vowel,Special  独立的元音符号
+    0x1703  0x1711  Vowel,Special  辅音符号
+    0x1712  0x1713  Vowel,Special  扩展元音符号
+    0x1714  0x1714  Special  Virama符号
+Hanunoo  汉努诺奥文
+    ##  Hanunó'o语言，菲律宾Mangyans人使用
+    0x1720  0x1722  Vowel,Special  独立的元音符号
+    0x1723  0x1731  Vowel,Special  辅音符号
+    0x1732  0x1733  Vowel,Special  扩展元音符号
+    0x1734  0x1734  Special  Virama符号
+    0x1735  0x1736  Punctuation  菲律宾文通用标点符号
+Buhid  布德希文
+    ## 布德希文，菲律宾的一种语言
+    0x1740  0x1742  Vowel,Special  独立的元音符号
+    0x1743  0x1751  Vowel,Special  辅音符号
+    0x1752  0x1753  Vowel,Special  扩展元音符号
+Tagbanwa  塔格巴努亚文
+    ## 塔格巴努亚文，菲律宾的一种语言
+    0x1760  0x1762  Vowel,Special  独立的元音符号
+    0x1763  0x1770  Vowel,Special  辅音符号
+    0x1772  0x1773  Vowel,Special  扩展元音符号
+Khmer  柬埔寨文
+    ## 高棉语，又称柬埔寨语
+    0x1780  0x17A2  Vowel,Special  辅音符号
+    0x17A3  0x17A4  Vowel,Special  独立的音译元音符号
+    0x17A5  0x17B3  Vowel,Special  独立的元音符号
+    0x17B4  0x17B5  Vowel,Special  固有的元音
+    0x17B6  0x17BD  Vowel,Special  扩展元音符号
+    0x17BE  0x17C0  Vowel,Special  两段扩展元音符号
+    0x17C1  0x17C3  Vowel,Special  扩展元音符号
+    0x17C4  0x17C5  Vowel,Special  两段扩展元音符号
+    0x17C6  0x17C8  Special  特殊标记
+    0x17C9  0x17CA  Vowel,Special  辅音移位标记
+    0x17CB  0x17D2  Special  特殊标记
+    0x17D3  0x17D3  Special  日期标记
+    0x17D4  0x17DA  Special  特殊标记
+    0x17DB  0x17DB  Currency,Special  货币符号
+    0x17DC  0x17DD  Special  特殊标记
+    0x17E0  0x17E9  Digit  数字
+    0x17F0  0x17F9  Math,Special  占卜数学符号
+    ## 高棉文符号
+    0x19E0  0x19FF  Special  日期标记
+Mongolian  蒙古文
+    ## 蒙古族语
+    0x1800  0x180A  Punctuation  标点符号
+    0x180B  0x180E  Special  格式符号
+    0x1810  0x1819  Digit  数字
+    0x1820  0x1842  Letter  基础字母
+    0x1843  0x185C  Letter  Todo字母
+    0x185D  0x1872  Letter  锡伯文字母
+    0x1873  0x1877  Letter  满文字母
+    0x1878  0x1878  Letter  布里亚特文字母
+    0x1880  0x18AA  Letter  梵语和藏语扩展字母
+Limbu  林布文
+    ## 林布语，尼泊尔的一个土著民族语言
+    0x1900  0x191E  Vowel,Special  辅音符号
+    0x1920  0x1928  Vowel,Special  扩展元音符号
+    0x1929  0x192B  Vowel,Special  附加辅音符号
+    0x1930  0x1938  Vowel,Special  辅音韵母符号
+    0x1939  0x1945  Special  特殊符号
+    0x1946  0x194F  Digit  数字
+Tai_Le  泰文
+    ## 泰语
+    0x1950  0x1962  Vowel,Special  辅音符号
+    0x1963  0x196D  Vowel,Special  元音符号
+    0x1970  0x1974  Letter  声调字母
+    ## 新泰语
+    0x1980  0x19AB  Vowel,Special  辅音符号
+    0x19B0  0x19C0  Vowel,Special  元音符号
+    0x19C1  0x19C7  Vowel,Special  辅音韵母符号
+    0x19C8  0x19C9  Special  声调标记
+    0x19D0  0x19DA  Digit  数字
+    0x19DE  0x19DF  Special  特殊标记
+    ## 旧泰语
+    0x1A20  0x1A4C  Vowel,Special  辅音符号
+    0x1A4D  0x1A52  Vowel,Special  独立的元音符号
+    0x1A53  0x1A54  Vowel,Special  辅音符号
+    0x1A55  0x1A5E  Vowel,Special  辅音符号
+    0x1A60  0x1A60  Special  标记
+    0x1A61  0x1A74  Vowel,Special  扩展元音符号
+    0x1A75  0x1A79  Special  声调标记
+    0x1A7A  0x1A7C  Special  其他标记
+    0x1A7F  0x1A7F  Special  密码符号
+    0x1A80  0x1A89  Digit  欧拉数字
+    0x1A90  0x1A99  Digit  Tham数字
+    0x1AA0  0x1AA2  Special  特殊标记
+    0x1AA3  0x1AA6  Punctuation  标点符号
+    0x1AA7  0x1AA7  Special  标记
+    0x1AA8  0x1AAD  Punctuation  标点符号
+Buginese  布吉斯文
+    ## 布吉斯语，印度尼西亚南苏拉威西岛的游牧马来人
+    0x1A00  0x1A16  Vowel,Special  辅音符号
+    0x1A17  0x1A1B  Vowel,Special  元音符号
+    0x1A1E  0x1A1F  Special  特殊标记
+Balinese  巴厘文
+    ## 巴厘文
+    0x1B00  0x1B04  Special  特殊标记
+    0x1B05  0x1B12  Vowel,Special  独立的元音符号
+    0x1B13  0x1B33  Vowel,Special  辅音符号
+    0x1B34  0x1B34  Special  标记
+    0x1B35  0x1B43  Vowel,Special  扩展元音符号
+    0x1B44  0x1B44  Special  标记
+    0x1B45  0x1B4B  Vowel,Special  辅音符号扩展
+    0x1B50  0x1B59  Digit  数字
+    0x1B5A  0x1B60  Punctuation  标点符号
+    0x1B61  0x1B6A  Special  音乐笔记符号
+    0x1B6B  0x1B73  Special  音乐音调符号
+    0x1B74  0x1B7C  Special  音乐符号
+Sundanese  巽丹文
+    ## 巽他文
+    0x1B80  0x1B82  Vowel,Special  独立的元音符号
+    0x1B83  0x1B89  Vowel,Special  辅音符号
+    0x1BA1  0x1BA3  Vowel,Special  辅音标记
+    0x1BA4  0x1BA9  Vowel,Special  元音标记
+    0x1BAA  0x1BAB  Special  Virama符号
+    0x1BAC  0x1BAD  Vowel,Special  辅音标记
+    0x1BAE  0x1BAF  Vowel,Special  辅音符号扩展
+    0x1BB0  0x1BB9  Digit  数字
+    0x1BBA  0x1BBA  Special  标记
+    0x1BBB  0x1BBF  Letter,Special  历史字母
+    ## 巽他文补充
+    0x1CC0  0x1CC7  Punctuation  标点符号
+Batak  巴达克文
+    ## 巴达克文
+    0x1BC0  0x1BE5  Letter  字母
+    0x1BE6  0x1BE6  Special  标记
+    0x1BE7  0x1BEF  Vowel,Special  元音扩展标记
+    0x1BF0  0x1BF1  Vowel,Special  辅音扩展标记
+    0x1BF2  0x1BF3  Special  标记
+    0x1BFC  0x1BFF  Punctuation  标点符号
+Lepcha  雷布查文
+    ## 雷布查人的语言，位于尼泊尔东部，锡金和大吉岭地区
+    0x1C00  0x1C23  Vowel,Special  辅音标记
+    0x1C24  0x1C25  Vowel,Special  附加辅音标记
+    0x1C26  0x1C2C  Vowel,Special  元音扩展
+    0x1C2D  0x1C35  Vowel,Special  辅音标记
+    0x1C36  0x1C37  Special  特殊标记
+    0x1C3B  0x1C3F  Punctuation  标点符号
+    0x1C40  0x1C49  Digit  数字
+    0x1C4D  0x1C4F  Letter  附加字母
+Ol_Chiki  桑塔利文
+    ## 桑塔利文
+    0x1C50  0x1C59  Digit  数字
+    0x1C5A  0x1C77  Letter  字母
+    0x1C78  0x1C7D  Modifier,Letter  修饰字母
+    0x1C7E  0x1C7F  Punctuation  标点符号
+Vedic  梵文
+    ## 早期梵文扩展
+    0x1CD0  0x1CD2  Special  Samaveda声调标记
+    0x1CD3  0x1CD3  Special  Samaveda语气标记
+    0x1CD4  0x1CDD  Special  Yajurvedic标记
+    0x1CDE  0x1CDF  Special  Satapathabrahmana声调标记
+    0x1CE0  0x1CE0  Special  Rigveda声调标记
+    0x1CE1  0x1CE1  Special  Atharvaveda声调标记
+    0x1CE2  0x1CE8  Special  Visarga变音符号
+    0x1CE9  0x1CF1  Special  鼻音标记
+    0x1CF2  0x1CF3  Special  Ardhavisarga符号
+    0x1CF4  0x1CF4  Special  Yajurvedic标记
+    0x1CF5  0x1CF7  Special  标记
+    0x1CF8  0x1CF9  Special  Jaiminiya_Sama_Veda标记
+    0x1CFA  0x1CFA  Special  鼻音标记
+Caucasian  高加索文
+    ## 音标扩展
+    0x1D77  0x1D78  Special   高加索语言字母
+Braille  盲文
+    ## 盲文模型符号
+    0x2800  0x28FF  Letter  盲文
+Glagolitic  格拉哥里文
+    ##  格拉哥里字母
+    0x2C00  0x2C2E  Letter  大写字母
+    0x2C30  0x2C5E  Letter  小写字母
+Coptic  科普特文
+    ## 科普特文
+    0x2C80  0x2CB1  Letter  波黑科普特字母
+    0x2CB2  0x2CDB  Letter  古科普特语和方言字母
+    0x2CDC  0x2CE3  Letter  古努比亚字母
+    0x2CE4  0x2CEA  Special  符号
+    0x2CEB  0x2CEE  Letter  密码字母
+    0x2CEF  0x2CF1  Special  组合标记
+    0x2CF2  0x2CF3  Letter  波黑科普特字母
+    0x2CF9  0x2CFC  Punctuation  古努比亚标点符号
+    0x2CFD  0x2CFD  Digit  数字字符
+    0x2CEF  0x2CFF  Punctuation  标点符号
+Tifinagh  提非纳文
+    ## 提非纳文
+    0x2D30  0x2D67  Letter  字母
+    0x2D6F  0x2D6F  Modifier,Letter  修饰字母
+    0x2D70  0x2D70  Punctuation  标点符号
+    0x2D7F  0x2D7F  Special  标记
+CJK  中日韩文
+    ## 中日韩部首补充
+    0x2E80  0x2EF3  Literal  部首补充
+    ## 康熙部首
+    0x2F00  0x2FD5  Literal  字典部首
+    ## 表意文字描述符
+    0x2FF0  0x2FFB  Special  文字描述
+    ## 中日韩符号和标点
+    0x3000  0x3007  Punctuation  标点符号
+    0x3008  0x300B  Punctuation  尖括号
+    0x300C  0x300F  Punctuation  方括号
+    0x3010  0x3011  Punctuation  括号
+    0x3012  0x3013  Punctuation  符号
+    0x3014  0x301B  Punctuation  括号
+    0x301C  0x301F  Punctuation  标点符号
+    0x3020  0x3020  Punctuation  符号
+    0x3021  0x3029  Punctuation  苏州数字
+    0x302A  0x302F  Punctuation  组合音标记
+    0x3030  0x3030  Punctuation  其他标点符号
+    0x3031  0x3035  Punctuation  假名重复标记
+    0x3036  0x3037  Punctuation  其他符号
+    0x3038  0x303A  Punctuation  苏州数字增补
+    0x303B  0x303D  Punctuation  其他标点符号
+    0x303E  0x303F  Punctuation  专用标记
+    ## 日文平假名
+    0x3041  0x3094  Letter  平假名字母
+    0x3095  0x3096  Letter  小写字母
+    0x3099  0x309C  Vowel  声纹
+    0x309D  0x309E  Special  迭代标记
+    0x309F  0x309F  Special  平假名有向图
+    ## 日文片假名
+    0x30A0  0x30A0  Punctuation  标点符号
+    0x30A1  0x30FA  Letter  片假名字母
+    0x30FB  0x30FC  Special  连接和长度标记
+    0x30FD  0x30FE  Special  迭代标记
+    0x30FF  0x30FF  Special  片假名有向图
+    ## 注音
+    0x3105  0x3129  Vowel,Letter  基础注音
+    0x312A  0x312C  Vowel,Letter  方言（非普通话）字母
+    0x312D  0x312F  Vowel  其他补充
+    ## 朝鲜文兼容字母
+    0x3131  0x314E  Vowel,Letter  辅音字母
+    0x314F  0x3163  Vowel,Letter  元音字母
+    0x3164  0x3164  Special  特殊字符
+    0x3165  0x3186  Vowel,Letter  古辅音字母
+    0x3187  0x318E  Vowel,Letter  古元音字母
+    ## 象形字注释标志
+    0x3190  0x3190  Special  注释连接标记
+    0x3191  0x319F  Special  注释反标记
+    ## 注音字母扩展
+    0x31A0  0x31B7  Vowel,Letter  闽南和客家扩展注音
+    0x31B8  0x31BA  Vowel,Letter  Hmu和Ge的扩展注音
+    0x31BB  0x31BB  Vowel,Letter  闽南和客家扩展注音
+    0x31BC  0x31BF  Vowel,Letter  粤语扩展注音
+    ## 中日韩笔画
+    0x31C0  0x31E3  Literal  笔画
+    ## 片假名语音扩展
+    0x31F0  0x31FF  Vowel,Letter  阿伊努语的语音扩展
+    ## 封闭的字母和月份
+    0x3200  0x320D  Special  带圆括号的朝鲜文字母
+    0x320E  0x321C  Special  带圆括号的朝鲜文音节
+    0x321D  0x321E  Special  带圆括号的韩国语单词
+    0x3220  0x3243  Special  带圆括号表意字符
+    0x3244  0x3247  Special  带圆圈的表意字符
+    0x3248  0x324F  Special  带圆圈和黑方框的数字
+    0x3250  0x3250  Special  方形拉丁文缩写
+    0x3251  0x325F  Special  带圆圈的数字
+    0x3260  0x326D  Special  带圆圈的朝鲜文字母
+    0x326E  0x327B  Special  带圆圈的朝鲜文音节
+    0x327C  0x327D  Special  带圆圈的韩国语单词
+    0x327E  0x327E  Special  带圆圈的韩国语音节
+    0x327F  0x327F  Special  标记
+    0x3280  0x32B0  Special  带圆圈的表意字符
+    0x32B1  0x32BF  Special  带圆圈的数字
+    0x32C0  0x32CB  Special  数字月份符号
+    0x32CC  0x32CF  Special  方形拉丁文缩写
+    0x32D0  0x32FE  Special  带圆圈片假名
+    0x32FF  0x32FF  Special  日本时代名称
+    ## 兼容文字
+    0x3300  0x3357  Special  方形片假名单词
+    0x3358  0x3370  Special  数字小时符号
+    0x3371  0x337A  Special  方形拉丁文缩写
+    0x337B  0x337E  Special  日本时代名称
+    0x337F  0x337F  Special  日本公司
+    0x3380  0x3394  Special  方形拉丁文缩写
+    0x3395  0x3398  Special  公升符号缩写
+    0x3399  0x33DF  Special  方形拉丁缩写
+    0x33E0  0x33FE  Special  数字日期符号
+    0x33FF  0x33FF  Special  方形拉丁文缩写
+    ## 中日韩统一象形文字扩展A
+    0x3400  0x4DBF  Literal  文字
+    ## 易经符号
+    0x4DC0  0x4DFF  Special  易经符号
+    ## 中日韩统一象形文字
+    0x4E00  0x9FFC  Literal  文字
+    ## 彝文音节
+    0xA000  0xA014  Special  音节
+    0xA015  0xA015  Special  音节反复标记
+    0xA016  0xA48C  Special  音节
+    ## 彝文字根
+    0xA490  0xA4C6  Special  字根
+    ## 傈僳族音节
+    0xA4D0  0xA4ED  Vowel,Special  辅音
+    0xA4EE  0xA4F7  Vowel,Special  元音
+    0xA4F8  0xA4FD  Vowel,Special  音调
+    0xA4EE  0xA4FF  Punctuation  标点符号
+    ## 汉语角音标记
+    0xA700  0xA707  Special 角音标记
+
+Vai  瓦伊语
+    ## 瓦伊语，曼德语族语言，是撒哈拉以南少数有文字系统的非洲语言之一
+    0xA500  0xA523  Special  ee音节
+    0xA524  0xA548  Special  i音节
+    0xA549  0xA570  Special  a音节
+    0xA571  0xA594  Special  oo音节
+    0xA595  0xA5B9  Special  u音节
+    0xA5BA  0xA5E0  Special  o音节
+    0xA5E1  0xA60A  Special  e音节
+    0xA60B  0xA60C  Special  韵母音节
+    0xA60D  0xA60F  Punctuation  标点符号
+    0xA610  0xA612  Special  历史音节
+    0xA613  0xA61F  Special  语标
+    0xA620  0xA620  Digit  数字
+    0xA62A  0xA62B  Special  历史音节
+Bamum  巴姆穆文字
+    ## 巴姆穆文字，用来表记喀麦隆巴姆穆人的巴姆穆语而制定的半音节文字
+    0xA6A0  0xA6EF  Vowel,Special   音节
+    0xA6F0  0xA6F1  Special 组合标记
+    0xA6F2  0xA6F7  Punctuation 标点符号
+
+
+
+
+
+International_Phonetic_Alphabet  国际音标扩展
+    ## 国际音标
+    0x0250  0x02A8  Phonetic,Letter  国际音标扩展
+    0x02A9  0x02AD  Phonetic,Letter  国际音标字符扩展
+    0x02AE  0x02AF  Phonetic,Letter  汉字语言学补充
+    ## 组合变音标记
+    0x0300  0x0333  Vowel,Special  普通变音标记
+    0x0334  0x0338  Vowel,Special  其他变音标记
+    0x0339  0x033F  Vowel,Special  混杂的变音标记
+    0x0346  0x034A  Vowel,Special  IPA扩展符号
+    0x034B  0x034E  Vowel,Special  IPA混杂的变音符号
+    0x034F  0x034F  Vowel,Special  字母连接符号
+    0x0358  0x035B  Vowel,Special  混杂的符号扩展
+    0x035C  0x0362  Vowel,Special  双变音符号
+    0x0363  0x036F  Vowel,Special  中世纪上标字母变音符
+    0x20D0  0x20DC  Vowel,Special  组合变音符号
+    0x20DD  0x20E0  Vowel,Special  封闭变音符号
+    0x20E1  0x20E1  Vowel,Special  附加的组合变音符号
+    0x20E2  0x20E4  Vowel,Special  附加的封闭变音标记
+    0x20E5  0x20F0  Vowel,Special  附加的组合变音符号
+    ## 音标扩展
+    0x1D79  0x1D7F  Special  其他音标符号
+    ## 音标扩展增补
+    0x1D9B  0x1DBF  Modifier,Letter  修饰字母
+    ## 组合变音标记扩展
+    0x1DC2  0x1DC3  Special  其他标记
+    0x1DC4  0x1DC9  Special  轮廓色调标记
+    0x1DCA  0x1DCA  Special  其他标记
+    0x1DCB  0x1DCC  Special  轮廓色调标记
+    0x1DCD  0x1DCD  Special  双音调符号
+    0x1DCE  0x1DD2  Special  中世纪研究学符号增补
+    0x1DD3  0x1DE6  Special,Letter  中世纪上标字母变音符号
+    0x1DF6  0x1DF7  Special  Typicon标记
+    0x1DF8  0x1DFB  Special  其他标记
+    0x1DFC  0x1DFC  Special  UPA的双音调符号
+    0x1DFD  0x1DFD  Special  其他标记
+    0x1DEE  0x1DFF  Special  UPA标记附加
+    ## 修饰音字母
+    0xA708  0xA711  Vowel  点音字母
+    0xA712  0xA716  Vowel  左声调字母
+    0xA717  0xA71A  Special 南提克音节标记
+    0xA71B  0xA71F  Vowel  非洲音标字母
+Spacing_Modifier  间距修饰符号
+    ## 间距修饰符号
+    0x02B9  0x02D7  Modifier,Phonetic,Special  其他语音修饰符
+    0x02D8  0x02DD  Modifier,Phonetic,Special  变音符号的间隔符
+    0x02DE  0x02E4  Modifier,Letter  基于1989IPA的扩展
+    0x02E5  0x02E9  Modifier,Letter  音调字符
+    0x02EA  0x02EB  Modifier,Special  Bopomofo音调标记扩展
+    0x02EC  0x02ED  Modifier,Letter  IPA音标修饰符
+    0x02EE  0x02EE  Modifier,Letter  其他修饰符
+    0x02EF  0x02FF  Modifier,Special  UPA修饰符
+General_Punctuation  通用标点符号
+    ## 通用标点符号
+    0x2000  0x200A  Punctuation  空白
+    0x200B  0x200F  Punctuation  格式字符
+    0x2010  0x2015  Punctuation  破折号
+    0x2016  0x2017  Punctuation  通用标点符号
+    0x2018  0x201F  Punctuation  引号和撇号
+    0x2020  0x2027  Punctuation  通用标点符号
+    0x2028  0x2029  Punctuation  分隔符
+    0x202A  0x202E  Punctuation  格式字符
+    0x202F  0x202F  Punctuation  空白
+    0x2030  0x2038  Punctuation  通用标点符号
+    0x2039  0x203A  Punctuation  引号
+    0x203B  0x203B  Punctuation  通用标点符号
+    0x203C  0x203C  Punctuation  竖排文字的双标点符号
+    0x203D  0x2044  Punctuation  通用标点符号
+    0x2045  0x2046  Punctuation  括号
+    0x2047  0x2049  Punctuation  竖排文字的双标点符号
+    0x204A  0x2055  Punctuation  通用标点符号
+    0x2056  0x2056  Punctuation  古文标点
+    0x2057  0x2057  Punctuation  通用标点符号
+    0x2058  0x205E  Punctuation  古文标点
+    0x205F  0x205F  Punctuation  空白
+    0x2060  0x2060  Punctuation  格式字符
+    0x2061  0x2064  Punctuation  隐形运算符
+    0x2066  0x2069  Punctuation  格式字符
+    0x206A  0x206F  Punctuation  弃用的标点
+    ## 标点符号补充
+    0x2E00  0x2E0D  Punctuation  新约编辑符号
+    0x2E0E  0x2E16  Punctuation  古希腊文字符号
+    0x2E17  0x2E17  Punctuation  古代近东语言符号
+    0x2E18  0x2E19  Punctuation  通用标点
+    0x2E1A  0x2E1B  Punctuation  词典标点
+    0x2E1C  0x2E1D  Punctuation  括号
+    0x2E1E  0x2E1F  Punctuation  词典标点
+    0x2E20  0x2E21  Punctuation  括号
+    0x2E22  0x2E25  Punctuation  半括号
+    0x2E26  0x2E29  Punctuation  括号
+    0x2E2A  0x2E31  Punctuation  历史标点符号
+    0x2E32  0x2E32  Punctuation  古文字音译符号
+    0x2E33  0x2E34  Punctuation  历史标点符号
+    0x2E35  0x2E39  Punctuation  古文字音译符号
+    0x2E3A  0x2E3B  Punctuation  破折号
+    0x2E3C  0x2E3E  Punctuation  标点符号的替代形式
+    0x2E3F  0x2E3F  Punctuation  历史标点符号
+    0x2E40  0x2E40  Punctuation  双连字符
+    0x2E41  0x2E42  Punctuation  反转标点符号
+    0x2E43  0x2E44  Punctuation  杂项标点符号
+    0x2E45  0x2E49  Punctuation  Typicon标点符号
+    0x2E4A  0x2E52  Punctuation  历史标点符号
+General_Superscripts_Subscripts  上标及下标
+    ## 上标及下标
+    0x2070  0x207F  Special,Modifier  上标
+    0x2080  0x0294  Special,Modifier  下标
+    0x2095  0x209C  Special,Modifier  UPA下标
+General_Currency  货币符号
+    ## 货币符号
+    0x20A0  0x20BF  Currency,Special  货币符号
+General_Symbol  通用符号
+    ## 字母式符号
+    0x2100  0x2134  Special  字母式符号
+    0x2139  0x213F  Special  字母式符号增补
+    0x2140  0x2140  Special  双线大运算符
+    0x2141  0x2144  Special  字母式符号增补
+    0x2145  0x2149  Special  双线斜体数学符号
+    0x214A  0x214D  Special  字母式符号增补
+    0x214E  0x214E  Special  小写Claudian字母
+    0x214F  0x214F  Special  圣经编辑符号
+General_Number  数字表
+    ## 数字表
+    0x2150  0x215F  Math_Fraction  分数
+    0x2160  0x217F  Digit  罗马数字
+    0x2180  0x2183  Digit  古罗马数字
+    0x2184  0x2184  Letter  小写Claudian字母
+    0x2185  0x2188  Digit  古罗马数字
+    0x2189  0x2189  Math_Fraction  分数
+    0x218A  0x218B  Digit  变位数字
+General_Arrows  箭头
+    ## 箭头
+    0x2190  0x2199  Special  简单箭头
+    0x219A  0x21AF  Special  改进箭头
+    0x21B0  0x21B3  Special  尖端弯曲的箭头
+    0x21B4  0x21BB  Special  键盘符号和圆箭头
+    0x21BC  0x21C3  Special  鱼叉
+    0x21C4  0x21CC  Special  成对箭头和鱼叉
+    0x21CD  0x21D9  Special  双箭头
+    0x21DA  0x21E5  Special  其他箭头和键盘符号
+    0x21E6  0x21F3  Special  白底色箭头和键盘符号
+    0x21F4  0x21FF  Special  其他箭头
+    ## 增补箭头A
+    0x27F0  0x27F4  Special  箭头
+    0x27F5  0x27FF  Special  长箭头
+    ## 增补箭头B
+    0x2900  0x2918  Special  其他箭头
+    0x2919  0x291C  Special  箭尾
+    0x291D  0x2926  Special  其他箭头
+    0x2927  0x2932  Special  交叉箭头
+    0x2933  0x2941  Special  其他弯曲箭头
+    0x2942  0x2949  Special  带操作的组合箭头
+    0x294A  0x2951  Special  双倒钩鱼叉
+    0x2052  0x2961  Special  改良鱼叉
+    0x2962  0x296F  Special  成对鱼叉
+    0x2970  0x2970  Special  其他箭头
+    0x2971  0x297B  Special  带关系的组合箭头
+    0x297C  0x297F  Special  鱼尾
+    ## 其他符号和箭头
+    0x2B00  0x2B0D  Special  黑白箭头
+    0x2B0E  0x2B11  Special  尖端弯曲的箭头
+    0x2B30  0x2B4C  Special  数学领域箭头
+    0x2B40  0x2B4D  Special  其他箭头
+    0x2B60  0x2B7D  Special  三角头箭头
+    0x2B80  0x2B87  Special  成对的三角形头箭头
+    0x2B88  0x2B8B  Special  带圆圈的箭头
+    0x2B8C  0x2B8F  Special  三角头U形箭头
+    0x2B94  0x2B94  Special  其他箭头符号
+    0x2B95  0x2B95  Special  黑色箭头
+    0x2B98  0x2B9F  Special  箭头头部
+    0x2BA0  0x2BA7  Special  尖端弯曲的三角头箭头
+    0x2BA8  0x2BAF  Special  黑色曲线箭头
+    0x2BB0  0x2BB7  Special  丝带箭头
+    0x2BEC  0x2BEF  Special  双头箭头符号
+General_Mathematical  数学领域
+    ## 数学运算符
+    0x2200  0x2207  Math,Special  其他数学符号
+    0x2208  0x220D  Math,Special  集合符号
+    0x220E  0x220E  Math,Special  其他数学符号
+    0x220F  0x2011  Math,Special  N元符号
+    0x2212  0x221D  Math,Special  运算符号
+    0x221E  0x221E  Math,Special  其他数学符号
+    0x221F  0x2222  Math,Special  角度符号
+    0x2223  0x2226  Math,Special  关系符号
+    0x2227  0x222A  Math,Special  集合逻辑符号
+    0x222B  0x2233  Math,Special  微积分符号
+    0x2234  0x2235  Math,Special  其他数学符号
+    0x2236  0x2237  Math,Special  关系符号
+    0x2238  0x2238  Math,Special  运算符号
+    0x2239  0x2239  Math,Special  关系符号
+    0x223A  0x223A  Math,Special  运算符号
+    0x223B  0x223E  Math,Special  关系符号
+    0x223F  0x223F  Math,Special  关系符号
+    0x2240  0x2240  Math,Special  运算符号
+    0x2241  0x228B  Math,Special  关系符号
+    0x228C  0x228E  Math,Special  运算符号
+    0x228F  0x2292  Math,Special  关系符号
+    0x2293  0x22A3  Math,Special  运算符号
+    0x22A4  0x22A5  Math,Special  其他数学符号
+    0x22A6  0x22B9  Math,Special  关系符号
+    0x22BA  0x22BD  Math,Special  运算符号
+    0x22C0  0x22C3  Math,Special  N元符号
+    0x22C4  0x22C7  Math,Special  运算符号
+    0x22C8  0x22C8  Math,Special  关系符号
+    0x22C9  0x22CC  Math,Special  运算符号
+    0x22CD  0x22CD  Math,Special  关系符号
+    0x22DE  0x22CF  Math,Special  逻辑操作符号
+    0x22D0  0x22D1  Math,Special  关系符号
+    0x22D2  0x22D3  Math,Special  运算符号
+    0x22D4  0x22ED  Math,Special  关系符号
+    0x22EE  0x22F1  Math,Special  矩阵椭圆
+    0x22F2  0x22FF  Math,Special  关系符号
+    ## 其他数学符号扩展A
+    0x27C0  0x27C4  Math,Special  其他符号
+    0x27C5  0x27C6  Math,Special  成对标点符号
+    0x27C7  0x27C7  Math,Special  运算符号
+    0x27C8  0x27C9  Math,Special  其他符号
+    0x27CA  0x27CA  Math,Special  垂直线操作符
+    0x27CB  0x27CB  Math,Special  其他符号
+    0x27CC  0x27CC  Math,Special  除法运算符
+    0x27CD  0x27CD  Math,Special  其他符号
+    0x27CE  0x27CF  Math,Special  运算符号
+    0x27D0  0x27D0  Math,Special  其他符号
+    0x27D1  0x27D4  Math,Special  运算符号
+    0x27D5  0x27D7  Math,Special  数据库理论运算符
+    0x27D8  0x27DF  Math,Special  大头钉和转门
+    0x27E0  0x27E5  Math,Special  模态逻辑操作符
+    0x27E6  0x27EF  Math,Special  数学括号
+    ## 其他数学符号扩展B
+    0x2980  0x2982  Math,Special  其他数学符号
+    0x2983  0x298C  Math,Special  括号
+    0x298D  0x2990  Math,Special  带尾部的括号
+    0x2991  0x2998  Math,Special  括号
+    0x2999  0x299A  Math,Special  围栏
+    0x299B  0x29AF  Math,Special  角度
+    0x29B0  0x29B4  Math,Special  空集合
+    0x29B5  0x29C3  Math,Special  圆圈符号
+    0x29C4  0x29C9  Math,Special  正方形符号
+    0x29CA  0x29D0  Math,Special  三角形符号
+    0x29D1  0x29D7  Math,Special  领结符号
+    0x29D8  0x29DB  Math,Special  围栏
+    0x29DC  0x29E2  Math,Special  其他数学符号
+    0x29E3  0x29E6  Math,Special  关系符号
+    0x29E7  0x29ED  Math,Special  其他数学符号
+    0x29EE  0x29F3  Math,Special  误差符号
+    0x29F4  0x29F7  Math,Special  其他数学符号
+    0x29F8  0x29F9  Math,Special  大型运算符
+    0x29FA  0x29FB  Math,Special  专用加号运算符
+    0x29FC  0x29FD  Math,Special  括号
+    0x29FE  0x29FF  Math,Special  博弈论中的符号
+    ## 补充数学运算符
+    0x2A00  0x2A09  Math,Special  N元符号
+    0x2A0A  0x2A1C  Math,Special  求和和微积分
+    0x2A1D  0x2A21  Math,Special  其他大型运算符
+    0x2A22  0x2A2E  Math,Special  加减运算符
+    0x2A2F  0x2A38  Math,Special  乘除运算符
+    0x2A39  0x2A3F  Math,Special  其他数学符号
+    0x2A40  0x2A50  Math,Special  交点和并集
+    0x2A51  0x2A63  Math,Special  逻辑与或符号
+    0x2A64  0x2A65  Math,Special  其他数学符号
+    0x2A66  0x2ABC  Math,Special  关系符号
+    0x2ABD  0x2AD8  Math,Special  子集与超集关系符号
+    0x2AD9  0x2ADD  Math,Special  叉子
+    0x2ADE  0x2AED  Math,Special  大头钉和转门
+    0x2AEE  0x2AF5  Math,Special  垂直线运算符
+    0x2AF6  0x2AF6  Math,Special  其他数学符号
+    0x2AF7  0x2AFB  Math,Special  关系符号
+    0x2AFC  0x2AFF  Math,Special  运算符号
+General_Miscellaneous  杂项符号
+    ## 杂项工艺符号
+    0x2300  0x2307  Special  杂项专业
+    0x2308  0x230B  Special  上限和下限
+    0x230C  0x230F  Special  裁剪
+    0x2310  0x2319  Special  杂项专业
+    0x231A  0x231B  Special  用户界面
+    0x231C  0x231F  Special  直角
+    0x2320  0x2321  Special  积分部件
+    0x2322  0x2323  Special  皱眉微笑
+    0x2324  0x2328  Special  键盘符号
+    0x2329  0x232A  Special  过期的尖括号
+    0x232B  0x232B  Special  键盘符号
+    0x232C  0x232C  Special  化学符号
+    0x232D  0x2335  Special  绘图符号
+    0x2336  0x237A  Special  APL符号
+    0x237B  0x237B  Special  控制代码图形
+    0x237C  0x237C  Special  杂项专业
+    0x237D  0x237F  Special  控制代码图形
+    0x2380  0x238C  Special  键盘符号
+    0x238D  0x2394  Special  电工符号
+    0x2395  0x2395  Special  APL符号
+    0x239B  0x23AD  Special  括号部件
+    0x23AE  0x23AF  Special  特殊字符扩展
+    0x23B0  0x23B1  Special  括号部件
+    0x23B2  0x23B3  Special  求和符号部件
+    0x23B4  0x23B6  Special  水平括号
+    0x23B7  0x23B9  Special  终端图形字符
+    0x23BA  0x23BD  Special  终端图形扫描线
+    0x23BE  0x23CC  Special  牙科符号
+    0x23CD  0x23CD  Special  杂项专业
+    0x23CE  0x23CF  Special  键盘UI符号
+    0x23D0  0x23D0  Special  特殊字符扩展
+    0x23D1  0x23D9  Special  度量符号
+    0x23DA  0x23DB  Special  电工符号
+    0x23DC  0x23E1  Special  水平括号
+    0x23E2  0x23E2  Special  杂项专业
+    0x23E3  0x23E3  Special  化学符号
+    0x23E4  0x23E8  Special  杂项专业
+    0x23E9  0x23FA  Special  用户界面
+    0x23FB  0x23FD  Special  电源符号
+    0x23FE  0x23FE  Special  电源符号
+    0x23FF  0x23FF  Special  杂项符号
+    ##杂项符号
+    0x2600  0x260D  Special  天气和占星术符号
+    0x260E  0x2613  Special  杂项符号
+    0x2614  0x2614  Special  天气符号
+    0x2615  0x2615  Special  杂项符号
+    0x2616  0x2617  Special  日本象棋符号
+    0x2618  0x2619  Special  杂项符号
+    0x261A  0x261F  Special  指针符号
+    0x2620  0x2623  Special  警告标记
+    0x2624  0x2625  Special  医疗和治疗符号
+    0x2626  0x262F  Special  宗教和政治象征
+    0x2630  0x2637  Special  易经八卦符号
+    0x2638  0x2638  Special  杂项符号
+    0x2639  0x263B  Special  表情符号
+    0x263C  0x263C  Special  杂项符号
+    0x263D  0x2647  Special  占星术符号
+    0x2648  0x2653  Special  黄道带符号
+    0x2654  0x265F  Special  象棋符号
+    0x2660  0x2667  Special  扑克牌符号
+    0x2668  0x2668  Special  杂项符号
+    0x2669  0x266F  Special  音乐符号
+    0x2670  0x2671  Special  叙利亚十字符号
+    0x2672  0x267D  Special  回收利用符号
+    0x267E  0x267F  Special  杂项符号
+    0x2680  0x2685  Special  骰子
+    0x2686  0x2689  Special  前进标记
+    0x268A  0x268F  Special  易经花押字
+    0x2690  0x269B  Special  字典和地图符号
+    0x269C  0x269D  Special  杂项符号
+    0x269E  0x269F  Special  闭路字幕符号
+    0x26A0  0x26A1  Special  杂项符号
+    0x26A2  0x26A9  Special  性别符号
+    0x26AA  0x26AC  Special  圆圈
+    0x26AD  0x26B1  Special  谱系符号
+    0x26B2  0x26B2  Special  性别符号
+    0x26B3  0x26B8  Special  星象
+    0x26B9  0x26BC  Special  占星术方面
+    0x26BD  0x26BE  Special  体育符号
+    0x26BF  0x26BF  Special  杂项符号
+    0x26C0  0x26C3  Special  绘图和跳棋符号
+    0x26C4  0x26C8  Special  天气符号
+    0x26C9  0x26CB  Special  游戏符号
+    0x26CC  0x26CD  Special  交通标志
+    0x26CE  0x26CE  Special  黄道带符号
+    0x26CF  0x26E1  Special  交通标志
+    0x26E2  0x26E2  Special  天文符号
+    0x26E3  0x26E3  Special  地图符号
+    0x26E4  0x26E7  Special  五角星
+    0x26E8  0x26FF  Special  地图符号
+    ## 其他符号和箭头
+    0x2B12  0x2B15  Special  正方形
+    0x2B16  0x2B19  Special  菱形
+    0x2B1A  0x2B1E  Special  正方形
+    0x2B1F  0x2B20  Special  五边形
+    0x2B21  0x2B23  Special  六边形
+    0x2B24  0x2B24  Special  圆形
+    0x2B25  0x2B2B  Special  菱形
+    0x2B2C  0x2B2F  Special  椭圆形
+    0x2B50  0x2B52  Special  星形
+    0x2B53  0x2B54  Special  五边形
+    0x2B55  0x2B55  Special  交通标志
+    0x2B56  0x2B59  Special  字典和地图标记
+    0x2B7E  0x2B7F  Special  键盘符号
+    0x2B90  0x2B93  Special  键盘符号
+    0x2B97  0x2B97  Special  其他符号
+    0x2BB8  0x2BB9  Special  键盘符号
+    0x2BBA  0x2BBC  Special  象棋符号
+    0x2BBD  0x2BBF  Special  几何符号
+    0x2BC0  0x2BC8  Special  中心几何形状
+    0x2BC9  0x2BC9  Special  天文符号
+    0x2BCA  0x2BCB  Special  半圆形
+    0x2BCC  0x2BCF  Special  尖角形
+    0x2BD0  0x2BD2  Special  其他符号
+    0x2BD3  0x2BD6  Special  冥王星的占星术符号
+    0x2BD7  0x2BDF  Special  其他天文符号
+    0x2BE0  0x2BE7  Special  天王星占星术符号
+    0x2BE8  0x2BEB  Special  半角星字符
+    0x2BF9  0x2BFE  Special  象棋符号
+    0x2BFF  0x2BFF  Special  其他符号
+General_Control  控制符号图片
+    ## 控制图片
+    0x2400  0x2421  Special  控制代码的图形图片
+    0x2422  0x2423  Special  特殊的空白符号
+    0x2424  0x2424  Special  控制代码的图形图片
+    0x2425  0x2425  Special  键盘符号
+    0x2426  0x2426  Special  控制代码的特殊符号
+General_Optical_Symbol  光学识别符
+    ## 光学符号识别
+    0x2440  0x2445  Special  光学字符识别A
+    0x2446  0x2449  Special  磁性墨水字符识别
+    0x244A  0x244A  Special  光学字符识别
+General_Enclosed_Symbol  封闭符号
+    ## 封闭的字母数字
+    0x2460  0x2473  Special  带圆圈的数字
+    0x2474  0x2487  Special  带圆括号的数字
+    0x2488  0x249B  Special  数字周期
+    0x249C  0x24B5  Special  带圆括号的拉丁字母
+    0x24B6  0x24E9  Special  带圆圈的拉丁字母
+    0x24EA  0x24EA  Special  带圆圈的数字增补
+    0x24EB  0x24F4  Special  黑底白色圆圈数字
+    0x24F5  0x24FE  Special  带双圆圈的数字
+    0x24FF  0x24FF  Special  黑底白色圆圈数字增补
+General_Box_Drawing  制表符
+    ## 制表符
+    0x2500  0x2503  Special  轻重实线
+    0x2504  0x250B  Special  轻重虚线
+    0x250C  0x254B  Special  轻重线制表部件
+    0x254C  0x254F  Special  轻重虚线
+    0x2550  0x2551  Special  双线
+    0x2552  0x256C  Special  轻双线制表部件
+    0x256D  0x2570  Special  字符单元格弧
+    0x2571  0x2573  Special  字符单元格对角线
+    0x2574  0x257B  Special  轻重半线
+    0x257C  0x257F  Special  混合轻重线条
+General_Block  块元素
+    ## 块元素
+    0x2580  0x2590  Special  块元素
+    0x2591  0x2593  Special  阴影字符
+    0x2594  0x2594  Special  块元素
+    0x2596  0x259F  Special  终端图形字符
+General_Geometric  几何形状
+    ## 几何形状
+    0x25A0  0x25EF  Special  几何图形
+    0x25F0  0x25F7  Special  控制代码图形
+    0x25F8  0x25FF  Special  几何图形
+General_Dingbat  印刷符号
+    ## 印刷符号
+    0x2700  0x2700  Special  杂项
+    0x2719  0x2720  Special  十字架
+    0x2721  0x273D  Special  星号
+    0x273E  0x2741  Special  花边
+    0x2742  0x274B  Special  星号和雪花
+    0x274C  0x275A  Special  杂项
+    0x274B  0x2765  Special  标点符号装饰物
+    0x2766  0x2767  Special  花边
+    0x2768  0x2775  Special  装饰括号
+    0x2776  0x2793  Special  带圆圈的数字
+    0x2794  0x2794  Special  箭头
+    0x2795  0x2797  Special  算术符号的重变体
+    0x2798  0x27AF  Special  箭头
+    0x27B0  0x27B0  Special  杂项
+    0x27B1  0x27B1  Special  箭头
+    0x27BF  0x27BF  Special  杂项
+
+
+
+
+Diacritical_Marks  组合变音标记
+    ## 组合变音标记
+    0x0340  0x0341  Vowel,Special  越南语调标志
+    0x0350  0x0357  Vowel,Special  乌拉尔语音标扩展符号
+    0x1AB0  0x1ABE  Special  德语方言扩展
+    0x1ABF  0x1AC0  Special  苏格兰方言扩展
+    ## 组合变音标记扩展
+    0x1DE7  0x1DF4  Special,Letter  德语方言学中的上标字母变音字母
+    0x1DF5  0x1DF5  Special  美国词典学中的变音符号
+    ## 其他符号和箭头
+    0x2B4E  0x2B4F  Special  立陶宛方言语调标志
+    0x2B5A  0x2B5F  Special  立陶宛方言语调标志
+    0x2BF0  0x2BF2  Special  厄里斯和塞德娜的占星术符号
+    0x2BF3  0x2BF8  Special  俄罗斯占星术
+

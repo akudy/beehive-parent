@@ -53,7 +53,17 @@ package org.beehive.util;
  */
 public class ObjectUtils {
 
-
+    /**
+     * 判断给定的实例对象是否是指定类型的实例
+     *
+     * @param object 对象实例
+     * @param clazz  类型
+     * @return 如果是指定类型的实例则返回true，否则返回false
+     * @since 1.0
+     */
+    public static boolean instanceOf(Object object, Class<?> clazz) {
+        return clazz.isInstance(object);
+    }
 
     public static <T> String toString(T instance) {
         return instance.toString();

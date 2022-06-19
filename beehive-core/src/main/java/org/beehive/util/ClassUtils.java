@@ -14,16 +14,16 @@ package org.beehive.util;
 
 import org.beehive.core.file.AntPathMatcher;
 
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 类分析工具类，提供类的解析等功能。
@@ -192,25 +192,38 @@ public class ClassUtils {
     }
 
     /**
-     * 判断给定的实例对象是否实现了某一个接口类型
+     * 判断给定的类型是否实现了指定的接口类型
      *
-     * @param object 实例对象
-     * @param clazz  接口类型，如果非接口类型则返回false，否则逐层向上查找
+     * @param clazz          需要检查判断的类型定义
+     * @param interfaceClass 接口类型，如果非接口类型则返回false，否则逐层向上查找
      * @return 如果给定的匹配类型非接口，则返回false；如果其直接或间接实现该接口则返回true
      * @since 1.0
      */
-    public static boolean implementOf(Object object, Class<?> clazz) {
+    public static boolean implementOf(Class<?> clazz, Class<?> interfaceClass) {
         if (clazz == null) {
             return false;
         }
-        if (!clazz.isInterface()) {
+        if (interfaceClass == null) {
             return false;
         }
-        Class<?>[] upperClassArray = object.getClass().getInterfaces();
-        if (upperClassArray == null || upperClassArray.length == 0) {
-            upperClassArray = object.getClass().getSuperclass().getInterfaces();
+        if (!interfaceClass.isInterface()) {
+            return false;
         }
-        return findInterfaceClazz(clazz, upperClassArray);
+        // 优先基于接口向上查找；获取类型的直接上层所有接口，如果没有接口则获取其父类的接口
+        Class<?>[] upperClassArray = clazz.getInterfaces();
+        if (upperClassArray == null || upperClassArray.length == 0) {
+            if (clazz.getSuperclass() != null) {
+                upperClassArray = clazz.getSuperclass().getInterfaces();
+            }
+        }
+        // 进行接口名称的匹配
+        if (upperClassArray != null && findInterfaceClazz(interfaceClass, upperClassArray)) {
+            return true;
+        } else {
+            // 其次基于父类向上查找；查找其直接父类的接口
+            clazz = clazz.getSuperclass();
+            return implementOf(clazz, interfaceClass);
+        }
     }
 
     /**
@@ -222,9 +235,6 @@ public class ClassUtils {
      * @since 1.0
      */
     private static boolean findInterfaceClazz(Class<?> clazz, Class<?>[] upperClazzArray) {
-        if (upperClazzArray == null || upperClazzArray.length == 0) {
-            return false;
-        }
         for (Class<?> upperClazz : upperClazzArray) {
             if (upperClazz.isInterface()) {
                 if (clazz == upperClazz) {
@@ -244,38 +254,25 @@ public class ClassUtils {
     }
 
     /**
-     * 判断给定的实例对象是否继承了某个类型
+     * 判断给定的类型是否继承了指定的某个类型
      *
-     * @param object 实例对象
-     * @param clazz  类类型
+     * @param clazz      需要检查判断的类型定义
+     * @param superClass 父类型定义
      * @return 如果直接或间接继承该类则返回true；否则返回false
      * @since 1.0
      */
-    public static boolean extendsOf(Object object, Class<?> clazz) {
-        if (clazz == null) {
+    public static boolean extendsOf(Class<?> clazz, Class<?> superClass) {
+        if (superClass == null) {
             return false;
         }
-        Class<?> currentClazz = object.getClass().getSuperclass();
+        Class<?> currentClazz = clazz.getSuperclass();
         while (currentClazz != null && currentClazz != Object.class) {
-            if (clazz == currentClazz) {
+            if (superClass == currentClazz) {
                 return true;
             }
             currentClazz = currentClazz.getSuperclass();
         }
         return false;
-    }
-
-
-    /**
-     * 判断给定的实例对象是否是指定类型的实例
-     *
-     * @param object 对象实例
-     * @param clazz  类型
-     * @return 如果是指定类型的实例则返回true，否则返回false
-     * @since 1.0
-     */
-    public static boolean instanceOf(Object object, Class<?> clazz) {
-        return clazz.isInstance(object);
     }
 
     /*----------------------------- class type end ----------------------------------------*/
@@ -289,7 +286,7 @@ public class ClassUtils {
      * Java应用程序的类加载器分为四类（优先级依次递减）：
      * <ol>
      *     <li>启动类加载器(Bootstrap ClassLoader)：这个类加载器负责将\lib目录下的类库加载到虚拟机内存中,用来加载java的核心库,此类加载器并不继承于java.lang.ClassLoader,不能被java程序直接调用,代码是使用C++编写的.是虚拟机自身的一部分.</li>
-     *     <li>扩展类加载器(Extendsion ClassLoader)：这个类加载器负责加载\lib\ext目录下的类库,用来加载java的扩展库,开发者可以直接使用这个类加载器.</li>
+     *     <li>扩展类加载器(Extension ClassLoader)：这个类加载器负责加载\lib\ext目录下的类库,用来加载java的扩展库,开发者可以直接使用这个类加载器.</li>
      *     <li>应用程序类加载器(Application ClassLoader)：这个类加载器负责加载用户类路径(CLASSPATH)下的类库,一般我们编写的java类都是由这个类加载器加载,这个类加载器是CLassLoader中的getSystemClassLoader()方法的返回值,所以也称为系统类加载器.一般情况下这就是系统默认的类加载器.</li>
      *     <li>自定义类加载器(Custom ClassLoader)：自己定义的类加载器,用来满足特殊的需求,需要继承java.lang.ClassLoader类.</li>
      * </ol>
@@ -468,11 +465,299 @@ public class ClassUtils {
         return antPathMatcher.match(packagePattern, clazzPackage);
     }
 
+    /**
+     * 获取某一个类型的继承或实现链上的所有类型定义（自动去重）
+     *
+     * @param clazz     需要检查的类型定义
+     * @param clazzList 该类型独有的继承或接口实现链上的所有类型定义（自动去重）
+     * @since 1.0
+     */
+    private static void getParentClasses(Class<?> clazz, List<Class<?>> clazzList) {
+        if (clazz == null) {
+            return;
+        }
+        List<Class<?>> tempClassList = new ArrayList<>();
+        Class<?> superClass = clazz.getSuperclass();
+        if (superClass != null && superClass != Object.class) {
+            tempClassList.add(superClass);
+        }
+        Class<?>[] interfaces = clazz.getInterfaces();
+        if (interfaces != null && interfaces.length > 0) {
+            tempClassList.addAll(Arrays.asList(interfaces));
+        }
+        for (Class<?> tempClass : tempClassList) {
+            if (tempClass == Object.class || tempClass == null) {
+                break;
+            }
+            if (!clazzList.contains(tempClass)) {
+                clazzList.add(tempClass);
+            }
+            getParentClasses(tempClass, clazzList);
+        }
+    }
+
+    /**
+     * 判断给定的类是否声明为泛型类型，类表面定义直接描述为泛型定义，不考虑其父类或父接口定义。
+     *
+     * @param clazz 需要检查的类型定义
+     * @return 如果直接声明的为泛型类型，则返回true；否则返回false
+     * @see #isGenericType(Class)
+     * @since 1.0
+     */
+    public static boolean isDeclaredGenericType(Class<?> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+        TypeVariable[] typeVariableArray = clazz.getTypeParameters();
+        if (typeVariableArray != null && typeVariableArray.length > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断给定的类是否是泛型类型，考虑其父类或父接口是否是泛型定义。<br/>
+     * 由于子类在继承或其他情况下会抹除泛型定义，所以这种判断推测不一定正确。<br/>
+     * <strong>请慎用</strong>
+     *
+     * @param clazz 需要检查的类型定义
+     * @return 如果直接声明的为房型类型，则返回true；否则依次向上判断其超类或接口返回定义是否为泛型定义，如果是则返回true；否则返回false
+     * @see #isDeclaredGenericType(Class)
+     * @since 1.0
+     */
+    public static boolean isGenericType(Class<?> clazz) {
+        if (isDeclaredGenericType(clazz)) {
+            return true;
+        }
+        List<Class<?>> superClassList = new ArrayList<>();
+        getParentClasses(clazz, superClassList);
+        for (Class<?> superClass : superClassList) {
+            if (isDeclaredGenericType(superClass)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取某一个类型的继承或实现链上的所有泛型类型定义（自动去重）
+     *
+     * @param clazz    需要检查的类型定义
+     * @param typeList 该类型独有的继承或接口实现链上的所有泛型类型定义（自动去重）
+     * @param findUp   是否获取链，true表示查找链式所有的类型，false表示不查找
+     * @since 1.0
+     */
+    private static void getGenericParentClasses(Class<?> clazz, List<ParameterizedType> typeList, boolean findUp) {
+        if (clazz == null) {
+            return;
+        }
+        List<Type> tempTypeList = new ArrayList<>();
+        Type superClass = clazz.getGenericSuperclass();
+        if (superClass != null && superClass != Object.class) {
+            tempTypeList.add(superClass);
+        }
+        Type[] interfaces = clazz.getGenericInterfaces();
+        if (interfaces.length > 0) {
+            tempTypeList.addAll(Arrays.asList(interfaces));
+        }
+        for (Type tempType : tempTypeList) {
+            if (tempType == Object.class || tempType == null) {
+                break;
+            }
+            // 如果不是泛型，则忽略
+            if (tempType instanceof ParameterizedType) {
+                if (!typeList.contains(tempType)) {
+                    typeList.add((ParameterizedType) tempType);
+                }
+            }
+            // 如果是Class类型则忽略
+            if (findUp && tempType.getClass() != Class.class) {
+                getGenericParentClasses(tempType.getClass(), typeList, true);
+            }
+        }
+    }
+
+    /**
+     * 过滤泛型父类，将没有定义真实类型的泛型定义过滤掉；如果存在泛型类型声明时定义多个参数，则如果有一个参数未明确指定类型，也将被过滤移除
+     *
+     * @param typeList 待过滤的泛型类型列表
+     * @since 1.0
+     */
+    private static void filterGenericParentClasses(List<ParameterizedType> typeList) {
+        if (typeList == null) {
+            return;
+        }
+        Iterator<ParameterizedType> iterator = typeList.iterator();
+        while (iterator.hasNext()) {
+            ParameterizedType parameterizedType = iterator.next();
+            Type[] actualTypeArray = parameterizedType.getActualTypeArguments();
+            for (int i = 0; i < actualTypeArray.length; i++) {
+                // 如果真实类型不是类型定义，则忽略
+                if (!(actualTypeArray[i] instanceof Class)) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取给定类的实际声明泛型类型，获取类型在声明定义时的具体泛型类型。
+     *
+     * @param clazz 需要检查的类型定义
+     * @return 返回给定类具体的泛型类型列表，按声明的顺序进行排序
+     * @see #isGenericType(Class)
+     * @see #getActualGenericType(Class)
+     * @since 1.0
+     */
+    public static ParameterizedType[] getDeclaredGenericType(Class<?> clazz) {
+        List<ParameterizedType> parameterizedSupperType = new ArrayList<>();
+        getGenericParentClasses(clazz, parameterizedSupperType, false);
+        if (parameterizedSupperType.size() > 0) {
+            return parameterizedSupperType.toArray(new ParameterizedType[]{});
+        }
+        return new ParameterizedType[]{};
+    }
+
+    /**
+     * 获取给定类的实际声明泛型类型，通过继承或接口实现链路进行查找，并输出所有的定义了实际类型的泛型类型。（如果存在泛型类型声明时定义多个参数，则如果有一个参数未明确指定类型）
+     *
+     * @param clazz 需要检查的类型定义
+     * @return 返回给定类具体的泛型类型列表，按声明的顺序进行排序
+     * @see #getDeclaredGenericType(Class)
+     * @since 1.0
+     */
+    public static ParameterizedType[] getActualGenericType(Class<?> clazz) {
+        List<ParameterizedType> parameterizedSupperType = new ArrayList<>();
+        getGenericParentClasses(clazz, parameterizedSupperType, true);
+        filterGenericParentClasses(parameterizedSupperType);
+        if (parameterizedSupperType.size() > 0) {
+            return parameterizedSupperType.toArray(new ParameterizedType[]{});
+        }
+        return new ParameterizedType[]{};
+    }
+
+    /**
+     * 获取指定类的所有注解定义。<br/>
+     * 包含父类（非接口）定义的可被继承，并且 {@link Retention} 被标记为 Runtime 类型的注解 和 当前类上声明的注解。
+     *
+     * @param clazz 被检查的类定义
+     * @return 注解列表
+     * @see Class#getAnnotations()
+     */
+    public static Annotation[] getAnnotation(Class<?> clazz) {
+        if (clazz == null) {
+            return new Annotation[]{};
+        }
+        return clazz.getAnnotations();
+    }
+
     /*----------------------------- class info end ----------------------------------------*/
 
-    /*----------------------------- field analysis start ----------------------------------------*/
+    /*----------------------------- class content start ----------------------------------------*/
+
+    private static List<Field> getFields(Class<?> clazz, boolean findUp) {
+        List<Field> fieldList = new ArrayList<>();
+        List<Class<?>> clazzList = new ArrayList<>();
+        clazzList.add(clazz);
+        if (findUp) {
+            getParentClasses(clazz, clazzList);
+        }
+        for (Class<?> tempClazz : clazzList) {
+            fieldList.addAll(Arrays.asList(tempClazz.getDeclaredFields()));
+        }
+        return fieldList;
+    }
+
+    private static List<Constructor<?>> getConstructors(Class<?> clazz) {
+        return Arrays.asList(clazz.getDeclaredConstructors());
+    }
+
+    private static List<Method> getMethods(Class<?> clazz, boolean findUp) {
+        List<Method> methodList = new ArrayList<>();
+        List<Class<?>> clazzList = new ArrayList<>();
+        clazzList.add(clazz);
+        if (findUp) {
+            getParentClasses(clazz, clazzList);
+        }
+        for (Class<?> tempClazz : clazzList) {
+            methodList.addAll(Arrays.asList(tempClazz.getDeclaredMethods()));
+        }
+        return methodList;
+    }
 
 
-    /*----------------------------- field analysis end ----------------------------------------*/
+    public static boolean hasField(Class<?> clazz, String fieldName, boolean findUp) {
+        return false;
+    }
+
+    public static boolean hasField(Class<?> clazz, String fieldName) {
+        return hasField(clazz, fieldName, false);
+    }
+
+    public static boolean hasField(Class<?> clazz, Type declaredType, String fieldName, boolean findUp) {
+        return false;
+    }
+
+    public static boolean hasField(Class<?> clazz, Type declaredType, String fieldName) {
+        return false;
+    }
+
+    public static Field[] findFiled(Class<?> clazz, String fieldName, boolean findUp) {
+        return null;
+    }
+
+    public static Field[] findFiled(Class<?> clazz, String fieldName) {
+        return null;
+    }
+
+    public static Field[] findFiled(Class<?> clazz, Type declaredType, String fieldName, boolean findUp) {
+        return null;
+    }
+
+    public static Field[] findFiled(Class<?> clazz, Type declaredType, String fieldName) {
+        return null;
+    }
+
+    public static boolean hasConstructor(Class<?> clazz, Type... parameterTypes) {
+        return false;
+    }
+
+    public static Constructor[] findConstructor(Class<?> clazz, Type... parameterTypes) {
+        return null;
+    }
+
+    public static boolean hasMethodName(Class<?> clazz, String methodName, boolean findUp) {
+        return false;
+    }
+
+    public static boolean hasMethodName(Class<?> clazz, String methodName) {
+        return false;
+    }
+
+    public static Method[] findMethod(Class<?> clazz, Type returnType, String methodName, boolean findUp, Type... parameterTypes) {
+        return null;
+    }
+
+    public static Method[] findMethod(Class<?> clazz, Type returnType, String methodName, Type... parameterTypes) {
+        return null;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+    }
+
+    public static List<Field> getFieldList(Class<?> clazz, boolean findUp) {
+        return getFields(clazz, findUp);
+    }
+
+    public static List<Constructor<?>> getConstructorList(Class<?> clazz) {
+        return getConstructors(clazz);
+    }
+
+    public static List<Method> getMethodList(Class<?> clazz, boolean findUp) {
+        return getMethods(clazz, findUp);
+    }
+
+    /*----------------------------- class content end ----------------------------------------*/
 
 }

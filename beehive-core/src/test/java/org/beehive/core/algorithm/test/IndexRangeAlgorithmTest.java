@@ -109,7 +109,7 @@ public class IndexRangeAlgorithmTest {
         System.out.println(test(str, 1, 3, 5, 7, 9));
     }
 
-    public String test(String str, int... indexs) {
+    private String test(String str, int... indexs) {
         if (indexs.length == 1) {
             int[] numbers = IndexRangeAlgorithm.indexRange(str.length(), indexs[0]);
             return "(" + str + ", " + indexs[0] + ") -> " + str + Arrays.toString(numbers) + " = " + str.substring(numbers[0], numbers[1]);

@@ -104,7 +104,7 @@ public interface DictionaryEnumeration<T> {
         sb.append("{");
         sb.append("\"code\": \"").append(this.getCode()).append("\", ");
         sb.append("\"title\": \"").append(this.getTitle()).append("\", ");
-        sb.append("\"description\": ").append(this.getDescription()).append("\"");
+        sb.append("\"description\": \"").append(this.getDescription()).append("\"");
         sb.append("}");
         return sb.toString();
     }

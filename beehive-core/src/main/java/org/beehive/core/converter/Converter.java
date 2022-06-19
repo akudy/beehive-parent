@@ -65,7 +65,7 @@ public interface Converter<S, T> {
     T convert(S source) throws ConvertException;
 
     /**
-     * 将源对象转换为目标对象
+     * 将源对象转换为目标对象，如果转换失败，则返回指定的默认值
      *
      * @param source       源对象实例
      * @param defaultValue 如果转换失败，则返回默认值

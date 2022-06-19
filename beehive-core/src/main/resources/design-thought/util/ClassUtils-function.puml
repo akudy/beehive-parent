@@ -12,9 +12,8 @@
 *** 关系分析
 ****_ implementOf
 ****_ extendsOf
-****_ instanceOf
 
-** 类信息分析
+** 类定义分析
 *** 类加载器和路径
 ****_ getDefaultClassLoader
 ****_ getDefaultClassLoadURL
@@ -28,9 +27,18 @@
 *** 在某个包下
 ****_ fromPackage
 ****_ matchPackage
+*** 泛型
+****_ isDeclaredGenericType
+****_ isGenericType
+****_ getDeclaredGenericType
+****_ getActualGenericType
+*** 注解
+****_ getAnnotation
 
-** 字段分析
 
-** 方法解析
+** 类内容分析
+*** 字段/属性
+*** 构造函数
+*** 方法
 
 @endmindmap

@@ -11,6 +11,8 @@
 ***_ strFormat
 ***_ msgFormat
 ***_ logFormat
+***_ appendToLeft
+***_ appendToRight
 
 ** 字符串检查
 ***_ isNull
@@ -36,7 +38,9 @@
 ****_ transcode
 *** 大小写
 ****_ upperCase
+****_ upperCaseFirst
 ****_ lowerCase
+****_ lowerCaseFirst
 
 ** 创建
 *** 随机字符串
@@ -44,11 +48,19 @@
 ****_ randomDigit
 ****_ randomLetter
 ****_ randomDigitAndLetter
-****_ randomChineseChar
+****_ randomLocalChar
 
 ** 截取&提取
 ***_ subStr
 ***_ pickStr
 ***_ ofStr
+***_ slice
+
+** 类型判断
+***_ isNumber
+***_ isIntNumber
+
+** 查找
+***_ indexOf
 
 @endmindmap

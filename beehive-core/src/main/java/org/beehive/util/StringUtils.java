@@ -13,6 +13,7 @@
 package org.beehive.util;
 
 import org.beehive.core.algorithm.IndexRangeAlgorithm;
+import org.beehive.core.algorithm.IndexSliceAlgorithm;
 import org.beehive.core.converter.ConvertException;
 import org.beehive.core.string.RandomStringFactory;
 import org.beehive.core.string.Slf4jStringFormatter;
@@ -160,7 +161,7 @@ public class StringUtils {
     }
 
     /**
-     * 使用slf4j日志模板进行输出。示例：<br/>
+     * 使用Java字符串模板进行输出。示例：<br/>
      * <code>
      * userId = %d, userName = %s
      * </code>
@@ -177,7 +178,7 @@ public class StringUtils {
     }
 
     /**
-     * 使用Java字符串模板进行输出。示例：<br/>
+     * 使用Java消息模板进行输出。示例：<br/>
      * <code>
      * userId = {0}, userName = {1}
      * </code>
@@ -193,7 +194,7 @@ public class StringUtils {
     }
 
     /**
-     * 使用Java消息模板进行输出。示例：<br/>
+     * 使用slf4j日志模板进行输出。示例：<br/>
      * <code>
      * userId = {}, userName = {}
      * </code>
@@ -206,6 +207,84 @@ public class StringUtils {
      */
     public static String logFormat(String templateStr, Object... args) {
         return format(TemplateStyle.SLF4J_LOG, templateStr, args);
+    }
+
+    /**
+     * 向字符串左边追加一个或多个字符
+     *
+     * @param str         原字符串
+     * @param appendChar  追加的字符
+     * @param repeatCount 追加的字符重复次数
+     * @return 按规则追加字符后的字符串
+     */
+    public static String appendToLeft(String str, char appendChar, int repeatCount) {
+        return repeatStr(String.valueOf(appendChar), repeatCount) + str;
+    }
+
+    /**
+     * 向字符串右边追加一个或多个字符
+     *
+     * @param str         原字符串
+     * @param appendChar  追加的字符
+     * @param repeatCount 追加的字符重复次数
+     * @return 按规则追加字符后的字符串
+     */
+    public static String appendToRight(String str, char appendChar, int repeatCount) {
+        return str + repeatStr(String.valueOf(appendChar), repeatCount);
+    }
+
+    private static String repeatStr(String str, int repeatCount) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < repeatCount; i++) {
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 向字符串左边追加一个或多个字符串
+     *
+     * @param str         原字符串
+     * @param appendStr   追加的字符串
+     * @param repeatCount 追加的字符串重复次数
+     * @return 按规则追加字符串后的字符串
+     */
+    public static String appendToLeft(String str, String appendStr, int repeatCount) {
+        return repeatStr(appendStr, repeatCount) + str;
+    }
+
+    /**
+     * 向字符串右边追加一个或多个字符串
+     *
+     * @param str         原字符串
+     * @param appendStr   追加的字符串
+     * @param repeatCount 追加的字符串重复次数
+     * @return 按规则追加字符串后的字符串
+     */
+    public static String appendToRight(String str, String appendStr, int repeatCount) {
+        return str + repeatStr(appendStr, repeatCount);
+    }
+
+    /**
+     * 向字符串左边追加一个字符串
+     *
+     * @param str       原字符串
+     * @param appendStr 追加的字符串
+     * @return 按规则追加字符串后的字符串
+     */
+    public static String appendToLeft(String str, String appendStr) {
+        return appendStr + str;
+    }
+
+    /**
+     * 向字符串右边追加一个字符串
+     *
+     * @param str       原字符串
+     * @param appendStr 追加的字符串
+     * @return 按规则追加字符串后的字符串
+     */
+    public static String appendToRight(String str, String appendStr) {
+        return str + appendStr;
     }
 
     /****************************** format end **********************************/
@@ -252,7 +331,7 @@ public class StringUtils {
      * @since 1.0
      */
     public static boolean isNotBlank(String str) {
-        return str != null && str.trim().length() == 0;
+        return str != null && str.trim().length() > 0;
     }
 
     /****************************** null & blank end **********************************/
@@ -449,6 +528,7 @@ public class StringUtils {
         return containsAny(newSource, newTarget);
     }
 
+    private static final Comparator<String> dictComparator = new StringDictComparator();
 
     /**
      * 按照字典顺序进行字符串大小比较
@@ -460,7 +540,7 @@ public class StringUtils {
      * @since 1.0
      */
     public static int compareWithDict(String str1, String str2) {
-        return compare(str1, str2, new StringDictComparator());
+        return compare(str1, str2, dictComparator);
     }
 
     /**
@@ -481,42 +561,151 @@ public class StringUtils {
     /****************************** sub & pick start **********************************/
 
     /**
-     * 针对一个字符串进行截取，并返回一个新的子字符串
+     * 针对一个字符串进行截取，并返回一个新的子字符串。<br/>
+     * eg. 字符串"hello word!"的分析如下：
+     * <code>
+     *     <table border="1">
+     *         <tr style="text-align:center">
+     *             <td>h</td><td>e</td><td>l</td><td>l</td><td>o</td><td>&nbsp;</td><td>w</td><td>o</td><td>r</td><td>l</td><td>d</td><td>!</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>-12</td><td>-11</td><td>-10</td><td>-9</td><td>-8</td><td>-7</td><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td>
+     *         </tr>
+     *     </table>
+     *     <ul>
+     *         <li>subStr("hello world!", -3) => ld!</li>
+     *         <li>subStr("hello world!", 3) => hel</li>
+     *     </ul>
+     * </code>
      *
-     * @param str   原字符串
-     * @param index 截取的开始位置和元素个数（正数表示正向计算并截取，负数表示逆向计算并截取)
+     * @param str  原字符串
+     * @param from 截取的开始位置和元素个数（正数表示正向计算并截取，负数表示逆向计算并截取)
      * @return 子字符串
      * @see IndexRangeAlgorithm
      * @since 1.0
      */
-    public static String subStr(String str, int index) {
+    public static String subStr(String str, int from) {
         if (str == null) {
             return null;
         }
-        int[] range = IndexRangeAlgorithm.indexRange(str.length(), index);
+        int[] range = IndexRangeAlgorithm.indexRange(str.length(), from);
         return str.substring(range[0], range[1]);
     }
 
     /**
-     * 针对一个字符串进行截取，并返回一个新的子字符串
+     * 针对一个字符串进行截取，并返回一个新的子字符串。<br/>
+     * eg. 字符串"hello word!"的分析如下：
+     * <code>
+     *     <table border="1">
+     *         <tr style="text-align:center">
+     *             <td>h</td><td>e</td><td>l</td><td>l</td><td>o</td><td>&nbsp;</td><td>w</td><td>o</td><td>r</td><td>l</td><td>d</td><td>!</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>-12</td><td>-11</td><td>-10</td><td>-9</td><td>-8</td><td>-7</td><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td>
+     *         </tr>
+     *     </table>
+     *     <ul>
+     *         <li>subStr("hello world!", -3, -1) => r</li>
+     *         <li>subStr("hello world!", -3, 1) => l</li>
+     *         <li>subStr("hello world!", 3, 7) => lo worl</li>
+     *     </ul>
+     * </code>
      *
-     * @param str   原字符串
-     * @param index 截取的开始位置和元素个数（正数表示正向计算，负数表示逆向计算)
-     * @param count 截取的方向和元素个数（整数表示正向截取，负数表示逆向截取）
+     * @param str    原字符串
+     * @param from   截取的开始位置（正数表示正向计算，负数表示逆向计算)
+     * @param length 元素个数（正数表示正向计算，负数表示逆向计算，绝对值表示字符的个数）
      * @return 子字符串
      * @see IndexRangeAlgorithm
      * @since 1.0
      */
-    public static String subStr(String str, int index, int count) {
+    public static String subStr(String str, int from, int length) {
         if (str == null) {
             return null;
         }
-        int[] range = IndexRangeAlgorithm.indexRange(str.length(), index, count);
+        int[] range = IndexRangeAlgorithm.indexRange(str.length(), from, length);
         return str.substring(range[0], range[1]);
     }
 
     /**
-     * 针对一个字符串进行截取，并返回一个新的子字符串；将所有索引进行重新排序并去重，然后提取指定位置的元素组成新列表
+     * 针对一个字符串进行切片截取，并返回一个新的子字符串。<br/>
+     * eg. 字符串"hello word!"的分析如下：
+     * <code>
+     *     <table border="1">
+     *         <tr style="text-align:center">
+     *             <td>h</td><td>e</td><td>l</td><td>l</td><td>o</td><td>&nbsp;</td><td>w</td><td>o</td><td>r</td><td>l</td><td>d</td><td>!</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>-12</td><td>-11</td><td>-10</td><td>-9</td><td>-8</td><td>-7</td><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td>
+     *         </tr>
+     *     </table>
+     *     <ul>
+     *         <li>slice("hello world!", -3) => ld!</li>
+     *         <li>slice("hello world!", -3, 1) => </li>
+     *     </ul>
+     * </code>
+     *
+     * @param str   原字符串
+     * @param start 截取的开始位置（正数表示正向计算，负数表示逆向计算）
+     * @return 子字符串
+     * @see IndexSliceAlgorithm
+     * @since 1.0
+     */
+    public static String slice(String str, int start) {
+        if (str == null) {
+            return null;
+        }
+        int[] range = IndexSliceAlgorithm.indexSlice(str.length(), start);
+        return str.substring(range[0], range[1]);
+    }
+
+    /**
+     * 针对一个字符串切片截取，并返回一个新的子字符串。<br/>
+     * eg. 字符串"hello word!"的分析如下：
+     * <code>
+     *     <table border="1">
+     *         <tr style="text-align:center">
+     *             <td>h</td><td>e</td><td>l</td><td>l</td><td>o</td><td>&nbsp;</td><td>w</td><td>o</td><td>r</td><td>l</td><td>d</td><td>!</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td>
+     *         </tr>
+     *         <tr style="text-align:center">
+     *             <td>-12</td><td>-11</td><td>-10</td><td>-9</td><td>-8</td><td>-7</td><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td>
+     *         </tr>
+     *     </table>
+     *     <ul>
+     *         <li>slice("hello world!", -3, -1) => ld</li>
+     *         <li>slice("hello world!", 3) => lo world!</li>
+     *         <li>slice("hello world!", 3, 7) => lo w</li>
+     *     </ul>
+     * </code>
+     *
+     * @param str   原字符串
+     * @param start 截取的开始位置（正数表示正向计算，负数表示逆向计算）；如果开始的位置超过字符串长度，则以字符串长度为基准
+     * @param end   截取的结束位置（正数表示正向计算，负数表示逆向计算）；如果结束的位置超过字符串长度，则以字符串长度为基准
+     * @return 子字符串
+     * @see IndexSliceAlgorithm
+     * @since 1.0
+     */
+    public static String slice(String str, int start, int end) {
+        if (str == null) {
+            return null;
+        }
+        int[] range = IndexSliceAlgorithm.indexSlice(str.length(), start, end);
+        return str.substring(range[0], range[1]);
+    }
+
+    /**
+     * 针对一个字符串进行截取，并返回一个新的子字符串；将给定的索引进行重新排序并去重，然后提取指定位置的元素组成新列表
      *
      * @param str   原字符串
      * @param index 索引位置列表，超出范围或负值被剔除
@@ -655,15 +844,15 @@ public class StringUtils {
      * @return 本地语言字符构成的字符串
      * @since 1.0
      */
-    public static String randomZhCharacter(int count) {
-        return RandomStringFactory.newChineseCharacterFactory().random(count);
+    public static String randomLocalChar(int count) {
+        return RandomStringFactory.newLocalCharacterFactory().random(count);
     }
 
     /****************************** create end **********************************/
 
     /****************************** convert start **********************************/
     /**
-     * 将字符串转换为大写格式，将指定未知的字符串转换为大写字符串
+     * 将字符串转换为大写格式，将指定位置的字符串转换为大写字符串
      *
      * @param str        字符串文本
      * @param startIndex 开始位置，索引从0开始
@@ -672,6 +861,9 @@ public class StringUtils {
      * @since 1.0
      */
     public static String upperCase(String str, int startIndex, int endIndex) {
+        if (str == null) {
+            return null;
+        }
         if (startIndex < 0 || endIndex < 0) {
             return str;
         }
@@ -683,7 +875,32 @@ public class StringUtils {
     }
 
     /**
-     * 将字符串转换为小写格式，将指定未知的字符串转换为小写字符串
+     * 将字符串转换为大写格式
+     *
+     * @param str 字符串文本
+     * @return 转换后的字符串
+     * @since 1.0
+     */
+    public static String upperCase(String str) {
+        if (str == null) {
+            return null;
+        }
+        return str.toUpperCase();
+    }
+
+    /**
+     * 将字符串的首个字符转换为大写格式
+     *
+     * @param str 字符串文本
+     * @return 转换后的字符串
+     * @since 1.0
+     */
+    public static String upperCaseFirst(String str) {
+        return upperCase(str, 0, 0);
+    }
+
+    /**
+     * 将字符串转换为小写格式，将指定位置的字符串转换为小写字符串
      *
      * @param str        字符串文本
      * @param startIndex 开始位置，索引从0开始
@@ -692,6 +909,9 @@ public class StringUtils {
      * @since 1.0
      */
     public static String lowerCase(String str, int startIndex, int endIndex) {
+        if (str == null) {
+            return null;
+        }
         if (startIndex < 0 || endIndex < 0) {
             return str;
         }
@@ -703,27 +923,52 @@ public class StringUtils {
     }
 
     /**
-     * 将字符串使用指定的字符集进行编码，并返回编码后的字符串
+     * 将字符串转换为小写格式
      *
-     * @param str               字符文本
-     * @param encodeCharsetName 编码字符集名称
-     * @return 编码后的字符串
+     * @param str 字符串文本
+     * @return 转换后的字符串
      * @since 1.0
      */
-    public static String encode(String str, String encodeCharsetName) {
-        return transcode(str, encodeCharsetName, DEFAULT_CHARSET);
+    public static String lowerCase(String str) {
+        if (str == null) {
+            return null;
+        }
+        return str.toLowerCase();
     }
 
     /**
-     * 将字符串使用指定的字符集进行解码，并返回解码后的字符串
+     * 将字符串的首个字符转换为小写格式
      *
-     * @param str               字符文本
-     * @param decodeCharsetName 编码字符集名称
+     * @param str 字符串文本
+     * @return 转换后的字符串
+     * @since 1.0
+     */
+    public static String lowerCaseFirst(String str) {
+        return lowerCase(str, 0, 0);
+    }
+
+    /**
+     * 将默认编码格式的字符串按照指定的编码格式进行编码，并返回编码后的字符串
+     *
+     * @param str         字符文本
+     * @param charsetName 原字符串的编码字符集名称
      * @return 编码后的字符串
      * @since 1.0
      */
-    public static String decode(String str, String decodeCharsetName) {
-        return transcode(str, DEFAULT_CHARSET, decodeCharsetName);
+    public static String encode(String str, String charsetName) {
+        return transcode(str, DEFAULT_CHARSET, charsetName);
+    }
+
+    /**
+     * 将指定编码格式的字符串按照默认编码格式进行解码，并返回解码后的字符串
+     *
+     * @param str         字符文本
+     * @param charsetName 原字符串的编码字符集名称
+     * @return 编码后的字符串
+     * @since 1.0
+     */
+    public static String decode(String str, String charsetName) {
+        return transcode(str, charsetName, DEFAULT_CHARSET);
     }
 
     /**
@@ -750,17 +995,111 @@ public class StringUtils {
 
     /****************************** type start **********************************/
 
+    /**
+     * 判断给定的字符串是否是数值类型。即串中包含0-9的字符，同时仅包含一个"."符号。
+     *
+     * @param str 被检查的字符串
+     * @return 如果字符串为空，则返回false；如果字符串包含除过0-9和"."以外的符号，则返回false，如果字符串存在两个以上"."符号则返回false。否则返回true。
+     */
     public static boolean isNumber(String str) {
-        return false;
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+        int dotCount = 0;
+        for (int i = 0, length = str.trim().length(); i < length; i++) {
+            int code = (int) str.charAt(i);
+            // Unicode中的48~57表示0~9
+            if (!(code >= 48 && code <= 57)) {
+                // Unicode中的46表示"."
+                if (code == 46) {
+                    dotCount++;
+                } else {
+                    return false;
+                }
+            }
+            if (dotCount > 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public static boolean isEnLetter(String str) {
-        return false;
-    }
-
-    public static boolean isZhLetter(String str) {
-        return false;
+    /**
+     * 判断给定的字符串是否是正数类型。即串中仅包含0-9的字符
+     *
+     * @param str 被检查的字符串
+     * @return 如果字符串为空，则返回false；如果字符串包含除过0-9以外的符号，则返回false
+     */
+    public static boolean isIntNumber(String str) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+        for (int i = 0, length = str.trim().length(); i < length; i++) {
+            int code = (int) str.charAt(i);
+            // Unicode中的48~57表示0~9
+            if (!(code >= 48 && code <= 57)) {
+                // Unicode中的46表示"."
+                if (code == 46) {
+                    return false;
+                }
+                return false;
+            }
+        }
+        return true;
     }
 
     /****************************** type end **********************************/
+
+    /****************************** find start **********************************/
+
+    /**
+     * 在字符串中查找指定字符出现的全部索引位置，索引从0开始
+     *
+     * @param str 字符串
+     * @param ch  指定查找的字符
+     * @return 字符出现位置的索引数组
+     * @since 1.0
+     */
+    public static int[] indexOf(String str, char ch) {
+        List<Integer> list = new ArrayList<>();
+        int nextStartIndex = 0;
+        int end = str.length();
+        while (nextStartIndex <= end) {
+            int index = str.indexOf(ch, nextStartIndex);
+            if (index > 0) {
+                list.add(index);
+                nextStartIndex = index + 1;
+            } else {
+                break;
+            }
+        }
+        return list.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    /**
+     * 在字符串中查找指定字符串出现的全部索引位置，索引从0开始
+     *
+     * @param str    字符串
+     * @param subStr 指定查找的字符串
+     * @return 子字符串出现位置的索引数组
+     * @since 1.0
+     */
+    public static int[] indexOf(String str, String subStr) {
+        List<Integer> list = new ArrayList<>();
+        int nextStartIndex = 0;
+        int stepLength = subStr.length();
+        int end = str.length();
+        while (nextStartIndex <= end) {
+            int index = str.indexOf(subStr, nextStartIndex);
+            if (index > 0) {
+                list.add(index);
+                nextStartIndex = index + stepLength;
+            } else {
+                break;
+            }
+        }
+        return list.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    /****************************** find end **********************************/
 }

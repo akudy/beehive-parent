@@ -53,5 +53,9 @@ package org.beehive.util;
  */
 public class RegexUtils {
 
+    private RegexUtils() {
+    }
+
+
 
 }

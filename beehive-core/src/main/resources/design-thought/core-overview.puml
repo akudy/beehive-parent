@@ -23,7 +23,7 @@
 
 *** 对象
 **** Util
-*****_ ObjectUtils
+*****_ ObjectUtils <font color=red><&info><sup>待完善</sup></font>
 
 *** 字符串
 **** Util
@@ -36,11 +36,14 @@
 **** 随机字符串
 *****_ RandomStringFactory
 
-*** 类
+*** 反射
 **** Util
-*****_ ClassUtils
+*****_ ClassUtils <font color=red><&info><sup>待完善</sup></font>
 
-*** 属性文件
+*** 文件
+**** Util
+*****_ FileUtils <font color=red><&info><sup>待完善</sup></font>
+*****_ PropertiesFileUtils <font color=red><&info><sup>待完善</sup></font>
 
 
 *** 日期时间
@@ -51,5 +54,13 @@
 **** Ant
 *****_ AntMatcher
 *****_ AntPathMatcher
+**** 正则匹配
+***** Util
+******_ RegexUtils <font color=red><&info><sup>待完善</sup></font>
+
+** 组件库
+
+*** 字符集
+**** <del>Unicode</del>
 
 @endmindmap
