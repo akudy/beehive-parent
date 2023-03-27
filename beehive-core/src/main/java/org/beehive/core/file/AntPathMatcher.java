@@ -88,6 +88,9 @@ public class AntPathMatcher implements PathMatcher {
      */
     private static final String ANY_COUNT_DIR = "**";
 
+    /**
+     * 通配符字符列表
+     */
     private static final char[] WILDCARD_CHARS = {ANY_COUNT_CHAR.charAt(0), ANY_SINGLE_CHAR.charAt(0)};
 
     /**

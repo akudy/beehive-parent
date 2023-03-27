@@ -10,7 +10,7 @@
  * Comments: <简述该文件的内容和作用>
  */
 
-package org.beehive.core.converter;
+package org.beehive.core.common;
 
 import org.beehive.util.ObjectUtils;
 

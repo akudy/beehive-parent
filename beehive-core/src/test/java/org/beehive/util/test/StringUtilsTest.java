@@ -12,6 +12,10 @@
 
 package org.beehive.util.test;
 
+import org.beehive.core.string.PatternMessageBuilder;
+import org.beehive.core.string.PatternStringBuilder;
+import org.beehive.core.string.pattern.PatternMessage;
+import org.beehive.core.string.pattern.PatternString;
 import org.beehive.util.StringUtils;
 import org.junit.Test;
 
@@ -64,7 +68,21 @@ public class StringUtilsTest {
         System.out.println("format(字符串：{}, 213) => " + StringUtils.format("字符串：{}", "213"));
         System.out.println("logFormat(字符串：{}, 213) => " + StringUtils.logFormat("字符串：{}", "213"));
         System.out.println("msgFormat(字符串：{0}, 213) => " + StringUtils.msgFormat("字符串：{0}", "213"));
-        System.out.println("strFormat(字符串：{}, 213) => " + StringUtils.strFormat("字符串：%s", "213"));
+        System.out.println("strFormat(字符串：%s, 213) => " + StringUtils.strFormat("字符串：%s", "213"));
+
+        PatternMessageBuilder pmb = new PatternMessageBuilder();
+        pmb.append("字符串：");
+        pmb.append(PatternMessage.stringBuilder(0).build());
+        pmb.append("  数字：");
+        pmb.append(PatternMessage.numberBuilder(1).digit().point().digit(2).build());
+        System.out.println("msgFormat(" + pmb.toString() + ", 213, 213.12) => " + StringUtils.msgFormat(pmb.toString(), "213", 213.12));
+
+        PatternStringBuilder psb = new PatternStringBuilder();
+        psb.append("字符串：");
+        psb.append(PatternString.builder(PatternString.Marker.STRING_VALUE_LOWERCASE).build());
+        psb.append("  数字：");
+        psb.append(PatternString.builder(PatternString.Marker.DECIMAL_FLOATING_NUMBER).decimalNumberPrecision(1).build());
+        System.out.println("strFormat(" + psb.toString() + ", 213, 213.12) => " + StringUtils.strFormat(psb.toString(), "213", 213.12));
     }
 
     @Test
@@ -250,19 +268,19 @@ public class StringUtilsTest {
 
     @Test
     public void testType() {
-        System.out.println("isNumber(1234a) => "+StringUtils.isNumber("1234a"));
-        System.out.println("isNumber(1234.01) => "+StringUtils.isNumber("1234.01"));
-        System.out.println("isNumber(1234.) => "+StringUtils.isNumber("1234."));
-        System.out.println("isNumber(0.1234.01) => "+StringUtils.isNumber("0.1234.01"));
-        System.out.println("isNumber(.1234) => "+StringUtils.isNumber(".1234"));
-        System.out.println("isNumber(1234) => "+StringUtils.isNumber("1234"));
+        System.out.println("isNumber(1234a) => " + StringUtils.isNumber("1234a"));
+        System.out.println("isNumber(1234.01) => " + StringUtils.isNumber("1234.01"));
+        System.out.println("isNumber(1234.) => " + StringUtils.isNumber("1234."));
+        System.out.println("isNumber(0.1234.01) => " + StringUtils.isNumber("0.1234.01"));
+        System.out.println("isNumber(.1234) => " + StringUtils.isNumber(".1234"));
+        System.out.println("isNumber(1234) => " + StringUtils.isNumber("1234"));
 
-        System.out.println("isIntNumber(1234a) => "+StringUtils.isIntNumber("1234a"));
-        System.out.println("isIntNumber(1234.01) => "+StringUtils.isIntNumber("1234.01"));
-        System.out.println("isIntNumber(1234.) => "+StringUtils.isIntNumber("1234."));
-        System.out.println("isIntNumber(0.1234.01) => "+StringUtils.isIntNumber("0.1234.01"));
-        System.out.println("isIntNumber(.1234) => "+StringUtils.isIntNumber(".1234"));
-        System.out.println("isIntNumber(1234) => "+StringUtils.isIntNumber("1234"));
+        System.out.println("isIntNumber(1234a) => " + StringUtils.isIntNumber("1234a"));
+        System.out.println("isIntNumber(1234.01) => " + StringUtils.isIntNumber("1234.01"));
+        System.out.println("isIntNumber(1234.) => " + StringUtils.isIntNumber("1234."));
+        System.out.println("isIntNumber(0.1234.01) => " + StringUtils.isIntNumber("0.1234.01"));
+        System.out.println("isIntNumber(.1234) => " + StringUtils.isIntNumber(".1234"));
+        System.out.println("isIntNumber(1234) => " + StringUtils.isIntNumber("1234"));
     }
 
     @Test

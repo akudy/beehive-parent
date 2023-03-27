@@ -10,7 +10,7 @@
  * Comments: <简述该文件的内容和作用>
  */
 
-package org.beehive.core.converter;
+package org.beehive.core.common;
 
 /**
  * 类型转换接口，用于将一个输入的对象转换为目标类型对象。

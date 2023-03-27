@@ -1,19 +1,62 @@
 @startuml
 
-abstract class StringFormatter {
-    +format() : String
+together {
+    abstract class StringFormatter {
+        +format() : String
+    }
+    class Slf4jStringFormatter
+
+    StringFormatter <|-- Slf4jStringFormatter
 }
-class Slf4jStringFormatter
 
-StringFormatter <|-- Slf4jStringFormatter
+together {
+    interface Comparator<T>
+    class StringDictComparator<String>
 
-interface Comparator<T>
-class StringDictComparator<String>
-
-Comparator <|.. StringDictComparator
+    Comparator <|.. StringDictComparator
+}
 
 class RandomStringFactory{
     +random() : String
+}
+
+together {
+    package "pattern" {
+        interface PatternPlaceholder {
+            +placeholder() : String
+        }
+        class PatternMessage
+        class PatternMessage.Builder
+        class PatternMessage.StringPatternBuilder
+        class PatternMessage.NumberPatternBuilder
+        class PatternMessage.DatePatternBuilder
+        class PatternMessage.TimePatternBuilder
+        class PatternString
+        class PatternString.Builder
+        enum PatternString.Marker
+    }
+    PatternPlaceholder <|.. PatternMessage
+    PatternMessage +-right- PatternMessage.Builder
+    PatternMessage +-down- PatternMessage.StringPatternBuilder
+    PatternMessage +-down- PatternMessage.NumberPatternBuilder
+    PatternMessage +-down- PatternMessage.DatePatternBuilder
+    PatternMessage +-down- PatternMessage.TimePatternBuilder
+    PatternPlaceholder <|.. PatternString
+    PatternString +-- PatternString.Builder
+    PatternString +-- PatternString.Marker
+
+    interface Appendable
+    abstract class PatternBuilderAppendable<T, F> {
+        +toString() : String
+    }
+    class PatternMessageBuilder
+    class PatternStringBuilder
+
+    Appendable <|.. PatternBuilderAppendable
+    PatternBuilderAppendable <|-- PatternMessageBuilder
+    PatternBuilderAppendable <|-- PatternStringBuilder
+    PatternMessageBuilder .. PatternMessage
+    PatternStringBuilder .. PatternString
 }
 
 @enduml

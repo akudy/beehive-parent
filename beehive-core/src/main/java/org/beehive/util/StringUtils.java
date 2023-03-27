@@ -14,11 +14,8 @@ package org.beehive.util;
 
 import org.beehive.core.algorithm.IndexRangeAlgorithm;
 import org.beehive.core.algorithm.IndexSliceAlgorithm;
-import org.beehive.core.converter.ConvertException;
-import org.beehive.core.string.RandomStringFactory;
-import org.beehive.core.string.Slf4jStringFormatter;
-import org.beehive.core.string.StringDictComparator;
-import org.beehive.core.string.StringFormatter;
+import org.beehive.core.common.ConvertException;
+import org.beehive.core.string.*;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
@@ -165,6 +162,8 @@ public class StringUtils {
      * <code>
      * userId = %d, userName = %s
      * </code>
+     * <br/>
+     * 也可以借助{@link PatternStringBuilder}来实现模板的构建
      *
      * @param templateStr 字符串模板
      * @param args        填充内容列表
@@ -182,6 +181,8 @@ public class StringUtils {
      * <code>
      * userId = {0}, userName = {1}
      * </code>
+     * <br/>
+     * 也可以借助{@link PatternMessageBuilder}来实现模板的构建
      *
      * @param templateStr 字符串模板
      * @param args        填充内容列表

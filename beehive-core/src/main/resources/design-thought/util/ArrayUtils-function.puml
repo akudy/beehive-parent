@@ -9,6 +9,19 @@
 ****_ isEmpty
 ****_ isNotEmpty
 
+** 实例化
+*** 创建
+****_ newByteArray
+****_ newCharArray
+****_ newShortArray
+****_ newIntArray
+****_ newFloatArray
+****_ newLongArray
+****_ newDoubleArray
+****_ newBooleanArray
+****_ newArray
+****_ newEmptyArray
+
 ** 数据类型检查
 ***_ isArray
 ***_ length

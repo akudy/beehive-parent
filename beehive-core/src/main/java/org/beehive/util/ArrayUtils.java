@@ -12,7 +12,7 @@
 
 package org.beehive.util;
 
-import org.beehive.core.converter.Converter;
+import org.beehive.core.common.Converter;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -466,6 +466,146 @@ public class ArrayUtils {
     }
 
     /*----------------------------- null & notNull & empty && notEmpty end ----------------------------------------*/
+
+    /*----------------------------- create start ----------------------------------------*/
+
+    /**
+     * 空数组的长度
+     */
+    private static final int EMPTY_ARRAY_LENGTH = 0;
+
+    /**
+     * 根据元素创建一个byte数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static byte[] newByteArray(byte... e) {
+        if (e == null || e.length == 0) {
+            return new byte[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+
+    /**
+     * 根据元素创建一个char数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static char[] newCharArray(char... e) {
+        if (e == null || e.length == 0) {
+            return new char[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+    /**
+     * 根据元素创建一个short数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static short[] newShortArray(short... e) {
+        if (e == null || e.length == 0) {
+            return new short[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+    /**
+     * 根据元素创建一个int数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static int[] newIntArray(int... e) {
+        if (e == null || e.length == 0) {
+            return new int[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+    /**
+     * 根据元素创建一个float数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static float[] newFloatArray(float... e) {
+        if (e == null || e.length == 0) {
+            return new float[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+    /**
+     * 根据元素创建一个long数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static long[] newLongArray(long... e) {
+        if (e == null || e.length == 0) {
+            return new long[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+    /**
+     * 根据元素创建一个double数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static double[] newDoubleArray(double... e) {
+        if (e == null || e.length == 0) {
+            return new double[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+    /**
+     * 根据元素创建一个boolean数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static boolean[] newBooleanArray(boolean... e) {
+        if (e == null || e.length == 0) {
+            return new boolean[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+
+    /**
+     * 根据元素创建一个指定元素类型的数组。
+     *
+     * @param e 数据元素
+     * @return 如果元素为空，则返回一个长度为{@value #EMPTY_ARRAY_LENGTH}的数组；否则返回输入元素构成的数组。
+     */
+    public static <E> E[] newArray(E... e) {
+        if (e == null || e.length == 0) {
+            return (E[]) new Object[EMPTY_ARRAY_LENGTH];
+        }
+        return e;
+    }
+
+    /**
+     * 构建某一个指定类型的空数组
+     *
+     * @param clazz 数组元素类型类定义
+     * @param <E>   数组元素类型定义
+     * @return 返回这个数组元素类型的长度为0的空数组
+     * @see Array#newInstance(Class, int)
+     */
+    public static <E> E[] newEmptyArray(Class<E> clazz) {
+        return (E[])Array.newInstance(clazz, EMPTY_ARRAY_LENGTH);
+    }
+
+    /*----------------------------- create end ----------------------------------------*/
 
     /*----------------------------- cast start ----------------------------------------*/
 
@@ -2196,7 +2336,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static char[] subArray(char[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end+1);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /**
@@ -2209,7 +2349,7 @@ public class ArrayUtils {
      * @see Arrays#copyOfRange(int[], int, int)
      */
     public static int[] subArray(int[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end+1);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /**
@@ -2223,7 +2363,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static short[] subArray(short[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end+1);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /**
@@ -2237,7 +2377,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static long[] subArray(long[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end+1);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /**
@@ -2251,7 +2391,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static float[] subArray(float[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end+1);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /**
@@ -2265,7 +2405,7 @@ public class ArrayUtils {
      * @since 1.0
      */
     public static double[] subArray(double[] array, int start, int end) {
-        return Arrays.copyOfRange(array, start, end+1);
+        return Arrays.copyOfRange(array, start, end + 1);
     }
 
     /*----------------------------- extract end ----------------------------------------*/
@@ -3591,6 +3731,5 @@ public class ArrayUtils {
     }
 
     /*----------------------------- unite calc end ----------------------------------------*/
-
 
 }

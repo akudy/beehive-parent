@@ -71,7 +71,7 @@ import java.util.*;
  * <tr>
  * <td align="center">D</td>
  * <td>一年中的第几天标识符，取值范围：1-366。例如2019年6月27日是该年的第178天。</td>
- * <td>d - 178<br>dddd - 0178</td>
+ * <td>D - 178<br>DDDD - 0178</td>
  * </tr>
  * <tr>
  * <td align="center">F</td>
@@ -2764,7 +2764,7 @@ public class DateTimeUtils {
      * 将日期时间格式为指定时区和语言环境下指定模式的字符串
      *
      * @param date     日期时间
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone 时区对象
      * @param locale   语言环境
      * @return 格式化后的日期字符串
@@ -2783,7 +2783,7 @@ public class DateTimeUtils {
      * 将日期时间格式为指定时区下指定模式的字符串
      *
      * @param date     日期时间
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone 时区对象
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#SimpleDateFormat(String, Locale)
@@ -2801,7 +2801,7 @@ public class DateTimeUtils {
      * 将日期时间格式为指定语言环境下指定模式的字符串
      *
      * @param date    日期时间
-     * @param pattern <a href="#dateFormat">格式化字符串</a>
+     * @param pattern <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param locale  语言环境
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#SimpleDateFormat(String, Locale)
@@ -2817,7 +2817,7 @@ public class DateTimeUtils {
      * 将日期时间格式为本地默认语言环境下指定模式的字符串
      *
      * @param date    日期时间
-     * @param pattern <a href="#dateFormat">格式化字符串</a>
+     * @param pattern <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#SimpleDateFormat(String)
      * @see SimpleDateFormat#format(Date)
@@ -2883,7 +2883,7 @@ public class DateTimeUtils {
      * 将时间戳对应的日期时间格式为指定时区和语言环境下指定模式的字符串
      *
      * @param timestamp 时间戳
-     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone  时区对象
      * @param locale    语言环境
      * @return 格式化后的日期字符串
@@ -2900,7 +2900,7 @@ public class DateTimeUtils {
      * 将时间戳对应的日期时间格式为指定时区下指定模式的字符串
      *
      * @param timestamp 时间戳
-     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone  时区对象
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#setTimeZone(TimeZone)
@@ -2916,7 +2916,7 @@ public class DateTimeUtils {
      * 将时间戳对应的日期时间格式为指定语言环境下指定模式的字符串
      *
      * @param timestamp 时间戳
-     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param locale    语言环境
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#setTimeZone(TimeZone)
@@ -2932,7 +2932,7 @@ public class DateTimeUtils {
      * 将时间戳对应的日期时间格式为本地默认语言环境下指定模式的字符串
      *
      * @param timestamp 时间戳
-     * @param pattern   <a href="#dateFormat">格式化字符串</a>
+     * @param pattern   <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#setTimeZone(TimeZone)
      * @see #newDateTime(long)
@@ -2993,7 +2993,7 @@ public class DateTimeUtils {
      * 将日历对应的日期时间格式为指定时区和语言环境下指定模式的字符串
      *
      * @param calendar 日历
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone 时区对象
      * @param locale   语言环境
      * @return 格式化后的日期字符串
@@ -3010,7 +3010,7 @@ public class DateTimeUtils {
      * 将日历对应的日期时间格式为指定时区下指定模式的字符串
      *
      * @param calendar 日历
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone 时区对象
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#setTimeZone(TimeZone)
@@ -3026,7 +3026,7 @@ public class DateTimeUtils {
      * 将日历对应的日期时间格式为指定语言环境下指定模式的字符串
      *
      * @param calendar 日历
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param locale   语言环境
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#setTimeZone(TimeZone)
@@ -3042,7 +3042,7 @@ public class DateTimeUtils {
      * 将日历对应的日期时间格式为本地默认语言环境下指定模式的字符串
      *
      * @param calendar 日历
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @return 格式化后的日期字符串
      * @see SimpleDateFormat#setTimeZone(TimeZone)
      * @see #newDateTime(long)
@@ -3098,7 +3098,7 @@ public class DateTimeUtils {
     /**
      * 将当前日期时间格式为指定时区和语言环境下指定模式的字符串
      *
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone 时区对象
      * @param locale   语言环境
      * @return 格式化后的日期字符串
@@ -3113,7 +3113,7 @@ public class DateTimeUtils {
     /**
      * 将当前日期时间格式为指定时区下指定模式的字符串
      *
-     * @param pattern  <a href="#dateFormat">格式化字符串</a>
+     * @param pattern  <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param timeZone 时区对象
      * @return 格式化后的日期字符串
      * @see #format(Date, String, Locale)
@@ -3127,7 +3127,7 @@ public class DateTimeUtils {
     /**
      * 将当前日期时间格式为指定语言环境下指定模式的字符串
      *
-     * @param pattern <a href="#dateFormat">格式化字符串</a>
+     * @param pattern <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @param locale  语言环境
      * @return 格式化后的日期字符串
      * @see #format(Date, String, Locale)
@@ -3171,7 +3171,7 @@ public class DateTimeUtils {
     /**
      * 将当前日期时间格式为本地默认语言环境下指定模式的字符串
      *
-     * @param pattern <a href="#dateFormat">格式化字符串</a>
+     * @param pattern <a href="#dateFormat">格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @return 格式化后的日期字符串
      * @see #format(Date, String)
      * @since 1.0
@@ -3532,7 +3532,7 @@ public class DateTimeUtils {
      * 将一个指定格式的日期时间字符串转换为日期时间对象
      *
      * @param dateStr 日期时间字符串
-     * @param pattern 日期时间字符串的格式
+     * @param pattern <a href="#dateFormat">日期时间格式化字符串</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @return 日期时间对象
      * @throws RuntimeException 如果转换失败则抛出该异常
      * @see SimpleDateFormat#parse(String)
@@ -3709,7 +3709,7 @@ public class DateTimeUtils {
      * 根据输入的日期时间字符串和日期时间字符串格式集合，进行尝试匹配解析为日期时间对象
      *
      * @param dateStr  日期时间字符串
-     * @param patterns 日期时间格式化字符串列表
+     * @param patterns <a href="#dateFormat">日期时间格式化字符串列表</a>；也可以参考{@link org.beehive.core.string.pattern.PatternMessage.DatePatternBuilder}来完成格式构建
      * @return 日期时间对象
      * @see #parse(String, String)
      * @see SimpleDateFormat#SimpleDateFormat(String)

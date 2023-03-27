@@ -51,7 +51,7 @@ package org.beehive.core.file;
  * @version 1.0
  * @since 1.0
  */
-public interface PathMatcher {
+public interface PathMatcher{
 
     /**
      * 判断一个路径是否是一个模式方式。如果不是则完全不用使用模式进行匹配，可以直接进行相等比较。减少时间损耗。

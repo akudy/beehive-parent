@@ -31,6 +31,11 @@
 **** 格式化
 *****_ StringFormatter
 *****_ Slf4jStringFormatter
+***** 格式串构建器
+******_ PatternString
+******_ PatternMessage
+******_ PatternStringBuilder
+******_ PatternMessageBuilder
 **** 排序
 *****_ StringDictComparator
 **** 随机字符串
@@ -59,6 +64,13 @@
 ******_ RegexUtils <font color=red><&info><sup>待完善</sup></font>
 
 ** 组件库
+*** 通用组件
+**** 转换器
+*****_ Converter
+*****_ COnverterException
+
+**** 匹配器
+*****_ Matcher
 
 *** 字符集
 **** <del>Unicode</del>

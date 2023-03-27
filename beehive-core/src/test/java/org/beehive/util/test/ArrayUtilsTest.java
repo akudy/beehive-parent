@@ -12,8 +12,8 @@
 
 package org.beehive.util.test;
 
-import org.beehive.core.converter.ConvertException;
-import org.beehive.core.converter.Converter;
+import org.beehive.core.common.ConvertException;
+import org.beehive.core.common.Converter;
 import org.beehive.util.ArrayUtils;
 import org.junit.Test;
 
@@ -119,6 +119,18 @@ public class ArrayUtilsTest {
     }
 
     @Test
+    public void newArrayTest() {
+        int[] array1 = ArrayUtils.newIntArray(1, 2, 3);
+        int[] array2 = ArrayUtils.newIntArray();
+        System.out.println(String.format("newIntArray(1,2,3) => %s = %s", array1, Arrays.toString(array1)));
+        System.out.println(String.format("newIntArray() => %s = %s", array2, Arrays.toString(array2)));
+        String[] array3 = ArrayUtils.newArray("A", "B", "C");
+        System.out.println(String.format("newArray(\"A\",\"B\",\"C\") => %s = %s", array3, Arrays.toString(array3)));
+        String[] array4 = ArrayUtils.newEmptyArray(String.class);
+        System.out.println(String.format("newEmptyArray(String.class) => %s = %s", array4, Arrays.toString(array4)));
+    }
+
+    @Test
     public void isArrayAndLengthTest() {
         String str1 = "ABC";
         Object object = new String[]{"ABC", "DDD"};
@@ -147,7 +159,7 @@ public class ArrayUtilsTest {
 //        strListView.add("2");
 //        System.out.println("\tadd 1,2 to this list view after: " + strListView);
 
-        Student[] stuArray = {new Student(1),new Student(2),new Student(1)};
+        Student[] stuArray = {new Student(1), new Student(2), new Student(1)};
         Set<Student> stuSet = ArrayUtils.asSet(stuArray);
         System.out.println(String.format("asSet(E...) params = (%s), result = %s", Arrays.toString(stuArray), stuSet));
         stuSet.add(new Student(3));
