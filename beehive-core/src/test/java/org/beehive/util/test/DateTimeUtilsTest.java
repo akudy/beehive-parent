@@ -598,4 +598,25 @@ public class DateTimeUtilsTest {
         System.out.println(String.format("toLocalTime(%s, %s) = %s", DateTimeUtils.format(nowDate), zoneId, DateTimeUtils.toLocalTime(nowDate, zoneId)));
     }
 
+    @Test
+    public void moveMonthTest() {
+        Date date = DateTimeUtils.newBeginDate(2023, 1, 31);
+        int months = 3;
+
+        int daysOfMonth = DateTimeUtils.getMonthDays(date);
+        Date newDate = DateTimeUtils.addMonths(date, months);
+        int daysOfNewMonth = DateTimeUtils.getMonthDays(newDate);
+        if (daysOfMonth > daysOfNewMonth) {
+            int day = DateTimeUtils.getDay(date);
+            int leftDays = daysOfMonth - day;
+            int newDay = daysOfNewMonth - leftDays;
+            newDate.setDate(newDay);
+        }
+        System.out.println(DateTimeUtils.format(date, "y-M-d"));
+        System.out.println(DateTimeUtils.format(newDate, "y-M-d"));
+
+
+        System.out.println(String.format("moveMonths(%s, %s) = %s", DateTimeUtils.format(date), months, DateTimeUtils.format(DateTimeUtils.elapseMonths(date, months))));
+    }
+
 }

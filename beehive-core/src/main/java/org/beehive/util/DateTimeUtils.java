@@ -1707,7 +1707,8 @@ public class DateTimeUtils {
     }
 
     /**
-     * 给指定的日期时间添加一个指定的月数得出一个新的日期时间
+     * 给指定的日期时间添加一个指定的月数得出一个新的日期时间<br/>
+     * <strong>特别注意：如果增加/减少月数后的目标月的天数小于原始月的天数，则自动设置为目标月的最后一天</strong>
      *
      * @param date     日期时间对象
      * @param months   添加的月数
@@ -1726,7 +1727,8 @@ public class DateTimeUtils {
     }
 
     /**
-     * 给指定的日期时间添加一个指定的月数得出一个新的日期时间，时间被固定为00:00:00
+     * 给指定的日期时间添加一个指定的月数得出一个新的日期时间，时间被固定为00:00:00<br/>
+     * <strong>特别注意：如果增加/减少月数后的目标月的天数小于原始月的天数，则自动设置为目标月的最后一天</strong>
      *
      * @param date   日期时间对象
      * @param months 添加的月数
@@ -1739,7 +1741,8 @@ public class DateTimeUtils {
     }
 
     /**
-     * 给指定的日期时间减去一个指定的月数得出一个新的日期时间
+     * 给指定的日期时间减去一个指定的月数得出一个新的日期时间<br/>
+     * <strong>特别注意：如果增加/减少月数后的目标月的天数小于原始月的天数，则自动设置为目标月的最后一天</strong>
      *
      * @param date     日期时间对象
      * @param months   减去的月数
@@ -1753,7 +1756,8 @@ public class DateTimeUtils {
     }
 
     /**
-     * 给指定的日期时间减去一个指定的月数得出一个新的日期时间，时间被固定为00:00:00
+     * 给指定的日期时间减去一个指定的月数得出一个新的日期时间，时间被固定为00:00:00<br/>
+     * <strong>特别注意：如果增加/减少月数后的目标月的天数小于原始月的天数，则自动设置为目标月的最后一天</strong>
      *
      * @param date   日期时间对象
      * @param months 减去的月数
@@ -1763,6 +1767,47 @@ public class DateTimeUtils {
      */
     public static Date minusMonths(Date date, int months) {
         return addMonths(date, -months, DateTimeUtils.TimeMode.NOW_OF_DAY);
+    }
+
+    /**
+     * 给当前的日期时间移动一个指定的月数得出一个新的日期时间，时间被固定为00:00:00<br/>
+     * <strong>特别注意：如果向前/后推移指定月数后的目标月的天数小于原始月的天数，则目标日期（天）距离目标日期所在月的天数差等于使用原始日期（天）距离原始月日期所在月的天数差</strong>
+     *
+     * @param date       日期时间对象
+     * @param monthCount 指定的月数，如果是大于0，则向后移动；如果小于0，则向前移动
+     * @param timeMode   时间模式
+     * @return 移动一个指定的月数后的新日期时间对象
+     */
+    public static Date elapseMonths(Date date, int monthCount, DateTimeUtils.TimeMode timeMode) {
+        Calendar calendar = getCalendar(date, timeMode);
+        if (monthCount == 0) {
+            return calendar.getTime();
+        }
+        // 当前日期值
+        int[] array = toArray(calendar);
+        int daysOfMonth = getDaysOfMonth(array[0], array[1]);
+        // 添加指定的月数后的日期值
+        calendar.add(Calendar.MONTH, monthCount);
+        int daysOfNewMonth = getMonthDays(calendar.getTime());
+        if (daysOfMonth > daysOfNewMonth) {
+            int leftDays = daysOfMonth - array[2];
+            int newDay = daysOfNewMonth - leftDays;
+            calendar.set(Calendar.DAY_OF_MONTH, newDay);
+        }
+        return calendar.getTime();
+    }
+
+    /**
+     * 给当前的日期时间移动一个指定的月数得出一个新的日期时间，时间被固定为00:00:00<br/>
+     * <strong>特别注意：如果向前/后推移指定月数后的目标月的天数小于原始月的天数，则目标日期（天）距离目标日期所在月的天数差等于使用原始日期（天）距离原始月日期所在月的天数差</strong>
+     *
+     * @param date       日期时间对象
+     * @param monthCount 指定的月数，如果是大于0，则向后移动；如果小于0，则向前移动
+     * @return 移动一个指定的月数后的新日期时间对象
+     * @see #elapseMonths(Date, int, TimeMode)
+     */
+    public static Date elapseMonths(Date date, int monthCount) {
+        return elapseMonths(date, monthCount, TimeMode.NOW_OF_DAY);
     }
 
     /**
@@ -2160,7 +2205,8 @@ public class DateTimeUtils {
     }
 
     /**
-     * 给当前日期时间添加一个指定的月数得出一个新的日期时间，时间被固定为00:00:00
+     * 给当前日期时间添加一个指定的月数得出一个新的日期时间，时间被固定为00:00:00<br/>
+     * <strong>特别注意：如果增加/减少月数后的目标月的天数小于原始月的天数，则自动设置为目标月的最后一天</strong>
      *
      * @param months 添加的月数
      * @return 添加指定月数后的新日期时间对象
@@ -2172,7 +2218,8 @@ public class DateTimeUtils {
     }
 
     /**
-     * 给当前的日期时间减去一个指定的月数得出一个新的日期时间，时间被固定为00:00:00
+     * 给当前的日期时间减去一个指定的月数得出一个新的日期时间，时间被固定为00:00:00<br/>
+     * <strong>特别注意：如果增加/减少月数后的目标月的天数小于原始月的天数，则自动设置为目标月的最后一天</strong>
      *
      * @param months 减去的月数
      * @return 减去指定月数后的新日期时间对象
@@ -2181,6 +2228,18 @@ public class DateTimeUtils {
      */
     public static Date minusMonthsOfNow(int months) {
         return addMonths(now(), -months, DateTimeUtils.TimeMode.NOW_OF_DAY);
+    }
+
+    /**
+     * 给当前的日期时间移动一个指定的月数得出一个新的日期时间，时间被固定为00:00:00<br/>
+     * <strong>特别注意：如果向前/后推移指定月数后的目标月的天数小于原始月的天数，则目标日期（天）距离目标日期所在月的天数差等于使用原始日期（天）距离原始月日期所在月的天数差</strong>
+     *
+     * @param monthCount 指定的月数，如果是大于0，则向后移动；如果小于0，则向前移动
+     * @return 移动一个指定的月数后的新日期时间对象
+     * @see #elapseMonths(Date, int, TimeMode)
+     */
+    public static Date elapseMonthsOfNow(int monthCount) {
+        return elapseMonths(now(), monthCount, DateTimeUtils.TimeMode.NOW_OF_DAY);
     }
 
     /**
