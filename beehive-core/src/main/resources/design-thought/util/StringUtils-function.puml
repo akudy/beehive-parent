@@ -1,4 +1,12 @@
 @startmindmap
+<style>
+mindmapDiagram {
+    node {
+        BackgroundColor #Business
+    }
+}
+</style>
+
 * StringUtils
 
 ** 模板字符串样式(TemplateStyle)

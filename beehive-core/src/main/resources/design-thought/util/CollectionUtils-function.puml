@@ -1,4 +1,11 @@
 @startmindmap
+<style>
+mindmapDiagram {
+    node {
+        BackgroundColor #Business
+    }
+}
+</style>
 
 * CollectionUtils
 ** 集合检查

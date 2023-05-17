@@ -1,4 +1,11 @@
 @startmindmap
+<style>
+mindmapDiagram {
+    node {
+        BackgroundColor #Business
+    }
+}
+</style>
 
 * ArrayUtils
 ** 数组检查

@@ -1,4 +1,11 @@
 @startmindmap
+<style>
+mindmapDiagram {
+    node {
+        BackgroundColor #Business
+    }
+}
+</style>
 
 * ClassUtils
 
@@ -33,12 +40,28 @@
 ****_ getDeclaredGenericType
 ****_ getActualGenericType
 *** 注解
-****_ getAnnotation
+****_ hasAnnotation
+****_ getAnnotations
 
 
 ** 类内容分析
 *** 字段/属性
+****_ getContainFields
+****_ getDeclaredFields
+****_ getDeclaredField
+****_ containField
+****_ declaredField
+
+
 *** 构造函数
+****_ getDeclaredConstructors
+****_ getDeclaredConstructor
+****_ declaredConstructor
+
 *** 方法
+****_ getContainMethods
+****_ getDeclaredMethods
+****_ containMethod
+****_ declaredMethod
 
 @endmindmap

@@ -1,4 +1,12 @@
 @startmindmap
+<style>
+mindmapDiagram {
+    node {
+        BackgroundColor #Business
+    }
+}
+</style>
+
 * SystemInfo
 
 ** HARDWARE

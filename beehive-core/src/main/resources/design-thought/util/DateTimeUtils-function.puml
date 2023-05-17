@@ -1,4 +1,12 @@
 @startmindmap
+<style>
+mindmapDiagram {
+    node {
+        BackgroundColor #Business
+    }
+}
+</style>
+
 * DateTimeUtils
 
 ** 时间构建模式（TimeMode）

@@ -26,14 +26,14 @@ together {
             +placeholder() : String
         }
         class PatternMessage
-        class PatternMessage.Builder
-        class PatternMessage.StringPatternBuilder
-        class PatternMessage.NumberPatternBuilder
-        class PatternMessage.DatePatternBuilder
-        class PatternMessage.TimePatternBuilder
+        class PatternMessage#Builder
+        class PatternMessage#StringPatternBuilder
+        class PatternMessage#NumberPatternBuilder
+        class PatternMessage#DatePatternBuilder
+        class PatternMessage#TimePatternBuilder
         class PatternString
-        class PatternString.Builder
-        enum PatternString.Marker
+        class PatternString#Builder
+        enum PatternString#Marker
     }
     PatternPlaceholder <|.. PatternMessage
     PatternMessage +-right- PatternMessage.Builder

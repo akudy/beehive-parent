@@ -13,6 +13,9 @@
 package org.beehive.util;
 
 import org.beehive.core.file.AntPathMatcher;
+import org.beehive.core.reflection.ConstructorMatcher;
+import org.beehive.core.reflection.FieldMatcher;
+import org.beehive.core.reflection.MethodMatcher;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -96,7 +99,7 @@ public class ClassUtils {
     /**
      * 判断输入的类型是否为基础数据类型；基础数据类型为8个：<br/>
      * <pre>
-     *  类型    |长度(bit)    |取值范围             |默认值
+     *  类型    |长度(bit)     |取值范围          |默认值
      *  --------|-------------|-----------------|-----------
      *  byte    |8            |-2^7~2^7-1       |0
      *  char    |16           |\'u0000~\'uffff  |\'u0000
@@ -282,7 +285,7 @@ public class ClassUtils {
     /**
      * 获取默认的{@link ClassLoader}类加载器对象。
      * <br/>
-     * {@link ClassLoader}类加载器，可根据一个指定的类的全限定名,找到对应的Class字节码文件,然后加载它转化成一个java.lang.Class类的一个实例。<br/>
+     * {@link ClassLoader}类加载器，可根据一个指定的类的全限定名，找到对应的Class字节码文件，然后加载它转化成一个java.lang.Class类的一个加载器实例。<br/>
      * Java应用程序的类加载器分为四类（优先级依次递减）：
      * <ol>
      *     <li>启动类加载器(Bootstrap ClassLoader)：这个类加载器负责将\lib目录下的类库加载到虚拟机内存中,用来加载java的核心库,此类加载器并不继承于java.lang.ClassLoader,不能被java程序直接调用,代码是使用C++编写的.是虚拟机自身的一部分.</li>
@@ -619,7 +622,7 @@ public class ClassUtils {
     }
 
     /**
-     * 获取给定类的实际声明泛型类型，通过继承或接口实现链路进行查找，并输出所有的定义了实际类型的泛型类型。（如果存在泛型类型声明时定义多个参数，则如果有一个参数未明确指定类型）
+     * 获取给定类的实际声明泛型类型，通过继承或接口实现链路进行查找，并输出所有的定义了实际类型的泛型类型。（如果存在泛型类型声明时定义多个参数，则如果有一个参数未明确指定类型，则被忽略）
      *
      * @param clazz 需要检查的类型定义
      * @return 返回给定类具体的泛型类型列表，按声明的顺序进行排序
@@ -643,119 +646,445 @@ public class ClassUtils {
      * @param clazz 被检查的类定义
      * @return 注解列表
      * @see Class#getAnnotations()
+     * @since 1.0
      */
-    public static Annotation[] getAnnotation(Class<?> clazz) {
+    public static Annotation[] getAnnotations(Class<?> clazz) {
         if (clazz == null) {
             return new Annotation[]{};
         }
         return clazz.getAnnotations();
     }
 
+    /**
+     * 判断指定的类型，是否含有指定的注解定义。<br/>
+     * 如果要实现多个注解的包含检查，可以借助{@link #getAnnotations(Class)}和{@link ArrayUtils#containsAll(Object[], Comparator, Object[])}或者{@link ArrayUtils#containsAny(Object[], Comparator, Object[])}的组合功能来实现。
+     *
+     * @param clazz           被检查的类定义
+     * @param annotationClass 需要检查的注解类型
+     * @return 如果该类包含指定的注解定义（含继承来的注解定义），则返回true，否则返回false
+     */
+    public static boolean hasAnnotation(Class<?> clazz, Class<? extends Annotation> annotationClass) {
+        Annotation[] annotations = getAnnotations(clazz);
+        for (Annotation tempAnn : annotations) {
+            if (tempAnn.annotationType() == annotationClass) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /*----------------------------- class info end ----------------------------------------*/
 
     /*----------------------------- class content start ----------------------------------------*/
 
-    private static List<Field> getFields(Class<?> clazz, boolean findUp) {
+    /**
+     * 获取指定类型和其继承链上的可以匹配的字段定义。这里查找字段范围包括公有、被保护的、默认的、私有的，以及内置的。<br/>
+     * 继承链上的所有类型会按照定义的顺序进行依次查找。<br/><br/>
+     * <strong>注：该方法主要用于辅助反射功能，请谨慎使用。</strong>
+     *
+     * @param clazz   指定的底层类型
+     * @param matcher 字段匹配器
+     * @param findUp  是否向上查找，true-是；false-否
+     * @return 如果不向上查找；则直返回当前类型的字段定义列表；否则会向上查找，所有继承链上的类的字段定义列表
+     * @see Class#getDeclaredFields()
+     * @since 1.0
+     */
+    private static List<Field> getFieldList(Class<?> clazz, FieldMatcher matcher, boolean findUp) {
         List<Field> fieldList = new ArrayList<>();
         List<Class<?>> clazzList = new ArrayList<>();
         clazzList.add(clazz);
         if (findUp) {
+            // 获取所有父类型定义
             getParentClasses(clazz, clazzList);
         }
+        // 将所有类型的字段添加到结果列表
         for (Class<?> tempClazz : clazzList) {
-            fieldList.addAll(Arrays.asList(tempClazz.getDeclaredFields()));
+            for (Field tempField : tempClazz.getDeclaredFields()) {
+                if (matcher.accept(tempField)) {
+                    fieldList.add(tempField);
+                }
+            }
         }
         return fieldList;
     }
 
-    private static List<Constructor<?>> getConstructors(Class<?> clazz) {
-        return Arrays.asList(clazz.getDeclaredConstructors());
+    /**
+     * 获取指定类型的可以匹配的构造函数的定义<br/><br/>
+     * <strong>注：该方法主要用于辅助反射功能，请谨慎使用。</strong>
+     *
+     * @param clazz   指定的类型
+     * @param matcher 构造函数匹配器
+     * @return 该类型定义的所有构造函数列表
+     * @see Class#getDeclaredConstructors()
+     * @since 1.0
+     */
+    private static List<Constructor<?>> getConstructorList(Class<?> clazz, ConstructorMatcher matcher) {
+        List<Constructor<?>> constructorList = new ArrayList<>();
+        Constructor[] constructors = clazz.getDeclaredConstructors();
+        for (Constructor tempConstructor : constructors) {
+            if (matcher.accept(tempConstructor)) {
+                constructorList.add(tempConstructor);
+            }
+        }
+        return constructorList;
     }
 
-    private static List<Method> getMethods(Class<?> clazz, boolean findUp) {
+    /**
+     * 获取指定类型和其继承链上的所有类型的方法定义。这里的方法，包括公有、被保护的、默认的、私有的。<br/>
+     * 继承链上的所有类型会按照定义的顺序进行依次查找。<br/><br/>
+     * <strong>注：该方法主要用于辅助反射功能，请谨慎使用。</strong>
+     *
+     * @param clazz   指定的底层类型
+     * @param matcher 方法匹配器
+     * @param findUp  是否向上查找，true-是；false-否
+     * @return 如果不向上查找；则直返回当前类型的方法定义列表；否则会向上查找，所有继承链上的类的方法定义列表
+     * @see Class#getDeclaredMethods()
+     * @since 1.0
+     */
+    private static List<Method> getMethodList(Class<?> clazz, MethodMatcher matcher, boolean findUp) {
         List<Method> methodList = new ArrayList<>();
         List<Class<?>> clazzList = new ArrayList<>();
         clazzList.add(clazz);
         if (findUp) {
+            // 获取所有父类型定义
             getParentClasses(clazz, clazzList);
         }
+        // 将所有类型的方法添加到结果列表
         for (Class<?> tempClazz : clazzList) {
-            methodList.addAll(Arrays.asList(tempClazz.getDeclaredMethods()));
+            for (Method tempMethod : tempClazz.getDeclaredMethods()) {
+                if (matcher.accept(tempMethod)) {
+                    methodList.add(tempMethod);
+                }
+            }
         }
         return methodList;
     }
 
 
-    public static boolean hasField(Class<?> clazz, String fieldName, boolean findUp) {
-        return false;
+    /**
+     * 从指定的类型定义中获取与字段匹配器匹配字段定义。（所包含的字段定义）<br/>
+     * 如果使用向上查找策略，会从当前指定类型的继承链上依次向上查找，所以可能会存在多个同名同类型的字段定义，但是隶属不同类定义。<br/>
+     * 如果使用向上查找策略，会违反属性不被继承的原则，在面向对象的原则中，属性是不会被继承的；如果使用向上查找，则可能会存在误导，所以一般用于反射查找和操作字段。<p/>
+     *
+     * @param clazz   要进行字段查找的类型
+     * @param matcher 字段匹配器，参考{@link FieldMatcher}
+     * @return 指定类型中与字段匹配器匹配的字段定义
+     * @see FieldMatcher
+     * @see #getFieldList(Class, FieldMatcher, boolean)
+     * @since 1.0
+     */
+    public static Field[] getContainFields(Class<?> clazz, FieldMatcher matcher) {
+        List<Field> fieldList = getFieldList(clazz, matcher, true);
+        return fieldList.toArray(new Field[]{});
     }
 
-    public static boolean hasField(Class<?> clazz, String fieldName) {
-        return hasField(clazz, fieldName, false);
+    /**
+     * 从指定的类型中，查找获取字段匹配器匹配的字段定义，不会从当前指定类型的继承链上依次向上查找。（所声明的字段定义）
+     *
+     * @param clazz   要进行字段查找的类型
+     * @param matcher 字段匹配器，参考{@link FieldMatcher}
+     * @return 指定类型中与字段匹配器匹配的字段定义
+     * @see #getFieldList(Class, FieldMatcher, boolean)
+     * @since 1.0
+     */
+    public static Field[] getDeclaredFields(Class<?> clazz, FieldMatcher matcher) {
+        List<Field> fieldList = getFieldList(clazz, matcher, false);
+        return fieldList.toArray(new Field[]{});
     }
 
-    public static boolean hasField(Class<?> clazz, Type declaredType, String fieldName, boolean findUp) {
-        return false;
+
+    /**
+     * 从指定的类型中查找获取指定名称的字段定义（所包含的字段）。<br/><br/>
+     * 如果使用向上查找策略，会从当前指定类型的继承链上依次向上查找，所以可能会存在多个同名同名的字段定义，但是隶属不同类定义。<br/>
+     * 如果使用向上查找策略，会违反属性不被继承的原则，在面向对象的原则中，属性是不会被继承的；如果使用向上查找，则可能会存在误导，所以一般用于反射查找和操作字段。<p/>
+     *
+     * @param clazz     要进行字段查找的类型
+     * @param fieldName 字段名称
+     * @return 指定类型中包含指定名称的字段
+     * @see #getContainFields(Class, FieldMatcher)
+     * @since 1.0
+     */
+    public static Field[] getContainFields(Class<?> clazz, String fieldName) {
+        FieldMatcher matcher = new FieldMatcher.Builder(fieldName).build();
+        List<Field> fieldList = getFieldList(clazz, matcher, true);
+        return fieldList.toArray(new Field[]{});
     }
 
-    public static boolean hasField(Class<?> clazz, Type declaredType, String fieldName) {
-        return false;
+    /**
+     * 从指定的类型中，查找获取指定名称的字段定义，不会从当前指定类型的继承链上依次向上查找（所声明的字段）。<br/><br/>
+     * 由于不会向上查找，在同一个类中同一个字段名称仅能出现一次，所以只会存在一个字段。
+     *
+     * @param clazz     要进行字段查找的类型
+     * @param fieldName 字段名称
+     * @return 指定类型中包含指定类型声明和名称的字段
+     * @see #getDeclaredFields(Class, FieldMatcher)
+     * @since 1.0
+     */
+    public static Field getDeclaredField(Class<?> clazz, String fieldName) {
+        FieldMatcher matcher = new FieldMatcher.Builder(fieldName).build();
+        Field[] fields = getDeclaredFields(clazz, matcher);
+        if (fields == null || fields.length == 0) {
+            return null;
+        } else if (fields.length > 1) {
+            throw new RuntimeException("duplicate definitions for the same field[" + fieldName + "].");
+        }
+        return fields[0];
     }
 
-    public static Field[] findFiled(Class<?> clazz, String fieldName, boolean findUp) {
+    /**
+     * 判断指定的类是否包含指定匹配器匹配的字段定义<br/>会向上查找
+     *
+     * @param clazz   要检查的类定义
+     * @param matcher 字段匹配器
+     * @return 如果包含指定名称的字段，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean containField(Class<?> clazz, FieldMatcher matcher) {
+        Field[] matchFields = getContainFields(clazz, matcher);
+        return matchFields != null && matchFields.length > 0;
+    }
+
+    /**
+     * 判断指定的类是否声明了指定匹配器匹配的字段定义<br/>不会向上查找
+     *
+     * @param clazz   要检查的类定义
+     * @param matcher 字段匹配器
+     * @return 如果包含指定名称的字段，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean declaredField(Class<?> clazz, FieldMatcher matcher) {
+        Field[] matchFields = getDeclaredFields(clazz, matcher);
+        return matchFields != null && matchFields.length > 0;
+    }
+
+    /**
+     * 判断指定的类是否包含指定名称的字段定义
+     *
+     * @param clazz     要检查的类定义
+     * @param fieldName 要检查的字段名称定义
+     * @return 如果包含指定名称的字段，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean containField(Class<?> clazz, String fieldName) {
+        Field[] matchFields = getContainFields(clazz, fieldName);
+        return matchFields != null && matchFields.length > 0;
+    }
+
+    /**
+     * 判断指定的类是否声明了指定名称的字段定义
+     *
+     * @param clazz     要检查的类定义
+     * @param fieldName 要检查的字段名称定义
+     * @return 如果包含指定名称的字段，则返回true；否则返回false
+     * @since 1.0
+     */
+    public static boolean declaredField(Class<?> clazz, String fieldName) {
+        return getDeclaredField(clazz, fieldName) != null;
+    }
+
+    /**
+     * 从指定的类型中获取指定构造函数匹配器匹配的构造函数定义
+     *
+     * @param clazz   要查找的类定义
+     * @param matcher 构造函数匹配器，参考{@link ConstructorMatcher}
+     * @return 指定类中与指定构造函数匹配器匹配的构造函数列表
+     * @since 1.0
+     */
+    public static Constructor[] getDeclaredConstructors(Class<?> clazz, ConstructorMatcher matcher) {
+        //获取所有的构造函数
+        List<Constructor<?>> constructorList = getConstructorList(clazz, matcher);
+        return constructorList.toArray(new Constructor[]{});
+    }
+
+    /**
+     * 获取指定类的指定参数类型列表签名的构造函数，参数类型列表进行依次匹配。<br/><br/>
+     * 由于一个类针对同一个参数签名的构造函数只存在一个，所以这里只返回一个构造函数
+     *
+     * @param clazz          要查找的类定义
+     * @param parameterTypes 参数类型列表定义
+     * @return 指定类的指定参数类型列表的构造函数
+     * @see #getDeclaredConstructors(Class, ConstructorMatcher)
+     * @since 1.0
+     */
+    public static Constructor getDeclaredConstructor(Class<?> clazz, Type... parameterTypes) {
+        ConstructorMatcher matcher = new ConstructorMatcher.Builder().addParameterType(parameterTypes).build();
+        Constructor[] constructors = getDeclaredConstructors(clazz, matcher);
+        if (constructors.length > 0) {
+            return constructors[0];
+        }
         return null;
     }
 
-    public static Field[] findFiled(Class<?> clazz, String fieldName) {
-        return null;
+    /**
+     * 判断指定类是否包含指定参数类型列表的构造函数，参数类型列表进行依次匹配
+     *
+     * @param clazz          要查找的类定义
+     * @param parameterTypes 参数类型列表定义
+     * @return 如果存在匹配的构造函数，则返回true，否则返回false
+     * @see #getDeclaredConstructor(Class, Type...)
+     * @since 1.0
+     */
+    public static boolean declaredConstructor(Class<?> clazz, Type... parameterTypes) {
+        Constructor constructor = getDeclaredConstructor(clazz, parameterTypes);
+        return constructor != null;
     }
 
-    public static Field[] findFiled(Class<?> clazz, Type declaredType, String fieldName, boolean findUp) {
-        return null;
+    /**
+     * 从指定的类型定义中获取与方法匹配器匹配的方法定义，并使用向上查找策略，会从当前指定类型的继承链上依次向上查找，所以可能会存在多个方法定义，但是隶属不同类定义。<br/>
+     * 如果使用向上查找策略，可能会违反私有方法不被继承的原则，在面向对象的原则中，私有方法是不会被继承的；如果使用向上查找，则可能会存在误导，所以一般用于反射查找和操作字段。<p/>
+     *
+     * @param clazz   要查找的类定义
+     * @param matcher 方法匹配器
+     * @return 与方法匹配器匹配的方法列表
+     * @since 1.0
+     */
+    public static Method[] getContainMethods(Class<?> clazz, MethodMatcher matcher) {
+        List<Method> methodList = getMethodList(clazz, matcher, true);
+        return methodList.toArray(new Method[]{});
     }
 
-    public static Field[] findFiled(Class<?> clazz, Type declaredType, String fieldName) {
-        return null;
+    /**
+     * 从指定的类型定义中获取与方法匹配器匹配的方法定义，不使用向上查找策略<br/>
+     *
+     * @param clazz   要查找的类定义
+     * @param matcher 方法匹配器
+     * @return 与方法匹配器匹配的方法列表
+     * @since 1.0
+     */
+    public static Method[] getDeclaredMethods(Class<?> clazz, MethodMatcher matcher) {
+        List<Method> methodList = getMethodList(clazz, matcher, false);
+        return methodList.toArray(new Method[]{});
     }
 
-    public static boolean hasConstructor(Class<?> clazz, Type... parameterTypes) {
-        return false;
+    /**
+     * 从指定的类中查找与方法名称匹配的方法定义，使用向上查找策略（查找范围包括继承而来的方法查找、以及父类定义的私有方法）<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 与方法名称匹配的方法列表
+     * @see #getContainFields(Class, FieldMatcher)
+     */
+    public static Method[] getContainMethods(Class<?> clazz, String methodName) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).build();
+        return getContainMethods(clazz, matcher);
     }
 
-    public static Constructor[] findConstructor(Class<?> clazz, Type... parameterTypes) {
-        return null;
+    /**
+     * 从指定的类型定义中查找与方法名称匹配的方法定义，不使用向上查找策略<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 与方法名称匹配的方法列表
+     * @see #getDeclaredFields(Class, FieldMatcher)
+     */
+    public static Method[] getDeclaredMethods(Class<?> clazz, String methodName) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).build();
+        return getDeclaredMethods(clazz, matcher);
     }
 
-    public static boolean hasMethodName(Class<?> clazz, String methodName, boolean findUp) {
-        return false;
+    /**
+     * 从指定的类中查找与方法名称和参数类型列表匹配的方法定义，使用向上查找策略（查找范围包括继承而来的方法查找、以及父类定义的私有方法）<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 与方法名称匹配的方法列表
+     * @see #getContainFields(Class, FieldMatcher)
+     */
+    public static Method[] getContainMethods(Class<?> clazz, String methodName, Type... parameterTypes) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).addParameterType(parameterTypes).build();
+        return getContainMethods(clazz, matcher);
     }
 
-    public static boolean hasMethodName(Class<?> clazz, String methodName) {
-        return false;
+    /**
+     * 从指定的类型定义中查找与方法名称和参数类型列表匹配的方法定义，不使用向上查找策略<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 与方法名称匹配的方法列表
+     * @see #getDeclaredFields(Class, FieldMatcher)
+     */
+    public static Method[] getDeclaredMethods(Class<?> clazz, String methodName, Type... parameterTypes) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).addParameterType(parameterTypes).build();
+        return getDeclaredMethods(clazz, matcher);
     }
 
-    public static Method[] findMethod(Class<?> clazz, Type returnType, String methodName, boolean findUp, Type... parameterTypes) {
-        return null;
+    /**
+     * 判断指定的类型中是否包含匹配器匹配的方法，使用向上查找策略（查找范围包括继承而来的方法查找、以及父类定义的私有方法）<br/>
+     *
+     * @param clazz   要查找的类定义
+     * @param matcher 方法匹配器
+     * @return 如果包含匹配的方法，则返回true；否则返回false
+     * @see #getContainFields(Class, FieldMatcher)
+     */
+    public static boolean containMethod(Class<?> clazz, MethodMatcher matcher) {
+        List<Method> methodList = getMethodList(clazz, matcher, true);
+        return methodList != null && methodList.size() > 0;
     }
 
-    public static Method[] findMethod(Class<?> clazz, Type returnType, String methodName, Type... parameterTypes) {
-        return null;
+    /**
+     * 判断指定的类型中是否声明了匹配器匹配的方法，不适用向上查找策略<br/>
+     *
+     * @param clazz   要查找的类定义
+     * @param matcher 方法匹配器
+     * @return 如果声明了匹配的方法，则返回true，否则返回false
+     * @see #getDeclaredMethods(Class, MethodMatcher)
+     */
+    public static boolean declaredMethod(Class<?> clazz, MethodMatcher matcher) {
+        List<Method> methodList = getMethodList(clazz, matcher, false);
+        return methodList != null && methodList.size() > 0;
     }
 
-    public static void main(String[] args) throws Exception {
-
+    /**
+     * 判断指定的类型中是否包含方法名称匹配的方法，使用向上查找策略（查找范围包括继承而来的方法查找、以及父类定义的私有方法）<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 如果包含匹配的方法，则返回true；否则返回false
+     * @see #getContainMethods(Class, String)
+     */
+    public static boolean containMethod(Class<?> clazz, String methodName) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).build();
+        return containMethod(clazz, matcher);
     }
 
-    public static List<Field> getFieldList(Class<?> clazz, boolean findUp) {
-        return getFields(clazz, findUp);
+    /**
+     * 判断指定的类型中是否声明了方法名称匹配的方法，使用向上查找策略（查找范围包括继承而来的方法查找、以及父类定义的私有方法）<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 如果声明了匹配的方法，则返回true；否则返回false
+     * @see #getDeclaredMethods(Class, String) (Class, String)
+     */
+    public static boolean declaredMethod(Class<?> clazz, String methodName) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).build();
+        return declaredMethod(clazz, matcher);
     }
 
-    public static List<Constructor<?>> getConstructorList(Class<?> clazz) {
-        return getConstructors(clazz);
+    /**
+     * 判断指定的类型中是否包含方法名称和参数类型列表匹配的方法，使用向上查找策略（查找范围包括继承而来的方法查找、以及父类定义的私有方法）<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 如果包含匹配的方法，则返回true；否则返回false
+     * @see #getContainMethods(Class, String)
+     */
+    public static boolean containMethod(Class<?> clazz, String methodName, Type... parameterTypes) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).addParameterType(parameterTypes).build();
+        return containMethod(clazz, matcher);
     }
 
-    public static List<Method> getMethodList(Class<?> clazz, boolean findUp) {
-        return getMethods(clazz, findUp);
+    /**
+     * 判断指定的类型中是否声明了方法名称和参数类型列表匹配的方法，使用向上查找策略（查找范围包括继承而来的方法查找、以及父类定义的私有方法）<br/>
+     *
+     * @param clazz      要查找的类定义
+     * @param methodName 方法名称
+     * @return 如果声明了匹配的方法，则返回true；否则返回false
+     * @see #getDeclaredMethods(Class, String) (Class, String)
+     */
+    public static boolean declaredMethod(Class<?> clazz, String methodName, Type... parameterTypes) {
+        MethodMatcher matcher = new MethodMatcher.Builder().nameOf(methodName).addParameterType(parameterTypes).build();
+        return declaredMethod(clazz, matcher);
     }
 
     /*----------------------------- class content end ----------------------------------------*/

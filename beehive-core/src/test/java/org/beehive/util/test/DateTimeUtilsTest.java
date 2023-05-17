@@ -619,4 +619,22 @@ public class DateTimeUtilsTest {
         System.out.println(String.format("moveMonths(%s, %s) = %s", DateTimeUtils.format(date), months, DateTimeUtils.format(DateTimeUtils.elapseMonths(date, months))));
     }
 
+
+    @Test
+    public void daysTest() {
+        Date begin = DateTimeUtils.newDateTime(2023, 03, 03, 00, 00, 00);
+        Date end = DateTimeUtils.newDateTime(2023, 03, 03, 00, 00, 00);
+
+        Calendar cBegin = Calendar.getInstance();
+        cBegin.setTime(begin);
+        Calendar cEnd = Calendar.getInstance();
+        cEnd.setTime(end);
+
+        System.err.println(begin.getTime() == cBegin.getTimeInMillis());
+        System.err.println(end.getTime() == cEnd.getTimeInMillis());
+
+        System.err.println(DateTimeUtils.intervalDays(begin, end));
+        System.err.println(DateTimeUtils.spanDays(begin, end));
+    }
+
 }

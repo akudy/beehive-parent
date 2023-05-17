@@ -12,12 +12,18 @@
 
 package org.beehive.util.test;
 
+import org.beehive.core.reflection.FieldMatcher;
 import org.beehive.util.ClassUtils;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -148,101 +154,6 @@ public class ClassUtilsTest {
         System.out.println(String.format("matchPackage(%s, %s) = %s", ClassUtils.class, "org.beehive.**", ClassUtils.matchPackage(ClassUtils.class, "org.beehive.**")));
     }
 
-    /***************/
-    // 泛型接口
-    interface InterfaceA<E> {
-
-    }
-
-    // 普通接口继承泛型接口
-    interface InterfaceB extends InterfaceA<Integer> {
-
-    }
-
-    // 普通接口
-    interface InterfaceC {
-
-    }
-
-    // 普通接口
-    interface InterfaceD extends InterfaceB {
-
-    }
-
-    // 泛型子接口
-    interface InterfaceE<T> extends InterfaceA<T>, Comparable<T> {
-
-    }
-
-    //普通子接口
-    interface InterfaceF extends InterfaceE<String> {
-
-    }
-
-    //普通子接口
-    interface InterfaceG extends InterfaceA {
-
-    }
-
-    //普通子接口
-    interface InterfaceH extends InterfaceB {
-
-    }
-
-    // 泛型类
-    class ClassA<E> {
-
-    }
-
-    // 普通类继承泛型类
-    class ClassB extends ClassA<Integer> {
-
-    }
-
-    // 普通类
-    class ClassC {
-
-    }
-
-    // 普通类
-    class ClassD extends ClassB {
-
-    }
-
-    // 泛型子类
-    class ClassE<T> extends ClassA<T> {
-
-    }
-
-    //普通子类
-    class ClassF extends ClassE<String> {
-
-    }
-
-    //普通子类
-    class ClassG extends ClassA {
-
-    }
-
-    //普通子类
-    class ClassH extends ClassB implements InterfaceA<String>, Comparable<String> {
-
-        @Override
-        public int compareTo(String o) {
-            return 0;
-        }
-    }
-
-    class ClassJ<K> extends HashMap<K, ClassB> implements InterfaceA<String> {
-
-    }
-
-    class ClassO extends ClassJ<Integer> {
-
-    }
-
-    /***************/
-
     @Test
     public void testGenericType() {
         System.out.println(String.format("isDeclaredGenericType(%s) => %s", InterfaceA.class, ClassUtils.isDeclaredGenericType(InterfaceA.class)));
@@ -324,7 +235,763 @@ public class ClassUtilsTest {
         System.out.println(String.format("getActualGenericType(%s) => %s", ClassG.class, Arrays.toString(ClassUtils.getActualGenericType(ClassG.class))));
         System.out.println(String.format("getActualGenericType(%s) => %s", ClassJ.class, Arrays.toString(ClassUtils.getActualGenericType(ClassJ.class))));
         System.out.println(String.format("getActualGenericType(%s) => %s", ClassO.class, Arrays.toString(ClassUtils.getActualGenericType(ClassO.class))));
+    }
+
+    @Test
+    public void annotationTest() {
+        System.out.println(String.format("hasAnnotation(%s, %s) => %s", InterfaceA.class, ClassAnnotation.class, ClassUtils.hasAnnotation(InterfaceA.class, ClassAnnotation.class)));
+        System.out.println(String.format("hasAnnotation(%s, %s) => %s", InterfaceA.class, InterfaceAnnotation.class, ClassUtils.hasAnnotation(InterfaceA.class, InterfaceAnnotation.class)));
+        System.out.println(String.format("hasAnnotation(%s, %s) => %s", InterfaceB.class, InterfaceAnnotation.class, ClassUtils.hasAnnotation(InterfaceB.class, InterfaceAnnotation.class)));
+        System.out.println(String.format("hasAnnotation(%s, %s) => %s", ClassA.class, ClassAnnotation.class, ClassUtils.hasAnnotation(ClassA.class, ClassAnnotation.class)));
+        System.out.println(String.format("hasAnnotation(%s, %s) => %s", ClassA.class, ClassAnnotation.class, ClassUtils.hasAnnotation(ClassA.class, ClassAnnotation.class)));
+        System.out.println(String.format("hasAnnotation(%s, %s) => %s", ClassB.class, ClassAnnotation.class, ClassUtils.hasAnnotation(ClassB.class, ClassAnnotation.class)));
+        System.out.println();
+        System.out.println(String.format("getAnnotations(%s) => %s", InterfaceA.class, Arrays.toString(ClassUtils.getAnnotations(InterfaceA.class))));
+        System.out.println(String.format("getAnnotations(%s) => %s", InterfaceB.class, Arrays.toString(ClassUtils.getAnnotations(InterfaceB.class))));
+        System.out.println(String.format("getAnnotations(%s) => %s", InterfaceC.class, Arrays.toString(ClassUtils.getAnnotations(InterfaceC.class))));
+        System.out.println(String.format("getAnnotations(%s) => %s", InterfaceD.class, Arrays.toString(ClassUtils.getAnnotations(InterfaceD.class))));
+        System.out.println(String.format("getAnnotations(%s) => %s", ClassA.class, Arrays.toString(ClassUtils.getAnnotations(ClassA.class))));
+        System.out.println(String.format("getAnnotations(%s) => %s", ClassB.class, Arrays.toString(ClassUtils.getAnnotations(ClassB.class))));
+        System.out.println(String.format("getAnnotations(%s) => %s", ClassC.class, Arrays.toString(ClassUtils.getAnnotations(ClassC.class))));
+        System.out.println(String.format("getAnnotations(%s) => %s", ClassD.class, Arrays.toString(ClassUtils.getAnnotations(ClassD.class))));
+    }
+
+    public static Class[] randomClassOfArray(int length) {
+        Class[] allClassArray = new Class[]{InterfaceA.class, InterfaceB.class, InterfaceC.class, InterfaceD.class, InterfaceE.class, InterfaceF.class, InterfaceG.class, InterfaceH.class,
+                ClassA.class, ClassB.class, ClassC.class, ClassD.class, ClassE.class, ClassF.class, ClassG.class, ClassH.class, ClassJ.class, ClassO.class};
+        Class[] classArray = new Class[length];
+        int allLength = allClassArray.length;
+        for (int i = 0; i < length; i++) {
+            int index = (int) (Math.random() * allLength) + 1;
+            Class clazz = allClassArray[index];
+            for (int j = 0; j < i; j++) {
+                if (classArray[j] == clazz) {
+                    i--;
+                    break;
+                }
+            }
+            classArray[i] = clazz;
+        }
+        return classArray;
+    }
+
+    public static String[] randomStringOfArray(String[] sourceArray, int length) {
+        String[] targetArray = new String[length];
+        int allLength = sourceArray.length;
+        for (int i = 0; i < length; i++) {
+            int index = (int) (Math.random() * allLength) + 1;
+            String clazz = sourceArray[index];
+            for (int j = 0; j < i; j++) {
+                if (targetArray[j] == clazz) {
+                    i--;
+                    break;
+                }
+            }
+            targetArray[i] = clazz;
+        }
+        return targetArray;
+    }
+
+    @Test
+    public void fieldTest() {
+        String[] allFieldNameArray = new String[]{"InterfaceA_FieldA", "InterfaceB_FieldA", "InterfaceC_FieldA", "InterfaceD_FieldA", "InterfaceE_FieldA", "InterfaceF_FieldA", "InterfaceG_FieldA", "InterfaceH_FieldA",
+                "Private_ClassA_FieldA", "Private_ClassA_Static_FieldA", "Private_ClassA_Final_FieldA", "Private_ClassA_Static_Final_FieldA", "ClassA_FieldB", "ClassA_Static_FieldB", "ClassA_Final_FieldB", "ClassA_Static_Final_FieldB",
+                "Protected_ClassA_FieldC", "Protected_ClassA_Static_FieldC", "Protected_ClassA_Final_FieldC", "Protected_ClassA_Static_Final_FieldC", "Public_ClassA_FieldD", "Public_ClassA_Static_FieldD", "Public_ClassA_Final_FieldD", "Public_ClassA_Static_Final_FieldD",
+                "Private_ClassB_FieldA", "Private_ClassB_Static_FieldA", "Private_ClassB_Final_FieldA", "Private_ClassB_Static_Final_FieldA", "ClassB_FieldB", "ClassB_Static_FieldB", "ClassB_Final_FieldB", "ClassB_Static_Final_FieldB",
+                "Protected_ClassB_FieldC", "Protected_ClassB_Static_FieldC", "Protected_ClassB_Final_FieldC", "Protected_ClassB_Static_Final_FieldC", "Public_ClassB_FieldD", "Public_ClassB_Static_FieldD", "Public_ClassB_Final_FieldD", "Public_ClassB_Static_Final_FieldD",
+                "Private_ClassC_FieldA", "Private_ClassC_Static_FieldA", "Private_ClassC_Final_FieldA", "Private_ClassC_Static_Final_FieldA", "ClassC_FieldB", "ClassC_Static_FieldB", "ClassC_Final_FieldB", "ClassC_Static_Final_FieldB",
+                "Protected_ClassC_FieldC", "Protected_ClassC_Static_FieldC", "Protected_ClassC_Final_FieldC", "Protected_ClassC_Static_Final_FieldC", "Public_ClassC_FieldD", "Public_ClassC_Static_FieldD", "Public_ClassC_Final_FieldD", "Public_ClassC_Static_Final_FieldD",
+                "Private_ClassD_FieldA", "Private_ClassD_Static_FieldA", "Private_ClassD_Final_FieldA", "Private_ClassD_Static_Final_FieldA", "ClassD_FieldB", "ClassD_Static_FieldB", "ClassD_Final_FieldB", "ClassD_Static_Final_FieldB",
+                "Protected_ClassD_FieldC", "Protected_ClassD_Static_FieldC", "Protected_ClassD_Final_FieldC", "Protected_ClassD_Static_Final_FieldC", "Public_ClassD_FieldD", "Public_ClassD_Static_FieldD", "Public_ClassD_Final_FieldD", "Public_ClassD_Static_Final_FieldD",
+                "Private_ClassE_FieldA", "Private_ClassE_Static_FieldA", "Private_ClassE_Final_FieldA", "Private_ClassE_Static_Final_FieldA", "ClassE_FieldB", "ClassE_Static_FieldB", "ClassE_Final_FieldB", "ClassE_Static_Final_FieldB",
+                "Protected_ClassE_FieldC", "Protected_ClassE_Static_FieldC", "Protected_ClassE_Final_FieldC", "Protected_ClassE_Static_Final_FieldC", "Public_ClassE_FieldD", "Public_ClassE_Static_FieldD", "Public_ClassE_Final_FieldD", "Public_ClassE_Static_Final_FieldD",
+                "Private_ClassF_FieldA", "Private_ClassF_Static_FieldA", "Private_ClassF_Final_FieldA", "Private_ClassF_Static_Final_FieldA", "ClassF_FieldB", "ClassF_Static_FieldB", "ClassF_Final_FieldB", "ClassF_Static_Final_FieldB",
+                "Protected_ClassF_FieldC", "Protected_ClassF_Static_FieldC", "Protected_ClassF_Final_FieldC", "Protected_ClassF_Static_Final_FieldC", "Public_ClassF_FieldD", "Public_ClassF_Static_FieldD", "Public_ClassF_Final_FieldD", "Public_ClassF_Static_Final_FieldD",
+                "Private_ClassG_FieldA", "Private_ClassG_Static_FieldA", "Private_ClassG_Final_FieldA", "Private_ClassG_Static_Final_FieldA", "ClassG_FieldB", "ClassG_Static_FieldB", "ClassG_Final_FieldB", "ClassG_Static_Final_FieldB",
+                "Protected_ClassG_FieldC", "Protected_ClassG_Static_FieldC", "Protected_ClassG_Final_FieldC", "Protected_ClassG_Static_Final_FieldC", "Public_ClassG_FieldD", "Public_ClassG_Static_FieldD", "Public_ClassG_Final_FieldD", "Public_ClassG_Static_Final_FieldD",
+                "Private_ClassH_FieldA", "Private_ClassH_Static_FieldA", "Private_ClassH_Final_FieldA", "Private_ClassH_Static_Final_FieldA", "ClassH_FieldB", "ClassH_Static_FieldB", "ClassH_Final_FieldB", "ClassH_Static_Final_FieldB",
+                "Protected_ClassH_FieldC", "Protected_ClassH_Static_FieldC", "Protected_ClassH_Final_FieldC", "Protected_ClassH_Static_Final_FieldC", "Public_ClassH_FieldD", "Public_ClassH_Static_FieldD", "Public_ClassH_Final_FieldD", "Public_ClassH_Static_Final_FieldD",
+                "Private_ClassJ_FieldA", "Private_ClassJ_Static_FieldA", "Private_ClassJ_Final_FieldA", "Private_ClassJ_Static_Final_FieldA", "ClassJ_FieldB", "ClassJ_Static_FieldB", "ClassJ_Final_FieldB", "ClassJ_Static_Final_FieldB",
+                "Protected_ClassJ_FieldC", "Protected_ClassJ_Static_FieldC", "Protected_ClassJ_Final_FieldC", "Protected_ClassJ_Static_Final_FieldC", "Public_ClassJ_FieldD", "Public_ClassJ_Static_FieldD", "Public_ClassJ_Final_FieldD", "Public_ClassJ_Static_Final_FieldD",
+                "Private_ClassO_FieldA", "Private_ClassO_Static_FieldA", "Private_ClassO_Final_FieldA", "Private_ClassO_Static_Final_FieldA", "ClassO_FieldB", "ClassO_Static_FieldB", "ClassO_Final_FieldB", "ClassO_Static_Final_FieldB",
+                "Protected_ClassO_FieldC", "Protected_ClassO_Static_FieldC", "Protected_ClassO_Final_FieldC", "Protected_ClassO_Static_Final_FieldC", "Public_ClassO_FieldD", "Public_ClassO_Static_FieldD", "Public_ClassO_Final_FieldD", "Public_ClassO_Static_Final_FieldD",
+                "Private_ClassA_E_Field", "Private_ClassB_T_Field", "Private_ClassE_T_Field", "Private_ClassO_K_Field", "Private_ClassF_T_Field"};
+        Class[] classArray = randomClassOfArray(5);
+        String[] fieldNameArray = randomStringOfArray(allFieldNameArray, 2);
+        System.out.println("------ find field -------");
+        Field[] fields = null;
+        Field field = null;
+        FieldMatcher fieldMatcher = null;
+        for (Class<?> clazz : classArray) {
+            for (String fieldName : fieldNameArray) {
+                fields = ClassUtils.getContainFields(clazz, fieldName);
+                field = ClassUtils.getDeclaredField(clazz, fieldName);
+                System.out.println(String.format("getContainFields(%s, %s) => %s", clazz, fieldName, Arrays.toString(fields)));
+                System.out.println(String.format("getDeclaredField(%s, %s) => %s", clazz, fieldName, field));
+                fieldMatcher = new FieldMatcher.Builder(fieldName)
+                        .typeOf(String.class)
+                        .modifierOf(Modifier.PUBLIC, Modifier.FINAL)
+                        .build();
+                fields = ClassUtils.getContainFields(clazz, fieldMatcher);
+                System.out.println(String.format("getContainFields(%s, %s) => %s", clazz, FieldMatcher.class, Arrays.toString(fields)));
+                fields = ClassUtils.getDeclaredFields(clazz, fieldMatcher);
+                System.out.println(String.format("getDeclaredFields(%s, %s) => %s", clazz, FieldMatcher.class, Arrays.toString(fields)));
+            }
+        }
+
+        System.out.println("------ has field -------");
+        for (Class<?> clazz : classArray) {
+            for (String fieldName : fieldNameArray) {
+                System.out.println(String.format("containField(%s, %s) => %s", clazz, fieldName, ClassUtils.containField(clazz, fieldName)));
+                System.out.println(String.format("declaredField(%s, %s) => %s", clazz, fieldName, ClassUtils.declaredField(clazz, fieldName)));
+                fieldMatcher = new FieldMatcher.Builder(fieldName)
+                        .typeOf(String.class)
+                        .modifierOf(Modifier.PUBLIC, Modifier.FINAL)
+                        .build();
+                System.out.println(String.format("containField(%s, %s) => %s", clazz, FieldMatcher.class, ClassUtils.containField(clazz, fieldMatcher)));
+                System.out.println(String.format("declaredField(%s, %s) => %s", clazz, FieldMatcher.class, ClassUtils.declaredField(clazz, fieldMatcher)));
+            }
+        }
+    }
+
+    @Test
+    public void constructorTest() {
 
     }
+
+    @Test
+    public void methodTest() {
+
+    }
+
+    /*********************************************************************/
+    // 泛型接口
+    @InterfaceAnnotation
+    interface InterfaceA<E> {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+    }
+
+    // 普通接口继承泛型接口
+    interface InterfaceB extends InterfaceA<Integer> {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+        String InterfaceB_FieldA = "InterfaceB_FieldA";
+    }
+
+    // 普通接口
+    @InterfaceAnnotation2
+    interface InterfaceC {
+        String InterfaceC_FieldA = "InterfaceC_FieldA";
+    }
+
+    // 普通接口
+    @InterfaceAnnotation
+    @Deprecated
+    interface InterfaceD extends InterfaceB {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+        String InterfaceB_FieldA = "InterfaceB_FieldA";
+        String InterfaceD_FieldA = "InterfaceD_FieldA";
+    }
+
+    // 泛型子接口
+    interface InterfaceE<T> extends InterfaceA<T>, Comparable<T> {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+        String InterfaceE_FieldA = "InterfaceE_FieldA";
+    }
+
+    //普通子接口
+    interface InterfaceF extends InterfaceE<String> {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+        String InterfaceE_FieldA = "InterfaceE_FieldA";
+        String InterfaceF_FieldA = "InterfaceF_FieldA";
+    }
+
+    //普通子接口
+    interface InterfaceG extends InterfaceA {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+        String InterfaceG_FieldA = "InterfaceG_FieldA";
+    }
+
+    //普通子接口
+    interface InterfaceH extends InterfaceB {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+        String InterfaceB_FieldA = "InterfaceB_FieldA";
+        String InterfaceH_FieldA = "InterfaceH_FieldA";
+    }
+
+    // 泛型类
+    @ClassAnnotation
+    static class ClassA<E> {
+        private String Private_ClassA_FieldA = "Private_ClassA_FieldA";
+        private static String Private_ClassA_Static_FieldA = "Private_ClassA_Static_FieldA";
+        private final String Private_ClassA_Final_FieldA = "Private_ClassA_Final_FieldA";
+        private static final String Private_ClassA_Static_Final_FieldA = "Private_ClassA_Static_Final_FieldA";
+
+        String ClassA_FieldB = "ClassA_FieldB";
+        static String ClassA_Static_FieldB = "ClassA_Static_FieldB";
+        final String ClassA_Final_FieldB = "ClassA_Final_FieldB";
+        static final String ClassA_Static_Final_FieldB = "ClassA_Static_Final_FieldB";
+
+        protected String Protected_ClassA_FieldC = "Protected_ClassA_FieldC";
+        protected static String Protected_ClassA_Static_FieldC = "Protected_ClassA_Static_FieldC";
+        protected final String Protected_ClassA_Final_FieldC = "Protected_ClassA_Final_FieldC";
+        protected static final String Protected_ClassA_Static_Final_FieldC = "Protected_ClassA_Static_Final_FieldC";
+
+        public String Public_ClassA_FieldD = "Public_ClassA_FieldD";
+        public static String Public_ClassA_Static_FieldD = "Public_ClassA_Static_FieldD";
+        public final String Public_ClassA_Final_FieldD = "Public_ClassA_Final_FieldD";
+        public static final String Public_ClassA_Static_Final_FieldD = "Public_ClassA_Static_Final_FieldD";
+
+        private E Private_ClassA_E_Field;
+
+        private ClassA() {
+        }
+
+        ClassA(String name) {
+        }
+
+        protected ClassA(int age, String name) {
+        }
+
+        public ClassA(char sex, int age, String name) {
+        }
+    }
+
+    // 普通类继承泛型类
+    static class ClassB extends ClassA<Integer> {
+        private String Private_ClassA_FieldA = "Private_ClassA_FieldA";
+        private static String Private_ClassA_Static_FieldA = "Private_ClassA_Static_FieldA";
+        private final String Private_ClassA_Final_FieldA = "Private_ClassA_Final_FieldA";
+        private static final String Private_ClassA_Static_Final_FieldA = "Private_ClassA_Static_Final_FieldA";
+        private String Private_ClassB_FieldA = "Private_ClassB_FieldA";
+        private static String Private_ClassB_Static_FieldA = "Private_ClassB_Static_FieldA";
+        private final String Private_ClassB_Final_FieldA = "Private_ClassB_Final_FieldA";
+        private static final String Private_ClassB_Static_Final_FieldA = "Private_ClassB_Static_Final_FieldA";
+
+        String ClassA_FieldB = "ClassA_FieldB";
+        static String ClassA_Static_FieldB = "ClassA_Static_FieldB";
+        final String ClassA_Final_FieldB = "ClassA_Final_FieldB";
+        static final String ClassA_Static_Final_FieldB = "ClassA_Static_Final_FieldB";
+        String ClassB_FieldB = "ClassB_FieldB";
+        static String ClassB_Static_FieldB = "ClassB_Static_FieldB";
+        final String ClassB_Final_FieldB = "ClassB_Final_FieldB";
+        static final String ClassB_Static_Final_FieldB = "ClassB_Static_Final_FieldB";
+
+        protected String Protected_ClassA_FieldC = "Protected_ClassA_FieldC";
+        protected static String Protected_ClassA_Static_FieldC = "Protected_ClassA_Static_FieldC";
+        protected final String Protected_ClassA_Final_FieldC = "Protected_ClassA_Final_FieldC";
+        protected static final String Protected_ClassA_Static_Final_FieldC = "Protected_ClassA_Static_Final_FieldC";
+        protected String Protected_ClassB_FieldC = "Protected_ClassB_FieldC";
+        protected static String Protected_ClassB_Static_FieldC = "Protected_ClassB_Static_FieldC";
+        protected final String Protected_ClassB_Final_FieldC = "Protected_ClassB_Final_FieldC";
+        protected static final String Protected_ClassB_Static_Final_FieldC = "Protected_ClassB_Static_Final_FieldC";
+
+        public String Public_ClassA_FieldD = "Public_ClassA_FieldD";
+        public static String Public_ClassA_Static_FieldD = "Public_ClassA_Static_FieldD";
+        public final String Public_ClassA_Final_FieldD = "Public_ClassA_Final_FieldD";
+        public static final String Public_ClassA_Static_Final_FieldD = "Public_ClassA_Static_Final_FieldD";
+        public String Public_ClassB_FieldD = "Public_ClassB_FieldD";
+        public static String Public_ClassB_Static_FieldD = "Public_ClassB_Static_FieldD";
+        public final String Public_ClassB_Final_FieldD = "Public_ClassB_Final_FieldD";
+        public static final String Public_ClassB_Static_Final_FieldD = "Public_ClassB_Static_Final_FieldD";
+
+        private Integer Private_ClassA_E_Field;
+        private Integer Private_ClassB_T_Field;
+
+        private ClassB() {
+        }
+
+        ClassB(String name) {
+        }
+
+        protected ClassB(int age, String name) {
+        }
+
+        public ClassB(char sex, int age, String name) {
+        }
+    }
+
+    // 普通类
+    @ClassAnnotation2
+    static class ClassC {
+        private String Private_ClassC_FieldA = "Private_ClassC_FieldA";
+        private static String Private_ClassC_Static_FieldA = "Private_ClassC_Static_FieldA";
+        private final String Private_ClassC_Final_FieldA = "Private_ClassC_Final_FieldA";
+        private static final String Private_ClassC_Static_Final_FieldA = "Private_ClassC_Static_Final_FieldA";
+
+        String ClassC_FieldB = "ClassC_FieldB";
+        static String ClassC_Static_FieldB = "ClassC_Static_FieldB";
+        final String ClassC_Final_FieldB = "ClassC_Final_FieldB";
+        static final String ClassC_Static_Final_FieldB = "ClassC_Static_Final_FieldB";
+
+        protected String Protected_ClassC_FieldC = "Protected_ClassC_FieldC";
+        protected static String Protected_ClassC_Static_FieldC = "Protected_ClassC_Static_FieldC";
+        protected final String Protected_ClassC_Final_FieldC = "Protected_ClassC_Final_FieldC";
+        protected static final String Protected_ClassC_Static_Final_FieldC = "Protected_ClassC_Static_Final_FieldC";
+
+        public String Public_ClassC_FieldD = "Public_ClassC_FieldD";
+        public static String Public_ClassC_Static_FieldD = "Public_ClassC_Static_FieldD";
+        public final String Public_ClassC_Final_FieldD = "Public_ClassC_Final_FieldD";
+        public static final String Public_ClassC_Static_Final_FieldD = "Public_ClassC_Static_Final_FieldD";
+
+        private ClassC() {
+        }
+
+        ClassC(String name) {
+        }
+
+        protected ClassC(int age, String name) {
+        }
+
+        public ClassC(char sex, int age, String name) {
+        }
+    }
+
+    // 普通类
+    @ClassAnnotation
+    @Deprecated
+    static class ClassD extends ClassB {
+        private String Private_ClassA_FieldA = "Private_ClassA_FieldA";
+        private static String Private_ClassA_Static_FieldA = "Private_ClassA_Static_FieldA";
+        private final String Private_ClassA_Final_FieldA = "Private_ClassA_Final_FieldA";
+        private static final String Private_ClassA_Static_Final_FieldA = "Private_ClassA_Static_Final_FieldA";
+        private String Private_ClassB_FieldA = "Private_ClassB_FieldA";
+        private static String Private_ClassB_Static_FieldA = "Private_ClassB_Static_FieldA";
+        private final String Private_ClassB_Final_FieldA = "Private_ClassB_Final_FieldA";
+        private static final String Private_ClassB_Static_Final_FieldA = "Private_ClassB_Static_Final_FieldA";
+        private String Private_ClassD_FieldA = "Private_ClassD_FieldA";
+        private static String Private_ClassD_Static_FieldA = "Private_ClassD_Static_FieldA";
+        private final String Private_ClassD_Final_FieldA = "Private_ClassD_Final_FieldA";
+        private static final String Private_ClassD_Static_Final_FieldA = "Private_ClassD_Static_Final_FieldA";
+
+        String ClassA_FieldB = "ClassA_FieldB";
+        static String ClassA_Static_FieldB = "ClassA_Static_FieldB";
+        final String ClassA_Final_FieldB = "ClassA_Final_FieldB";
+        static final String ClassA_Static_Final_FieldB = "ClassA_Static_Final_FieldB";
+        String ClassB_FieldB = "ClassB_FieldB";
+        static String ClassB_Static_FieldB = "ClassB_Static_FieldB";
+        final String ClassB_Final_FieldB = "ClassB_Final_FieldB";
+        static final String ClassB_Static_Final_FieldB = "ClassB_Static_Final_FieldB";
+        String ClassD_FieldB = "ClassD_FieldB";
+        static String ClassD_Static_FieldB = "ClassD_Static_FieldB";
+        final String ClassD_Final_FieldB = "ClassD_Final_FieldB";
+        static final String ClassD_Static_Final_FieldB = "ClassD_Static_Final_FieldB";
+
+        protected String Protected_ClassA_FieldC = "Protected_ClassA_FieldC";
+        protected static String Protected_ClassA_Static_FieldC = "Protected_ClassA_Static_FieldC";
+        protected final String Protected_ClassA_Final_FieldC = "Protected_ClassA_Final_FieldC";
+        protected static final String Protected_ClassA_Static_Final_FieldC = "Protected_ClassA_Static_Final_FieldC";
+        protected String Protected_ClassB_FieldC = "Protected_ClassB_FieldC";
+        protected static String Protected_ClassB_Static_FieldC = "Protected_ClassB_Static_FieldC";
+        protected final String Protected_ClassB_Final_FieldC = "Protected_ClassB_Final_FieldC";
+        protected static final String Protected_ClassB_Static_Final_FieldC = "Protected_ClassB_Static_Final_FieldC";
+        protected String Protected_ClassD_FieldC = "Protected_ClassD_FieldC";
+        protected static String Protected_ClassD_Static_FieldC = "Protected_ClassD_Static_FieldC";
+        protected final String Protected_ClassD_Final_FieldC = "Protected_ClassD_Final_FieldC";
+        protected static final String Protected_ClassD_Static_Final_FieldC = "Protected_ClassD_Static_Final_FieldC";
+
+        public String Public_ClassA_FieldD = "Public_ClassA_FieldD";
+        public static String Public_ClassA_Static_FieldD = "Public_ClassA_Static_FieldD";
+        public final String Public_ClassA_Final_FieldD = "Public_ClassA_Final_FieldD";
+        public static final String Public_ClassA_Static_Final_FieldD = "Public_ClassA_Static_Final_FieldD";
+        public String Public_ClassB_FieldD = "Public_ClassB_FieldD";
+        public static String Public_ClassB_Static_FieldD = "Public_ClassB_Static_FieldD";
+        public final String Public_ClassB_Final_FieldD = "Public_ClassB_Final_FieldD";
+        public static final String Public_ClassB_Static_Final_FieldD = "Public_ClassB_Static_Final_FieldD";
+        public String Public_ClassD_FieldD = "Public_ClassD_FieldD";
+        public static String Public_ClassD_Static_FieldD = "Public_ClassD_Static_FieldD";
+        public final String Public_ClassD_Final_FieldD = "Public_ClassD_Final_FieldD";
+        public static final String Public_ClassD_Static_Final_FieldD = "Public_ClassD_Static_Final_FieldD";
+
+        private Integer Private_ClassA_E_Field;
+        private Integer Private_ClassB_E_Field;
+        private Integer Private_ClassC_E_Field;
+
+        private ClassD() {
+        }
+
+        ClassD(String name) {
+        }
+
+        protected ClassD(int age, String name) {
+        }
+
+        public ClassD(char sex, int age, String name) {
+        }
+    }
+
+    // 泛型子类
+    static class ClassE<T> extends ClassA<T> {
+        private String Private_ClassA_FieldA = "Private_ClassA_FieldA";
+        private static String Private_ClassA_Static_FieldA = "Private_ClassA_Static_FieldA";
+        private final String Private_ClassA_Final_FieldA = "Private_ClassA_Final_FieldA";
+        private static final String Private_ClassA_Static_Final_FieldA = "Private_ClassA_Static_Final_FieldA";
+        private String Private_ClassE_FieldA = "Private_ClassE_FieldA";
+        private static String Private_ClassE_Static_FieldA = "Private_ClassE_Static_FieldA";
+        private final String Private_ClassE_Final_FieldA = "Private_ClassE_Final_FieldA";
+        private static final String Private_ClassE_Static_Final_FieldA = "Private_ClassE_Static_Final_FieldA";
+
+        String ClassA_FieldB = "ClassA_FieldB";
+        static String ClassA_Static_FieldB = "ClassA_Static_FieldB";
+        final String ClassA_Final_FieldB = "ClassA_Final_FieldB";
+        static final String ClassA_Static_Final_FieldB = "ClassA_Static_Final_FieldB";
+        String ClassE_FieldB = "ClassE_FieldB";
+        static String ClassE_Static_FieldB = "ClassE_Static_FieldB";
+        final String ClassE_Final_FieldB = "ClassE_Final_FieldB";
+        static final String ClassE_Static_Final_FieldB = "ClassE_Static_Final_FieldB";
+
+        protected String Protected_ClassA_FieldC = "Protected_ClassA_FieldC";
+        protected static String Protected_ClassA_Static_FieldC = "Protected_ClassA_Static_FieldC";
+        protected final String Protected_ClassA_Final_FieldC = "Protected_ClassA_Final_FieldC";
+        protected static final String Protected_ClassA_Static_Final_FieldC = "Protected_ClassA_Static_Final_FieldC";
+        protected String Protected_ClassE_FieldC = "Protected_ClassE_FieldC";
+        protected static String Protected_ClassE_Static_FieldC = "Protected_ClassE_Static_FieldC";
+        protected final String Protected_ClassE_Final_FieldC = "Protected_ClassE_Final_FieldC";
+        protected static final String Protected_ClassE_Static_Final_FieldC = "Protected_ClassE_Static_Final_FieldC";
+
+        public String Public_ClassA_FieldD = "Public_ClassA_FieldD";
+        public static String Public_ClassA_Static_FieldD = "Public_ClassA_Static_FieldD";
+        public final String Public_ClassA_Final_FieldD = "Public_ClassA_Final_FieldD";
+        public static final String Public_ClassA_Static_Final_FieldD = "Public_ClassA_Static_Final_FieldD";
+        public String Public_ClassE_FieldD = "Public_ClassE_FieldD";
+        public static String Public_ClassE_Static_FieldD = "Public_ClassE_Static_FieldD";
+        public final String Public_ClassE_Final_FieldD = "Public_ClassE_Final_FieldD";
+        public static final String Public_ClassE_Static_Final_FieldD = "Public_ClassE_Static_Final_FieldD";
+
+        private T Private_ClassA_E_Field;
+        private T Private_ClassE_T_Field;
+
+        private ClassE() {
+        }
+
+        ClassE(String name) {
+        }
+
+        protected ClassE(int age, String name) {
+        }
+
+        public ClassE(char sex, int age, String name) {
+        }
+    }
+
+    //普通子类
+    static class ClassF extends ClassE<String> {
+        private String Private_ClassA_FieldA = "Private_ClassA_FieldA";
+        private static String Private_ClassA_Static_FieldA = "Private_ClassA_Static_FieldA";
+        private final String Private_ClassA_Final_FieldA = "Private_ClassA_Final_FieldA";
+        private static final String Private_ClassA_Static_Final_FieldA = "Private_ClassA_Static_Final_FieldA";
+        private String Private_ClassE_FieldA = "Private_ClassE_FieldA";
+        private static String Private_ClassE_Static_FieldA = "Private_ClassE_Static_FieldA";
+        private final String Private_ClassE_Final_FieldA = "Private_ClassE_Final_FieldA";
+        private static final String Private_ClassE_Static_Final_FieldA = "Private_ClassE_Static_Final_FieldA";
+        private String Private_ClassF_FieldA = "Private_ClassF_FieldA";
+        private static String Private_ClassF_Static_FieldA = "Private_ClassF_Static_FieldA";
+        private final String Private_ClassF_Final_FieldA = "Private_ClassF_Final_FieldA";
+        private static final String Private_ClassF_Static_Final_FieldA = "Private_ClassF_Static_Final_FieldA";
+
+        String ClassA_FieldB = "ClassA_FieldB";
+        static String ClassA_Static_FieldB = "ClassA_Static_FieldB";
+        final String ClassA_Final_FieldB = "ClassA_Final_FieldB";
+        static final String ClassA_Static_Final_FieldB = "ClassA_Static_Final_FieldB";
+        String ClassE_FieldB = "ClassE_FieldB";
+        static String ClassE_Static_FieldB = "ClassE_Static_FieldB";
+        final String ClassE_Final_FieldB = "ClassE_Final_FieldB";
+        static final String ClassE_Static_Final_FieldB = "ClassE_Static_Final_FieldB";
+        String ClassF_FieldB = "ClassF_FieldB";
+        static String ClassF_Static_FieldB = "ClassF_Static_FieldB";
+        final String ClassF_Final_FieldB = "ClassF_Final_FieldB";
+        static final String ClassF_Static_Final_FieldB = "ClassF_Static_Final_FieldB";
+
+        protected String Protected_ClassA_FieldC = "Protected_ClassA_FieldC";
+        protected static String Protected_ClassA_Static_FieldC = "Protected_ClassA_Static_FieldC";
+        protected final String Protected_ClassA_Final_FieldC = "Protected_ClassA_Final_FieldC";
+        protected static final String Protected_ClassA_Static_Final_FieldC = "Protected_ClassA_Static_Final_FieldC";
+        protected String Protected_ClassE_FieldC = "Protected_ClassE_FieldC";
+        protected static String Protected_ClassE_Static_FieldC = "Protected_ClassE_Static_FieldC";
+        protected final String Protected_ClassE_Final_FieldC = "Protected_ClassE_Final_FieldC";
+        protected static final String Protected_ClassE_Static_Final_FieldC = "Protected_ClassE_Static_Final_FieldC";
+        protected String Protected_ClassF_FieldC = "Protected_ClassF_FieldC";
+        protected static String Protected_ClassF_Static_FieldC = "Protected_ClassF_Static_FieldC";
+        protected final String Protected_ClassF_Final_FieldC = "Protected_ClassF_Final_FieldC";
+        protected static final String Protected_ClassF_Static_Final_FieldC = "Protected_ClassF_Static_Final_FieldC";
+
+        public String Public_ClassA_FieldD = "Public_ClassA_FieldD";
+        public static String Public_ClassA_Static_FieldD = "Public_ClassA_Static_FieldD";
+        public final String Public_ClassA_Final_FieldD = "Public_ClassA_Final_FieldD";
+        public static final String Public_ClassA_Static_Final_FieldD = "Public_ClassA_Static_Final_FieldD";
+        public String Public_ClassE_FieldD = "Public_ClassE_FieldD";
+        public static String Public_ClassE_Static_FieldD = "Public_ClassE_Static_FieldD";
+        public final String Public_ClassE_Final_FieldD = "Public_ClassE_Final_FieldD";
+        public static final String Public_ClassE_Static_Final_FieldD = "Public_ClassE_Static_Final_FieldD";
+        public String Public_ClassF_FieldD = "Public_ClassF_FieldD";
+        public static String Public_ClassF_Static_FieldD = "Public_ClassF_Static_FieldD";
+        public final String Public_ClassF_Final_FieldD = "Public_ClassF_Final_FieldD";
+        public static final String Public_ClassF_Static_Final_FieldD = "Public_ClassF_Static_Final_FieldD";
+
+        private String Private_ClassA_T_Field;
+        private String Private_ClassE_T_Field;
+        private String Private_ClassF_T_Field;
+
+        private ClassF() {
+        }
+
+        ClassF(String name) {
+        }
+
+        protected ClassF(int age, String name) {
+        }
+
+        public ClassF(char sex, int age, String name) {
+        }
+    }
+
+    //普通子类
+    static class ClassG extends ClassA {
+        private String Private_ClassA_FieldA = "Private_ClassA_FieldA";
+        private static String Private_ClassA_Static_FieldA = "Private_ClassA_Static_FieldA";
+        private final String Private_ClassA_Final_FieldA = "Private_ClassA_Final_FieldA";
+        private static final String Private_ClassA_Static_Final_FieldA = "Private_ClassA_Static_Final_FieldA";
+        private String Private_ClassG_FieldA = "Private_ClassG_FieldA";
+        private static String Private_ClassG_Static_FieldA = "Private_ClassG_Static_FieldA";
+        private final String Private_ClassG_Final_FieldA = "Private_ClassG_Final_FieldA";
+        private static final String Private_ClassG_Static_Final_FieldA = "Private_ClassG_Static_Final_FieldA";
+
+        String ClassA_FieldB = "ClassA_FieldB";
+        static String ClassA_Static_FieldB = "ClassA_Static_FieldB";
+        final String ClassA_Final_FieldB = "ClassA_Final_FieldB";
+        static final String ClassA_Static_Final_FieldB = "ClassA_Static_Final_FieldB";
+        String ClassG_FieldB = "ClassG_FieldB";
+        static String ClassG_Static_FieldB = "ClassG_Static_FieldB";
+        final String ClassG_Final_FieldB = "ClassG_Final_FieldB";
+        static final String ClassG_Static_Final_FieldB = "ClassG_Static_Final_FieldB";
+
+        protected String Protected_ClassA_FieldC = "Protected_ClassA_FieldC";
+        protected static String Protected_ClassA_Static_FieldC = "Protected_ClassA_Static_FieldC";
+        protected final String Protected_ClassA_Final_FieldC = "Protected_ClassA_Final_FieldC";
+        protected static final String Protected_ClassA_Static_Final_FieldC = "Protected_ClassA_Static_Final_FieldC";
+        protected String Protected_ClassG_FieldC = "Protected_ClassG_FieldC";
+        protected static String Protected_ClassG_Static_FieldC = "Protected_ClassG_Static_FieldC";
+        protected final String Protected_ClassG_Final_FieldC = "Protected_ClassG_Final_FieldC";
+        protected static final String Protected_ClassG_Static_Final_FieldC = "Protected_ClassG_Static_Final_FieldC";
+
+        public String Public_ClassA_FieldD = "Public_ClassA_FieldD";
+        public static String Public_ClassA_Static_FieldD = "Public_ClassA_Static_FieldD";
+        public final String Public_ClassA_Final_FieldD = "Public_ClassA_Final_FieldD";
+        public static final String Public_ClassA_Static_Final_FieldD = "Public_ClassA_Static_Final_FieldD";
+        public String Public_ClassG_FieldD = "Public_ClassG_FieldD";
+        public static String Public_ClassG_Static_FieldD = "Public_ClassG_Static_FieldD";
+        public final String Public_ClassG_Final_FieldD = "Public_ClassG_Final_FieldD";
+        public static final String Public_ClassG_Static_Final_FieldD = "Public_ClassG_Static_Final_FieldD";
+
+        private Object Private_ClassA_E_Field;
+
+        private ClassG() {
+        }
+
+        ClassG(String name) {
+        }
+
+        protected ClassG(int age, String name) {
+        }
+
+        public ClassG(char sex, int age, String name) {
+        }
+    }
+
+    //普通子类
+    static class ClassH extends ClassB implements InterfaceA<String>, Comparable<String> {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+
+        private String Private_ClassA_FieldA = "Private_ClassA_FieldA";
+        private static String Private_ClassA_Static_FieldA = "Private_ClassA_Static_FieldA";
+        private final String Private_ClassA_Final_FieldA = "Private_ClassA_Final_FieldA";
+        private static final String Private_ClassA_Static_Final_FieldA = "Private_ClassA_Static_Final_FieldA";
+        private String Private_ClassB_FieldA = "Private_ClassB_FieldA";
+        private static String Private_ClassB_Static_FieldA = "Private_ClassB_Static_FieldA";
+        private final String Private_ClassB_Final_FieldA = "Private_ClassB_Final_FieldA";
+        private static final String Private_ClassB_Static_Final_FieldA = "Private_ClassB_Static_Final_FieldA";
+        private String Private_ClassH_FieldA = "Private_ClassH_FieldA";
+        private static String Private_ClassH_Static_FieldA = "Private_ClassH_Static_FieldA";
+        private final String Private_ClassH_Final_FieldA = "Private_ClassH_Final_FieldA";
+        private static final String Private_ClassH_Static_Final_FieldA = "Private_ClassH_Static_Final_FieldA";
+
+        String ClassA_FieldB = "ClassA_FieldB";
+        static String ClassA_Static_FieldB = "ClassA_Static_FieldB";
+        final String ClassA_Final_FieldB = "ClassA_Final_FieldB";
+        static final String ClassA_Static_Final_FieldB = "ClassA_Static_Final_FieldB";
+        String ClassB_FieldB = "ClassB_FieldB";
+        static String ClassB_Static_FieldB = "ClassB_Static_FieldB";
+        final String ClassB_Final_FieldB = "ClassB_Final_FieldB";
+        static final String ClassB_Static_Final_FieldB = "ClassB_Static_Final_FieldB";
+        String ClassH_FieldB = "ClassH_FieldB";
+        static String ClassH_Static_FieldB = "ClassH_Static_FieldB";
+        final String ClassH_Final_FieldB = "ClassH_Final_FieldB";
+        static final String ClassH_Static_Final_FieldB = "ClassH_Static_Final_FieldB";
+
+        protected String Protected_ClassA_FieldC = "Protected_ClassA_FieldC";
+        protected static String Protected_ClassA_Static_FieldC = "Protected_ClassA_Static_FieldC";
+        protected final String Protected_ClassA_Final_FieldC = "Protected_ClassA_Final_FieldC";
+        protected static final String Protected_ClassA_Static_Final_FieldC = "Protected_ClassA_Static_Final_FieldC";
+        protected String Protected_ClassB_FieldC = "Protected_ClassB_FieldC";
+        protected static String Protected_ClassB_Static_FieldC = "Protected_ClassB_Static_FieldC";
+        protected final String Protected_ClassB_Final_FieldC = "Protected_ClassB_Final_FieldC";
+        protected static final String Protected_ClassB_Static_Final_FieldC = "Protected_ClassB_Static_Final_FieldC";
+        protected String Protected_ClassH_FieldC = "Protected_ClassH_FieldC";
+        protected static String Protected_ClassH_Static_FieldC = "Protected_ClassH_Static_FieldC";
+        protected final String Protected_ClassH_Final_FieldC = "Protected_ClassH_Final_FieldC";
+        protected static final String Protected_ClassH_Static_Final_FieldC = "Protected_ClassH_Static_Final_FieldC";
+
+        public String Public_ClassA_FieldD = "Public_ClassA_FieldD";
+        public static String Public_ClassA_Static_FieldD = "Public_ClassA_Static_FieldD";
+        public final String Public_ClassA_Final_FieldD = "Public_ClassA_Final_FieldD";
+        public static final String Public_ClassA_Static_Final_FieldD = "Public_ClassA_Static_Final_FieldD";
+        public String Public_ClassB_FieldD = "Public_ClassB_FieldD";
+        public static String Public_ClassB_Static_FieldD = "Public_ClassB_Static_FieldD";
+        public final String Public_ClassB_Final_FieldD = "Public_ClassB_Final_FieldD";
+        public static final String Public_ClassB_Static_Final_FieldD = "Public_ClassB_Static_Final_FieldD";
+        public String Public_ClassH_FieldD = "Public_ClassH_FieldD";
+        public static String Public_ClassH_Static_FieldD = "Public_ClassH_Static_FieldD";
+        public final String Public_ClassH_Final_FieldD = "Public_ClassH_Final_FieldD";
+        public static final String Public_ClassH_Static_Final_FieldD = "Public_ClassH_Static_Final_FieldD";
+
+        private Integer Private_ClassA_E_Field;
+        private Integer Private_ClassB_T_Field;
+        private Integer Private_ClassF_T_Field;
+
+        private ClassH() {
+        }
+
+        ClassH(String name) {
+        }
+
+        protected ClassH(int age, String name) {
+        }
+
+        public ClassH(char sex, int age, String name) {
+        }
+
+        @Override
+        public int compareTo(String o) {
+            return 0;
+        }
+    }
+
+    static class ClassJ<K> extends HashMap<K, ClassB> implements InterfaceA<String> {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+
+        private String Private_ClassJ_FieldA = "Private_ClassJ_FieldA";
+        private static String Private_ClassJ_Static_FieldA = "Private_ClassJ_Static_FieldA";
+        private final String Private_ClassJ_Final_FieldA = "Private_ClassJ_Final_FieldA";
+        private static final String Private_ClassJ_Static_Final_FieldA = "Private_ClassJ_Static_Final_FieldA";
+
+        String ClassJ_FieldB = "ClassJ_FieldB";
+        static String ClassJ_Static_FieldB = "ClassJ_Static_FieldB";
+        final String ClassJ_Final_FieldB = "ClassJ_Final_FieldB";
+        static final String ClassJ_Static_Final_FieldB = "ClassJ_Static_Final_FieldB";
+
+        protected String Protected_ClassJ_FieldC = "Protected_ClassJ_FieldC";
+        protected static String Protected_ClassJ_Static_FieldC = "Protected_ClassJ_Static_FieldC";
+        protected final String Protected_ClassJ_Final_FieldC = "Protected_ClassJ_Final_FieldC";
+        protected static final String Protected_ClassJ_Static_Final_FieldC = "Protected_ClassJ_Static_Final_FieldC";
+
+        public String Public_ClassJ_FieldD = "Public_ClassJ_FieldD";
+        public static String Public_ClassJ_Static_FieldD = "Public_ClassJ_Static_FieldD";
+        public final String Public_ClassJ_Final_FieldD = "Public_ClassJ_Final_FieldD";
+        public static final String Public_ClassJ_Static_Final_FieldD = "Public_ClassJ_Static_Final_FieldD";
+
+        private K Private_ClassJ_K_Field;
+
+        private ClassJ() {
+        }
+
+        ClassJ(String name) {
+        }
+
+        protected ClassJ(int age, String name) {
+        }
+
+        public ClassJ(char sex, int age, String name) {
+        }
+    }
+
+    static class ClassO extends ClassJ<Integer> {
+        String InterfaceA_FieldA = "InterfaceA_FieldA";
+
+        private String Private_ClassJ_FieldA = "Private_ClassJ_FieldA";
+        private static String Private_ClassJ_Static_FieldA = "Private_ClassJ_Static_FieldA";
+        private final String Private_ClassJ_Final_FieldA = "Private_ClassJ_Final_FieldA";
+        private static final String Private_ClassJ_Static_Final_FieldA = "Private_ClassJ_Static_Final_FieldA";
+        private String Private_ClassO_FieldA = "Private_ClassO_FieldA";
+        private static String Private_ClassO_Static_FieldA = "Private_ClassO_Static_FieldA";
+        private final String Private_ClassO_Final_FieldA = "Private_ClassO_Final_FieldA";
+        private static final String Private_ClassO_Static_Final_FieldA = "Private_ClassO_Static_Final_FieldA";
+
+        String ClassJ_FieldB = "ClassJ_FieldB";
+        static String ClassJ_Static_FieldB = "ClassJ_Static_FieldB";
+        final String ClassJ_Final_FieldB = "ClassJ_Final_FieldB";
+        static final String ClassJ_Static_Final_FieldB = "ClassJ_Static_Final_FieldB";
+        String ClassO_FieldB = "ClassO_FieldB";
+        static String ClassO_Static_FieldB = "ClassO_Static_FieldB";
+        final String ClassO_Final_FieldB = "ClassO_Final_FieldB";
+        static final String ClassO_Static_Final_FieldB = "ClassO_Static_Final_FieldB";
+
+        protected String Protected_ClassJ_FieldC = "Protected_ClassJ_FieldC";
+        protected static String Protected_ClassJ_Static_FieldC = "Protected_ClassJ_Static_FieldC";
+        protected final String Protected_ClassJ_Final_FieldC = "Protected_ClassJ_Final_FieldC";
+        protected static final String Protected_ClassJ_Static_Final_FieldC = "Protected_ClassJ_Static_Final_FieldC";
+        protected String Protected_ClassO_FieldC = "Protected_ClassO_FieldC";
+        protected static String Protected_ClassO_Static_FieldC = "Protected_ClassO_Static_FieldC";
+        protected final String Protected_ClassO_Final_FieldC = "Protected_ClassO_Final_FieldC";
+        protected static final String Protected_ClassO_Static_Final_FieldC = "Protected_ClassO_Static_Final_FieldC";
+
+        public String Public_ClassJ_FieldD = "Public_ClassJ_FieldD";
+        public static String Public_ClassJ_Static_FieldD = "Public_ClassJ_Static_FieldD";
+        public final String Public_ClassJ_Final_FieldD = "Public_ClassJ_Final_FieldD";
+        public static final String Public_ClassJ_Static_Final_FieldD = "Public_ClassJ_Static_Final_FieldD";
+        public String Public_ClassO_FieldD = "Public_ClassO_FieldD";
+        public static String Public_ClassO_Static_FieldD = "Public_ClassO_Static_FieldD";
+        public final String Public_ClassO_Final_FieldD = "Public_ClassO_Final_FieldD";
+        public static final String Public_ClassO_Static_Final_FieldD = "Public_ClassO_Static_Final_FieldD";
+
+        private Integer Private_ClassJ_K_Field;
+        private Integer Private_ClassO_K_Field;
+
+        private ClassO() {
+        }
+
+        ClassO(String name) {
+        }
+
+        protected ClassO(int age, String name) {
+        }
+
+        public ClassO(char sex, int age, String name) {
+        }
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Inherited
+    @interface InterfaceAnnotation {
+
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Inherited
+    @interface InterfaceAnnotation2 {
+
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Inherited
+    @interface ClassAnnotation {
+
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Inherited
+    @interface ClassAnnotation2 {
+
+    }
+
+    /***************/
 
 }

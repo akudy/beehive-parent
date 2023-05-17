@@ -1,4 +1,11 @@
 @startmindmap
+<style>
+mindmapDiagram {
+    node {
+        BackgroundColor #Business
+    }
+}
+</style>
 * 核心库
 ** 工具库
 
@@ -56,9 +63,10 @@
 *****_ DateTimeUtils
 
 *** 表达式
-**** Ant
-*****_ AntMatcher
-*****_ AntPathMatcher
+**** 路径匹配
+*****_ PathMatcher
+***** Ant
+******_ AntPathMatcher
 **** 正则匹配
 ***** Util
 ******_ RegexUtils <font color=red><&info><sup>待完善</sup></font>
@@ -67,7 +75,7 @@
 *** 通用组件
 **** 转换器
 *****_ Converter
-*****_ COnverterException
+*****_ ConverterException
 
 **** 匹配器
 *****_ Matcher
