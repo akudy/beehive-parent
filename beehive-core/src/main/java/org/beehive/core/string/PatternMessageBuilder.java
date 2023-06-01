@@ -50,7 +50,7 @@ import org.beehive.core.string.pattern.PatternMessage;
  *   </dd>
  * </dl>
  *
- * @author akudy(akudys @ 163.com)
+ * @author <a href="mailto:akudys@163.com">akudy</a>
  * @version 1.0
  * @since 1.0
  */
@@ -73,7 +73,7 @@ public class PatternMessageBuilder extends PatternBuilderAppendable<PatternMessa
     }
 
     @Override
-    protected PatternMessageBuilder self() {
+    protected PatternMessageBuilder _self() {
         return this;
     }
 

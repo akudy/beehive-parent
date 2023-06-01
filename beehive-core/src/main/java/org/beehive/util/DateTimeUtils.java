@@ -175,7 +175,7 @@ import java.util.*;
  * </dd>
  * </dl>
  *
- * @author akudy(akudys @ 163.com)
+ * @author <a href="mailto:akudys@163.com">akudy</a>
  * @version 1.0
  * @since Java 8
  */
@@ -461,6 +461,9 @@ public class DateTimeUtils {
      */
     public static Date newDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond) {
         Calendar calendar = Calendar.getInstance();
+        if (year < 1) {
+            throw new IllegalArgumentException("value range of year must be greater than 1");
+        }
         calendar.set(Calendar.YEAR, year);
         if (month < 1 || month > 12) {
             throw new IllegalArgumentException("value range of month is [1,12]");
@@ -483,7 +486,7 @@ public class DateTimeUtils {
             throw new IllegalArgumentException("value range of second is [1,59]");
         }
         calendar.set(Calendar.SECOND, second);
-        if (month < 0 || month > 999) {
+        if (millisecond < 0 || millisecond > 999) {
             throw new IllegalArgumentException("value range of millisecond is [1,999]");
         }
         calendar.set(Calendar.MILLISECOND, millisecond);

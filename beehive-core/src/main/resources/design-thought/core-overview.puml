@@ -59,6 +59,12 @@ mindmapDiagram {
 
 
 *** 日期时间
+**** 时间值
+*****_ DateValue
+*****_ TimeValue
+*****_ DateTimeValue
+**** 时间周期
+*****_ DateTimePeriod
 **** Util
 *****_ DateTimeUtils
 

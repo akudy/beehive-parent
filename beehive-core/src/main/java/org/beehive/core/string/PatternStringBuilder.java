@@ -50,7 +50,7 @@ import org.beehive.core.string.pattern.PatternString;
  *   </dd>
  * </dl>
  *
- * @author akudy(akudys @ 163.com)
+ * @author <a href="mailto:akudys@163.com">akudy</a>
  * @version 1.0
  * @see java.util.Formatter
  * @see String#format(String, Object...)
@@ -75,7 +75,7 @@ public class PatternStringBuilder extends PatternBuilderAppendable<PatternString
     }
 
     @Override
-    protected PatternStringBuilder self() {
+    protected PatternStringBuilder _self() {
         return this;
     }
 

@@ -48,7 +48,7 @@ package org.beehive.core.common;
  *
  * @param <S> 源对象类型
  * @param <T> 目标对象类型
- * @author akudy(akudys @ 163.com)
+ * @author <a href="mailto:akudys@163.com">akudy</a>
  * @version 1.0
  * @since 1.0
  */

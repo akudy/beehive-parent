@@ -48,7 +48,7 @@ import java.util.List;
  * </dl>
  *
  * @param <E> 被分页的列表元素类型
- * @author akudy(akudys @ 163.com)
+ * @author <a href="mailto:akudys@163.com">akudy</a>
  * @version 1.0
  * @since 1.0
  */

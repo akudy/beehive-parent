@@ -49,7 +49,7 @@ import org.beehive.core.string.pattern.PatternPlaceholder;
  *   </dd>
  * </dl>
  *
- * @author akudy(akudys @ 163.com)
+ * @author <a href="mailto:akudys@163.com">akudy</a>
  * @version 1.0
  * @since 1.0
  */
@@ -65,12 +65,12 @@ public abstract class PatternBuilderAppendable<T extends PatternBuilderAppendabl
      *
      * @return 当前对象本身
      */
-    protected abstract T self();
+    protected abstract T _self();
 
     @Override
     public T append(CharSequence csq) {
         this.sb.append(csq);
-        return this.self();
+        return this._self();
     }
 
     /**
@@ -85,13 +85,13 @@ public abstract class PatternBuilderAppendable<T extends PatternBuilderAppendabl
     @Override
     public T append(CharSequence csq, int start, int end) {
         this.sb.append(csq, start, end);
-        return this.self();
+        return this._self();
     }
 
     @Override
     public T append(char c) {
         this.sb.append(c);
-        return this.self();
+        return this._self();
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class PatternBuilderAppendable<T extends PatternBuilderAppendabl
      */
     public T append(F formatStr) {
         this.sb.append(formatStr.placeholder());
-        return this.self();
+        return this._self();
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class PatternBuilderAppendable<T extends PatternBuilderAppendabl
      */
     public T beginWith(F formatStr) {
         this.sb.insert(0, formatStr.placeholder());
-        return this.self();
+        return this._self();
     }
 
     /**
@@ -126,7 +126,7 @@ public abstract class PatternBuilderAppendable<T extends PatternBuilderAppendabl
      */
     public T insert(int offset, F formatStr) {
         this.sb.insert(offset, formatStr.placeholder());
-        return this.self();
+        return this._self();
     }
 
     /**
@@ -139,7 +139,7 @@ public abstract class PatternBuilderAppendable<T extends PatternBuilderAppendabl
      */
     public T replace(int start, int end, F formatStr) {
         this.sb.replace(start, end, formatStr.placeholder());
-        return this.self();
+        return this._self();
     }
 
     @Override

@@ -95,7 +95,7 @@ package org.beehive.core.algorithm;
  *   </dd>
  * </dl>
  *
- * @author akudy(akudys @ 163.com)
+ * @author <a href="mailto:akudys@163.com">akudy</a>
  * @version 1.0
  * @since 1.0
  */

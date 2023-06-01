@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2019-2019 by akudy All Rights Reserved.
+  ~ Copyright (c) 2019-2023 by akudy All Rights Reserved.
   ~ Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
   ~ Project Name: beehive-parent
   ~ Module Name: beehive-parent
-  ~ File Name: D:/workspace/IdeaProjects/my/beehiveProject/beehive-parent/beehive-date/pom.xml
+  ~ File Name: D:/workspace/IdeaProjects/my/beehive-parent/beehive-lunar-calendar/pom.xml
   ~ Encoding: UTF-8
   ~ Creator: akudy(akudys@163.com)
-  ~ Create Date: 2019-06-28
+  ~ Create Date: 2023-05-22
   ~ Comments: <简述该文件的内容和作用>
   -->
 
@@ -21,7 +21,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>beehive-date</artifactId>
+    <artifactId>beehive-lunar-calendar</artifactId>
 
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 </project>

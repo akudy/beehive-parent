@@ -1,0 +1,66 @@
+@startuml
+
+interface Comparable<T>
+
+class DateValue {
+    + of(...) : DateValue
+    + ofXXX(...) : DateValue
+    + getXXX() : int
+    + getWeek() : int
+    + getDayOfWeek() : int
+    + getDayOfYear() : int
+    + getDayOfWeekInMonth() : int
+    + getWeekOfYear() : int
+    + getWeekOfMonth() : int
+    + before(DateValue) : boolean
+    + after(DateValue) : boolean
+    + ifFirstDayOfYear() : boolean
+    + isLastDayOfYear() : boolean
+    + isFirstDayOfMonth() : boolean
+    + isLastDayOfMonth() : boolean
+    + asLocalDate() : LocalDate
+}
+class TimeValue {
+    + of(...) : TimeValue
+    + ofXXX(...) : TimeValue
+    + getXXX() : int
+    + before(TimeValue) : boolean
+    + after(TimeValue) : boolean
+    + asLocalTime() : LocalTime
+}
+class DateTimeValue {
+    + of(...) : DateTimeValue
+    + ofXXX(...) : DateTimeValue
+    + getXXX() : int
+    + before(DateTimeValue) : boolean
+    + after(DateTimeValue) : boolean
+    + asLocalDateTime() : LocalDateTime
+    + asDate() : Date
+    + asXXX() : XXX
+}
+
+class DateTimePeriod {
+    + getBegin() : Date
+    + getEnd() : Date
+    + intervalDays() : int
+    + spanDays() : int
+    + before(Date) : boolean
+    + after(Date) : boolean
+    + contain(Date) : boolean
+    + left(DateTimePeriod) : boolean
+    + right(DateTimePeriod) : boolean
+    + middle(DateTimePeriod) : boolean
+    + enclose(DateTimePeriod) : boolean
+    + cross(DateTimePeriod) : boolean
+}
+
+
+DateTimePeriod ..|> Comparable
+DateValue ..|> Comparable
+TimeValue ..|> Comparable
+DateTimeValue ..|> Comparable
+
+DateTimeValue *-- DateValue
+DateTimeValue *-- TimeValue
+
+@enduml
