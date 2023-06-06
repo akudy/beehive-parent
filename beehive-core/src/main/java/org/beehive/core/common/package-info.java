@@ -5,7 +5,7 @@
  *     <li>匹配器{@link org.beehive.core.common.Matcher}</li>
  * </ul>
  *
- * @author <a href="mailto:akudys@163.com">akudy</a>
+ * @author akudy
  * @version 1.0
  * @since 1.0
  */

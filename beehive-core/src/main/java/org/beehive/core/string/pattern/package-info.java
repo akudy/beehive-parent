@@ -1,7 +1,7 @@
 /**
  * 这个包用于存放模式字符串相关类
  *
- * @author <a href="mailto:akudys@163.com">akudy</a>
+ * @author akudy
  * @version 1.0
  * @since 1.0
  */

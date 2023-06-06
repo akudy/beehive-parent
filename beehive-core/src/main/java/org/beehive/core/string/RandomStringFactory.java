@@ -1,13 +1,5 @@
 /*
- * Copyright (c) 2019-2020 by akudy All Rights Reserved.
- * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
- * Project Name: beehive-parent
- * Module Name: beehive-core
- * File Name: org.beehive.core.string.RandomStringFactory
- * Encoding: UTF-8
- * Creator: akudy(akudys@163.com)
- * Create Date: 2020-10-17
- * Comments: <简述该文件的内容和作用>
+ * Copyright(c) 2021 By akudy All Rights Reserved.
  */
 
 package org.beehive.core.string;
@@ -21,38 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * 随机字符串工厂，用于产生字符串。包含共用方法和接口定义。
  * <br>
  * 包括产生随机字符串等。
- * <p>
- * <b>Type Informations:</b>
- * <ul>
- * <li>Package Name: <code>org.beehive.core.string</code></li>
- * <li>Class Name: <code>RandomStringFactory</code></li>
- * <li>Java Version Used: Java 8</li>
- * <li>Compile With Java Version: JDK 8</li>
- * </ul>
- * <p>
- * <b>Upgrade/Modify Description:</b>
- * <dl>
- * <dd>
- * <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade&shy;Modify History>
- * <tr>
- * <th>Version</th>
- * <th>Environment</th>
- * <th>ModifyTime</th>
- * <th>Modifier</th>
- * <th>Description</th>
- * </tr>
- * <tr>
- * <td align="center"><em>1.0</em></td>
- * <td align="center"><em>Java 8</em></td>
- * <td align="center"><em>2020/10/16</em></td>
- * <td align="center"><em>akudy</em></td>
- * <td><em>Define</em></td>
- * </tr>
- * </table>
- * </dd>
- * </dl>
  *
- * @author <a href="mailto:akudys@163.com">akudy</a>
+ * @author akudy
  * @version 1.0
  * @since 1.0
  */

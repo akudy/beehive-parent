@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2019-2019 by akudy All Rights Reserved.
-  ~ Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
-  ~ Project Name: beehive-parent
-  ~ Module Name: beehive-util
-  ~ File Name: /resources/java.specification/timezone.xml
-  ~ Encoding: UTF-8
-  ~ Creator: akudy(akudys@163.com)
-  ~ Create Date: 2019-06-26
-  ~ Comments: 常用Java规定的时区代码和描述
+  ~ Copyright(c) 2021 By akudy All Rights Reserved.
   -->
 
 <timezones>

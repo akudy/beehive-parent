@@ -1,13 +1,5 @@
 /*
- * Copyright (c) 2019-2020 by akudy All Rights Reserved.
- * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
- * Project Name: beehive-parent
- * Module Name: beehive-core
- * File Name: org.beehive.util.ClassUtils
- * Encoding: UTF-8
- * Creator: akudy(akudys@163.com)
- * Create Date: 2020-08-19
- * Comments:
+ * Copyright(c) 2021 By akudy All Rights Reserved.
  */
 
 package org.beehive.util;
@@ -32,38 +24,8 @@ import java.util.*;
  * 类分析工具类，提供类的解析等功能。
  * <br>
  * 该类是主要依赖反射机制来工作。
- * <p>
- * <b>Type Informations:</b>
- * <ul>
- * <li>Package Name: <code>org.beehive.util</code></li>
- * <li>Class Name: <code>ClassUtils</code></li>
- * <li>Java Version Used: Java 8</li>
- * <li>Compile With Java Version: JDK 8</li>
- * </ul>
- * <p>
- * <b>Upgrade/Modify Description:</b>
- * <dl>
- * <dd>
- * <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade&shy;Modify History>
- * <tr>
- * <th>Version</th>
- * <th>Environment</th>
- * <th>ModifyTime</th>
- * <th>Modifier</th>
- * <th>Description</th>
- * </tr>
- * <tr>
- * <td align="center"><em>1.0</em></td>
- * <td align="center"><em>Java 8</em></td>
- * <td align="center"><em>2020/8/19</em></td>
- * <td align="center"><em>akudy</em></td>
- * <td><em>Define</em></td>
- * </tr>
- * </table>
- * </dd>
- * </dl>
  *
- * @author <a href="mailto:akudys@163.com">akudy</a>
+ * @author akudy
  * @version 1.0
  * @since 1.0
  */
@@ -293,7 +255,7 @@ public class ClassUtils {
      *     <li>应用程序类加载器(Application ClassLoader)：这个类加载器负责加载用户类路径(CLASSPATH)下的类库,一般我们编写的java类都是由这个类加载器加载,这个类加载器是CLassLoader中的getSystemClassLoader()方法的返回值,所以也称为系统类加载器.一般情况下这就是系统默认的类加载器.</li>
      *     <li>自定义类加载器(Custom ClassLoader)：自己定义的类加载器,用来满足特殊的需求,需要继承java.lang.ClassLoader类.</li>
      * </ol>
-     * Java的类加载器使用了双亲委托模型，当需要加载一个类时，优先交个启动类加载器；如果没有找到被加载类，则交给扩展类加载器；如果没有找到被加载类，则交给应用程序加载器；
+     * Java的类加载器使用了双亲委托模型，当需要加载一个类时，优先交给启动类加载器；如果没有找到被加载类，则交给扩展类加载器；如果没有找到被加载类，则交给应用程序加载器；
      * 如果还是没有找到被加载类，则返回给给委托的发起者，并由它到制定的文件系统或网路URL中加载该类，如果没有，则抛出ClassNotFoundException异常。这种模型可以避免类的重复加载。
      *
      * @return 默认的类加载器对象

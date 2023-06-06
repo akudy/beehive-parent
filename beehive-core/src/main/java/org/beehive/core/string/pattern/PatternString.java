@@ -1,13 +1,5 @@
 /*
- * Copyright (c) 2019-2023 by akudy All Rights Reserved.
- * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
- * Project Name: beehive-parent
- * Module Name: beehive-core
- * File Name: org.beehive.core.string.format.FormatMarkerBuilder
- * Encoding: UTF-8
- * Creator: akudy(akudys@163.com)
- * Create Date: 2023-03-06
- * Comments: <简述该文件的内容和作用>
+ * Copyright(c) 2021 By akudy All Rights Reserved.
  */
 
 package org.beehive.core.string.pattern;
@@ -22,38 +14,8 @@ import java.util.Locale;
  * 提供模式/格式字符串模板占位符形式的字符串构建方法，其中每一个实例代表一个格式字符串模板的开始和结束。<br/>
  * 提供各种方法来完成<code> %[argument_index$][flags][width][.precision]conversion </code>内容个构建<br/>
  * 可参考{@link java.util.Formatter}<a href ="https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html">官方文档</a>
- * <p>
- * <b>Type Informations:</b>
- * <ul>
- *   <li>Package Name: <code>org.beehive.core.string.format</code></li>
- *   <li>Class Name: <code>PatternString</code></li>
- *   <li>Java Version Used: Java 8</li>
- *   <li>Compile With Java Version: JDK 8</li>
- * </ul>
- * <p>
- * <b>Upgrade/Modify Description:</b>
- * <dl>
- *   <dd>
- *     <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade&shy;Modify History>
- *       <tr>
- *         <th>Version</th>
- *         <th>Environment</th>
- *         <th>ModifyTime</th>
- *         <th>Modifier</th>
- *         <th>Description</th>
- *       </tr>
- *       <tr>
- *         <td align="center"><em>1.0</em></td>
- *         <td align="center"><em>Java 8</em></td>
- *         <td align="center"><em>2023-03-06</em></td>
- *         <td align="center"><em>akudy</em></td>
- *         <td><em>Define</em></td>
- *       </tr>
- *     </table>
- *   </dd>
- * </dl>
  *
- * @author <a href="mailto:akudys@163.com">akudy</a>
+ * @author akudy
  * @version 1.0
  * @see java.util.Formatter
  * @since 1.0

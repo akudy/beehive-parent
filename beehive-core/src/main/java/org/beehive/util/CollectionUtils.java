@@ -1,13 +1,5 @@
 /*
- * Copyright (c) 2019-2020 by akudy All Rights Reserved.
- * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
- * Project Name: beehive-parent
- * Module Name: beehive-core
- * File Name: org.beehive.util.CollectionUtils
- * Encoding: UTF-8
- * Creator: akudy(akudys@163.com)
- * Create Date: 2020-08-30
- * Comments: <简述该文件的内容和作用>
+ * Copyright(c) 2021 By akudy All Rights Reserved.
  */
 
 package org.beehive.util;
@@ -21,38 +13,8 @@ import java.util.*;
  * 集合工具类。提供常规的集合判断、构建、转换等常用功能。
  * <br>
  * 该工具类用于辅助{@link java.util.Collections}工具类的实现数组其他功能的扩展。
- * <p>
- * <b>Type Informations:</b>
- * <ul>
- * <li>Package Name: <code>org.beehive.util</code></li>
- * <li>Class Name: <code>CollectionUtils</code></li>
- * <li>Java Version Used: Java 8</li>
- * <li>Compile With Java Version: JDK 8</li>
- * </ul>
- * <p>
- * <b>Upgrade/Modify Description:</b>
- * <dl>
- * <dd>
- * <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade&shy;Modify History>
- * <tr>
- * <th>Version</th>
- * <th>Environment</th>
- * <th>ModifyTime</th>
- * <th>Modifier</th>
- * <th>Description</th>
- * </tr>
- * <tr>
- * <td align="center"><em>1.0</em></td>
- * <td align="center"><em>Java 8</em></td>
- * <td align="center"><em>2020/8/30</em></td>
- * <td align="center"><em>akudy</em></td>
- * <td><em>Define</em></td>
- * </tr>
- * </table>
- * </dd>
- * </dl>
  *
- * @author <a href="mailto:akudys@163.com">akudy</a>
+ * @author akudy
  * @version 1.0
  * @since 1.0
  */

@@ -1,13 +1,5 @@
 /*
- * Copyright (c) 2019-2023 by akudy All Rights Reserved.
- * Create Environment: Windows10(64bit)/Jetbrains IDEA 2018/Java 8
- * Project Name: beehive-parent
- * Module Name: beehive-core
- * File Name: org.beehive.core.datetime.DateValue
- * Encoding: UTF-8
- * Creator: akudy(akudys@163.com)
- * Create Date: 2023-05-18
- * Comments: <简述该文件的内容和作用>
+ * Copyright(c) 2021 By akudy All Rights Reserved.
  */
 
 package org.beehive.core.datetime;
@@ -22,38 +14,8 @@ import java.util.Objects;
  * 日期值对象定义，用来解构一个日期时间对象或者日历对象。
  * <br>
  * 通过提供年、月、日来描述一个日期值
- * <p>
- * <b>Type Informations:</b>
- * <ul>
- *   <li>Package Name: <code>org.beehive.core.datetime</code></li>
- *   <li>Class Name: <code>DateValue</code></li>
- *   <li>Java Version Used: Java 8</li>
- *   <li>Compile With Java Version: JDK 8</li>
- * </ul>
- * <p>
- * <b>Upgrade/Modify Description:</b>
- * <dl>
- *   <dd>
- *     <table border="1" cellspacing="0" cellpadding="0" summary=""Upgrade&shy;Modify History>
- *       <tr>
- *         <th>Version</th>
- *         <th>Environment</th>
- *         <th>ModifyTime</th>
- *         <th>Modifier</th>
- *         <th>Description</th>
- *       </tr>
- *       <tr>
- *         <td align="center"><em>1.0</em></td>
- *         <td align="center"><em>Java 8</em></td>
- *         <td align="center"><em>2023-05-18</em></td>
- *         <td align="center"><em>akudy</em></td>
- *         <td><em>Define</em></td>
- *       </tr>
- *     </table>
- *   </dd>
- * </dl>
  *
- * @author <a href="mailto:akudys@163.com">akudy</a>
+ * @author akudy
  * @version 1.0
  * @since 1.0
  */
